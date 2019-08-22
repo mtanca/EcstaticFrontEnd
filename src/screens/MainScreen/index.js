@@ -1,7 +1,7 @@
 import React from "react";
-import LoginScreen from '../LoginScreen';
 
-import {View, Text, AsyncStorage} from "react-native";
+import {View, Text, Button, AsyncStorage, StyleSheet} from "react-native";
+import IntroOnBoardScreen from '../IntroOnBoardScreen';
 
 class MainScreen extends React.Component {
   constructor(props) {
@@ -13,14 +13,12 @@ class MainScreen extends React.Component {
     }
 
     this._retrieveData = this._retrieveData.bind(this)
+    this._retrieveData()
   }
 
-  static navigationOptions = {
-    title: '',
-  };
-
-  componentWillMount() {
-    this._retrieveData()
+  static navigationOptions: {
+    title: 'hello',
+    headerLeft: null
   }
 
   _retrieveData = async () => {
@@ -44,27 +42,38 @@ class MainScreen extends React.Component {
 
 
   render() {
-    const {navigate} = this.props.navigation;
+    const navigate = this.props.navigation;
 
     if(this.state.isLoggedIn === true) {
       return (
         <View>
-          {
-            this.state.canRender === true && <Text> Hello </Text>
-          }
+          <Text> hello world </Text>
         </View>
       )
     } else {
       return(
         <View>
-        {
-          this.state.canRender === true &&
-          <LoginScreen navigation={navigate}/>
-        }
+          {
+            this.state.canRender === true &&
+            <IntroOnBoardScreen navigation={navigate}/>
+          }
         </View>
       )
     }
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonsContainer:{
+    marginTop: 100,
+  },
+  buttons: {
+    marginTop: 30,
+  },
+})
 
 export default MainScreen;
