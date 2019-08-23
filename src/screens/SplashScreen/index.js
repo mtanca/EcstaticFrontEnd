@@ -22,7 +22,6 @@ class SplashScreen extends React.Component {
     headerLeft: null
   }
 
-
   render() {
     const {navigate} = this.props.navigation;
     setTimeout(function(){ navigate("MainScreen", {navigation: navigate}); }, 2000)
@@ -31,7 +30,7 @@ class SplashScreen extends React.Component {
       <View style={styles.container}>
         <Image
           source={ecstaticLogo}
-          style={{height: 100, width: 100, marginTop: 150}}
+          style={{height: 100, width: 100}}
         />
         <Image
           style={{marginTop: 30}}
@@ -44,6 +43,7 @@ class SplashScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    justifyContent: 'center',
     alignItems: "center",
     backgroundColor: '#1e1e1e',
     position: 'absolute',

@@ -1,8 +1,12 @@
 import React from "react";
 import {View, Text, Button, StyleSheet, Dimensions,} from "react-native";
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
+import PropTypes from 'prop-types';
+import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 
 var FBLoginButton = require('./FBLoginButton');
+import RegistrationScreen from '../RegistrationScreen';
+
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -12,6 +16,7 @@ class LoginScreen extends React.Component {
       email: "",
       password: "",
       isAllFieldsFilled: true,
+      buttonColor: "#39f3bb"
     }
   }
 
@@ -28,11 +33,13 @@ class LoginScreen extends React.Component {
 
     if(requiredBlankFields.length == 0) {
       this.setState({
-        isAllFieldsFilled: false
+        isAllFieldsFilled: false,
+        buttonColor: "#39f3bb"
       })
     } else {
       this.setState({
-        isAllFieldsFilled: true
+        isAllFieldsFilled: true,
+        buttonColor: "#39f3bb"
       })
     }
   }
@@ -65,25 +72,48 @@ class LoginScreen extends React.Component {
   }
 
   render() {
+    const {navigate} = this.props.navigation;
+
     return (
+      <View>
+        <Text style={{marginLeft: 15, fontWeight: 'bold', fontSize: 20}}>Log In</Text>
         <View style={styles.container}>
           <View style={styles.container}>
-            <FBLoginButton />
+            <FBLogin />
           </View>
 
         <View>
-          <FormLabel> Email Name </FormLabel>
-            <FormInput onChangeText={(email) => this.updateField({email: email})}/>
+          <FormLabel labelStyle={{fontWeight: 'bold'}}> Email or username </FormLabel>
+            <FormInput
+              containerStyle={{backgroundColor: "#f2f4f7", placeholder: "Hello world", value: "hello", defaultValue: "xxxxx"}}
+              onChangeText={(email) => this.updateField({email: email})}
+            />
           <FormLabel> Password </FormLabel>
-            <FormInput secureTextEntry={true} onChangeText={(password) => this.updateField({password: password})}/>
+            <FormInput
+              inputStyle={{backgroundColor: "#f2f4f7", placeholder: "Hello world", value: "world", defaultValue: "xxxxx"}}
+              secureTextEntry={true}
+              onChangeText={(password) => this.updateField({password: password})}
+            />
+            <Text style={{marginLeft: 15, marginTop: 5, color: '#00b1f1', fontWeight: 'bold'}}> Forgot Password? </Text>
+        </View>
+        <View style={{marginTop: 50}}>
+          <Button
+            onPress={() => this.handleSubmit()}
+            title="Login"
+            color={this.state.buttonColor}
+            disabled={this.state.isAllFieldsFilled}
+          />
+        </View>
         </View>
 
-        <Button
-          onPress={() => this.handleSubmit()}
-          title="Login"
-          color="#3FF1BF"
-          disabled={this.state.isAllFieldsFilled}
-        />
+        <View style={styles.signUp}>
+          <Text style= {{color: "#798498", textAlign: 'center'}}> Already have an account?</Text>
+          <Text
+            onPress={() => navigate("RegistrationScreen", {navigation: navigate.navigate})}
+            style={{fontWeight: 'bold'}}
+          > Sign Up
+          </Text>
+        </View>
       </View>
     )
   }
@@ -93,12 +123,19 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 60,
-    marginBottom: 60,
+    marginTop: 30,
+    marginBottom: 30,
   },
   loginButton: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  signUp: {
+    marginTop: 80,
+    flexDirection:'row',
+    flexWrap:'wrap',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
 

@@ -1,9 +1,10 @@
 import React from "react";
 import {View, Text, ScrollView, Button, StyleSheet, Image} from "react-native";
 
-const ecstaticWinners = require('../../assets/winners.png')
+const ecstaticPrizes = require('../../assets/prizes.png')
 
-class IntroOnBoardScreenOne extends React.Component {
+
+class IntroOnBoardScreenTwo extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -15,20 +16,20 @@ class IntroOnBoardScreenOne extends React.Component {
       <View style={this.props.style}>
         <View style={{marginTop: 130}}>
           <Text style={{fontSize: 20, fontWeight: 'bold',  textAlign: 'center', fontFamily: 'FiraSans'}}>
-            Win exclusive experiences to meet your favorite stars
+            Beyond exclusive experiences, everyone’s still a winner
           </Text>
         </View>
         <View style={{marginTop: 10}}>
           <Text style= {{color: "#798498", textAlign: 'center'}}>
-            Want to have the opportunity to meet your favorite {"\n"}
-            stars? Support them by buying a pack and this could be {"\n"}
-            you like our other fans!
+            When you purchase a pack, everyone is guaranteed to win {"\n"}
+            prizes ranging from common stickers to exclusive  {"\n"}
+            items signed by the individual.
           </Text>
         </View>
 
         <View style={{marginTop: 40}}>
         <Image
-          source={ecstaticWinners}
+          source={ecstaticPrizes}
         />
         </View>
       </View>
@@ -36,4 +37,4 @@ class IntroOnBoardScreenOne extends React.Component {
   }
 }
 
-export default IntroOnBoardScreenOne
+export default IntroOnBoardScreenTwo
