@@ -39,17 +39,15 @@ class IntroOnBoardScreen extends React.Component {
 
     return(
       <View>
-        <View>
-          <View style={{marginLeft: window.width / 4.5, marginTop: 60, flexDirection:'row', flexWrap:'wrap'}}>
-            <Image
-                source={ecstaticLogo}
-                style={{width: 25, height: 25}}
-              />
-            <Image
-                source={ecstaticFontBlack}
-                style={{marginLeft: 15, height: 25}}
-              />
-          </View>
+        <View style={{marginLeft: window.width / 4.5, marginTop: 60, flexDirection:'row', flexWrap:'wrap'}}>
+          <Image
+              source={ecstaticLogo}
+              style={{width: 25, height: 25}}
+            />
+          <Image
+              source={ecstaticFontBlack}
+              style={{marginLeft: 10, height: 25}}
+            />
         </View>
         <View style={{ position: 'absolute' }}>
           <Swiper
@@ -65,21 +63,21 @@ class IntroOnBoardScreen extends React.Component {
             <IntroOnBoardScreenThree navigation={navigate} style={styles.slides}/>
         </Swiper>
 
-        <View style={{alignItems: 'center'}}>
-          <Button
-            onPress={() => navigate("RegistrationScreen", {navigation: navigate.navigate})}
-            title="Sign Up"
-            color="#3FF1BF"
-          />
-        </View>
-        <View style={styles.signOrLogin}>
-          <Text style= {{color: "#798498", textAlign: 'center'}}> Already have an account?</Text>
-          <Text
-            onPress={() => navigate("LoginScreen", {navigation: navigate.navigate})}
-            style={{fontWeight: 'bold'}}
-          > Log In
-          </Text>
-        </View>
+          <View style={{alignItems: 'center'}}>
+            <Button
+              onPress={() => navigate("RegistrationScreen", {navigation: navigate.navigate})}
+              title="Sign Up"
+              color="#3FF1BF"
+            />
+          </View>
+          <View style={styles.signOrLogin}>
+            <Text style= {{color: "#798498", textAlign: 'center'}}> Already have an account?</Text>
+            <Text
+              onPress={() => navigate("LoginScreen", {navigation: navigate.navigate})}
+              style={{fontWeight: 'bold'}}
+            > Log In
+            </Text>
+          </View>
         </View>
       </View>
     )

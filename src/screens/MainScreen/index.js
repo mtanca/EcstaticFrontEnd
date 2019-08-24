@@ -1,7 +1,9 @@
 import React from "react";
 
-import {View, Text, Button, AsyncStorage, StyleSheet} from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
+import {View, Text, Button, StyleSheet} from "react-native";
 import IntroOnBoardScreen from '../IntroOnBoardScreen';
+import HomeScreen from '../HomeScreen'
 
 class MainScreen extends React.Component {
   constructor(props) {
@@ -11,20 +13,16 @@ class MainScreen extends React.Component {
       isLoggedIn: false,
       canRender: false
     }
-
-    this._retrieveData = this._retrieveData.bind(this)
-    this._retrieveData()
   }
 
-  static navigationOptions: {
-    title: 'hello',
-    headerLeft: null
+  componentDidMount(){
+    this.getData()
   }
 
-  _retrieveData = async () => {
+  getData = async () => {
     try {
-      const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
-      if (isLoggedIn !== null && isLoggedIn === "true") {
+      const isLoggedIn = await AsyncStorage.getItem('@isLoggedIn')
+      if(isLoggedIn !== null && isLoggedIn === "true") {
         this.setState({
           isLoggedIn: true,
           canRender: true
@@ -35,19 +33,21 @@ class MainScreen extends React.Component {
           canRender: true
         })
       }
-    } catch (error) {
-      // Error retrieving data
+    } catch(e) {
+      // error reading value
     }
   }
-
 
   render() {
     const navigate = this.props.navigation;
 
-    if(this.state.isLoggedIn === true) {
-      return (
+    if(this.state.isLoggedIn && this.state.canRender){
+      return(
         <View>
-          <Text> hello world </Text>
+          {
+            this.state.canRender === true &&
+            <HomeScreen navigation={navigate}/>
+          }
         </View>
       )
     } else {

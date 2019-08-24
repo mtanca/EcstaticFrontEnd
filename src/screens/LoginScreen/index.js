@@ -1,12 +1,16 @@
 import React from "react";
-import {View, Text, Button, StyleSheet, Dimensions,} from "react-native";
+import {View, Text, Button, StyleSheet, Dimensions} from "react-native";
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
-import PropTypes from 'prop-types';
-import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 
-var FBLoginButton = require('./FBLoginButton');
+import AsyncStorage from '@react-native-community/async-storage';
+
+
+import MainScreen from '../MainScreen';
 import RegistrationScreen from '../RegistrationScreen';
+import ForgotPasswordScreen from '../ForgotPasswordScreen';
+import HomeScreen from '../HomeScreen';
 
+const FBLoginButton = require('./FBLoginButton');
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -16,7 +20,19 @@ class LoginScreen extends React.Component {
       email: "",
       password: "",
       isAllFieldsFilled: true,
-      buttonColor: "#39f3bb"
+      loginErrors: false,
+    }
+
+    this._storeData = this._storeData.bind(this)
+    this.navigate = this._navigate.bind(this)
+  }
+
+  _storeData = async (data) => {
+    try {
+      await AsyncStorage.setItem('@isLoggedIn', 'true')
+      await AsyncStorage.setItem('@userId', data.userId)
+    } catch (e) {
+      // saving error
     }
   }
 
@@ -25,85 +41,93 @@ class LoginScreen extends React.Component {
     this._enableSumbitButton()
   }
 
+  _navigate = () => {
+    this.props.navigation.navigate("HomeScreen", {navigation: this.props.navigation.navigate})
+  }
+
   _enableSumbitButton = () => {
-    const fieldsNotToCheck = ["isAllFieldsFilled"]
+    const fieldsNotToCheck = ["isAllFieldsFilled", "loginErrors"]
 
     let requiredBlankFields = Object.keys(this.state)
                                     .filter(key => !fieldsNotToCheck.includes(key) && this.state[key] == "")
 
     if(requiredBlankFields.length == 0) {
       this.setState({
-        isAllFieldsFilled: false,
-        buttonColor: "#39f3bb"
+        isAllFieldsFilled: false
       })
     } else {
       this.setState({
-        isAllFieldsFilled: true,
-        buttonColor: "#39f3bb"
+        isAllFieldsFilled: true
       })
     }
   }
 
   handleSubmit = () => {
-    fetch('http://0.0.0.0:4000/sessions/new', {
+    fetch("http://192.168.1.14:4000/api/sessions", {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        first_name: this.state.firstName,
-        last_name: this.state.lastName,
         email: this.state.email,
-        password: this.state.password,
-        registering_as: "patient"
+        password: this.state.password
       }),
-    }).then((response) => {
-      response = JSON.parse(response._bodyText)
-      if(response.created === true){
-        this._storeData(response)
-        this.setState({
-          canNavigate: true
-        })
-      } else {
-        this._handleErrors(response.errors)
-      }
-    })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        this._storeData(responseJson.data)
+        if(responseJson.data.isAuthenticated) {
+          this.setState({
+            canNavigate: true,
+            loginHasErrors: false
+          })
+        } else {
+          this.setState({
+            loginHasErrors: true
+          })
+        }
+      })
   }
 
   render() {
     const {navigate} = this.props.navigation;
 
     return (
-      <View>
+      <View style={styles.container}>
         <Text style={{marginLeft: 15, fontWeight: 'bold', fontSize: 20}}>Log In</Text>
-        <View style={styles.container}>
-          <View style={styles.container}>
-            <FBLogin />
-          </View>
+        <View style={styles.contentContainer}>
+          <FBLoginButton />
 
-        <View>
-          <FormLabel labelStyle={{fontWeight: 'bold'}}> Email or username </FormLabel>
+          <View style={{marginTop: 80}}>
+          {
+            this.state.loginHasErrors &&
+            <Text style={{marginLeft: 15, fontWeight: 'bold', color: 'red'}}>Invalid username or password. Please try again.</Text>
+          }
+            <FormLabel labelStyle={{fontWeight: 'bold'}}> Email or username </FormLabel>
             <FormInput
-              containerStyle={{backgroundColor: "#f2f4f7", placeholder: "Hello world", value: "hello", defaultValue: "xxxxx"}}
+              containerStyle={{backgroundColor: "#f2f4f7"}}
               onChangeText={(email) => this.updateField({email: email})}
             />
-          <FormLabel> Password </FormLabel>
+            <FormLabel> Password </FormLabel>
             <FormInput
-              inputStyle={{backgroundColor: "#f2f4f7", placeholder: "Hello world", value: "world", defaultValue: "xxxxx"}}
+              inputStyle={{backgroundColor: "#f2f4f7"}}
               secureTextEntry={true}
               onChangeText={(password) => this.updateField({password: password})}
             />
-            <Text style={{marginLeft: 15, marginTop: 5, color: '#00b1f1', fontWeight: 'bold'}}> Forgot Password? </Text>
-        </View>
-        <View style={{marginTop: 50}}>
-          <Button
-            onPress={() => this.handleSubmit()}
-            title="Login"
-            color={this.state.buttonColor}
-            disabled={this.state.isAllFieldsFilled}
-          />
-        </View>
+
+            <Text
+              onPress={() => navigate("ForgotPasswordScreen", {navigation: navigate.navigate})}
+              style={styles.forgotPasswordButton}> Forgot Password?
+            </Text>
+          </View>
+          <View style={{marginTop: 50}}>
+            <Button
+              onPress={() => this.handleSubmit()}
+              title="Login"
+              color={this.state.buttonColor}
+              disabled={this.state.isAllFieldsFilled}
+            />
+          </View>
         </View>
 
         <View style={styles.signUp}>
@@ -114,6 +138,9 @@ class LoginScreen extends React.Component {
           > Sign Up
           </Text>
         </View>
+
+
+        {this.state.canNavigate && this._navigate()}
       </View>
     )
   }
@@ -121,9 +148,12 @@ class LoginScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  contentContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 50,
     marginBottom: 30,
   },
   loginButton: {
@@ -131,11 +161,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signUp: {
-    marginTop: 80,
+    marginTop: 50,
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
     flexDirection:'row',
     flexWrap:'wrap',
     alignItems: 'center',
-    justifyContent: 'center'
+  },
+  forgotPasswordButton: {
+    marginLeft: 15,
+    marginTop: 5,
+    color: '#00b1f1',
+    fontWeight: 'bold'
   }
 })
 
