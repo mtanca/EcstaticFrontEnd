@@ -90,7 +90,18 @@ class LoginScreen extends React.Component {
   }
 
   render() {
+    const window = Dimensions.get('window');
     const {navigate} = this.props.navigation;
+
+    let signUpMarginTopScalor = null
+
+    if(window.height > 748 && window.width > 384) {
+      signUpMarginTopScalor = "37%"
+    } else if (window.height > 592 && window.width > 384) {
+      signUpMarginTopScalor = "25%"
+    } else {
+      signUpMarginTopScalor = "15%"
+    }
 
     return (
       <View style={styles.container}>
@@ -98,7 +109,7 @@ class LoginScreen extends React.Component {
         <View style={styles.contentContainer}>
           <FBLoginButton />
 
-          <View style={{marginTop: 80}}>
+          <View style={{marginTop: '10%'}}>
           {
             this.state.loginHasErrors &&
             <Text style={{marginLeft: 15, fontWeight: 'bold', color: 'red'}}>Invalid username or password. Please try again.</Text>
@@ -120,7 +131,7 @@ class LoginScreen extends React.Component {
               style={styles.forgotPasswordButton}> Forgot Password?
             </Text>
           </View>
-          <View style={{marginTop: 50}}>
+          <View style={{marginTop: '5%'}}>
             <Button
               onPress={() => this.handleSubmit()}
               title="Login"
@@ -130,7 +141,16 @@ class LoginScreen extends React.Component {
           </View>
         </View>
 
-        <View style={styles.signUp}>
+        <View style={{
+            marginTop: signUpMarginTopScalor,
+            width: '100%',
+            height: 50,
+            justifyContent: 'center',
+            flexDirection:'row',
+            flexWrap:'wrap',
+            alignItems: 'center'
+          }}
+        >
           <Text style= {{color: "#798498", textAlign: 'center'}}> Already have an account?</Text>
           <Text
             onPress={() => navigate("RegistrationScreen", {navigation: navigate.navigate})}
@@ -153,21 +173,11 @@ const styles = StyleSheet.create({
   contentContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50,
-    marginBottom: 30,
+    marginTop: '20%',
   },
   loginButton: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  signUp: {
-    marginTop: 50,
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
-    flexDirection:'row',
-    flexWrap:'wrap',
-    alignItems: 'center',
   },
   forgotPasswordButton: {
     marginLeft: 15,
