@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {View, Text, Button, StyleSheet} from "react-native";
 import IntroOnBoardScreen from '../IntroOnBoardScreen';
 import HomeScreen from '../HomeScreen'
+import GiveAwayShowScreen from '../GiveAwayShowScreen'
 
 class MainScreen extends React.Component {
   constructor(props) {
@@ -46,7 +47,7 @@ class MainScreen extends React.Component {
         <View>
           {
             this.state.canRender === true &&
-            <HomeScreen navigation={navigate}/>
+            <GiveAwayShowScreen navigation={navigate} />
           }
         </View>
       )

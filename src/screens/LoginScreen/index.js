@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import MainScreen from '../MainScreen';
 import RegistrationScreen from '../RegistrationScreen';
 import ForgotPasswordScreen from '../ForgotPasswordScreen';
-import HomeScreen from '../HomeScreen';
+import GiveAwayShowScreen from '../GiveAwayShowScreen';
 
 const FBLoginButton = require('./FBLoginButton');
 
@@ -31,6 +31,7 @@ class LoginScreen extends React.Component {
     try {
       await AsyncStorage.setItem('@userId', data.userId + "")
       await AsyncStorage.setItem('@isLoggedIn', 'true')
+      await AsyncStorage.setItem('@giveawayId', data.giveawayId + "")
     } catch (e) {
       // saving error
     }
@@ -42,7 +43,7 @@ class LoginScreen extends React.Component {
   }
 
   _navigate = () => {
-    this.props.navigation.navigate("HomeScreen", {navigation: this.props.navigation.navigate})
+    this.props.navigation.navigate("GiveAwayShowScreen", {navigation: this.props.navigation.navigate, giveawayId: this.state.giveawayId})
   }
 
   _enableSumbitButton = () => {
@@ -79,7 +80,8 @@ class LoginScreen extends React.Component {
         if(responseJson.data.isAuthenticated) {
           this.setState({
             canNavigate: true,
-            loginHasErrors: false
+            loginHasErrors: false,
+            giveawayId: responseJson.data.giveawayId
           })
         } else {
           this.setState({

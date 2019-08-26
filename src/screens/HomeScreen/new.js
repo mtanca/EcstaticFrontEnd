@@ -9,6 +9,8 @@ const blackPink = require('../../assets/Blackpink.png')
 const khalid = require('../../assets/Khalid.png')
 const time = require('../../assets/time.png')
 
+const moment = require('moment');
+
 class HomeScreenNew extends React.Component {
   constructor(props) {
     super(props)
@@ -62,8 +64,8 @@ class HomeScreenNew extends React.Component {
                       source={time}
                       style={{marginTop: 5, marginRight: 5}}
                     />
-                    <Text >Starts in </Text>
-                    <Text style={{marginRight: 15}}>1 hour</Text>
+                    <Text>Starts in </Text>
+                    <Text style={{marginRight: 15, fontWeight: 'bold', color: "#39f3bb"}}>{moment.unix(giveaway.end_time).fromNow(true)}</Text>
                   </View>
                 </View>
               </View>

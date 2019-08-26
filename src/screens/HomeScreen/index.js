@@ -32,7 +32,7 @@ class HomeScreen extends React.Component {
     this.renderActiveGiveAways = this.renderActiveGiveAways.bind(this)
   }
 
-  renderActiveGiveAwaysGrid(giveaway, giveaways){
+  renderActiveGiveAwaysGrid(giveaway){
     const imageScalor = window.height > 592 && window.width > 384 ? 175 : 185
     return (
       <View style={styles.gridItem}>
@@ -57,7 +57,7 @@ class HomeScreen extends React.Component {
           <FlatList
             numColumns={2}
             data={this.state.data.giveaways}
-            renderItem={(giveaway) => this.renderActiveGiveAwaysGrid(giveaway.item, giveaways)}
+            renderItem={(giveaway) => this.renderActiveGiveAwaysGrid(giveaway.item)}
           />
         </ScrollView>
       );
