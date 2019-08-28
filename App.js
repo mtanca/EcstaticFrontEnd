@@ -2,7 +2,8 @@ import React from "react";
 
 import MainScreen from './src/screens/MainScreen';
 import LoginScreen from './src/screens/LoginScreen';
-import RegistrationScreen from './src/screens/RegistrationScreen';
+import RegistrationScreenOne from './src/screens/RegistrationScreen';
+import RegistrationScreenTwo from './src/screens/RegistrationScreen/two.js';
 import SplashScreen from './src/screens/SplashScreen';
 import IntroOnBoardScreen from './src/screens/IntroOnBoardScreen';
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
@@ -20,7 +21,8 @@ const AppNavigator = createStackNavigator({
   MainScreen: {screen: MainScreen, navigationOptions: {header: null, headerLeft: null}},
   IntroOnBoardScreen: {screen: IntroOnBoardScreen, navigationOptions: {header: null, headerLeft: null}},
   LoginScreen: {screen: LoginScreen, navigationOptions: {headerStyle: {backgroundColor: '#fff', elevation: 0}}},
-  RegistrationScreen: {screen: RegistrationScreen, navigationOptions: {headerStyle: {backgroundColor: '#fff', elevation: 0}}},
+  RegistrationScreenOne: {screen: RegistrationScreenOne, navigationOptions: {headerStyle: {backgroundColor: '#fff', elevation: 0}}},
+  RegistrationScreenTwo: {screen: RegistrationScreenTwo, navigationOptions: {headerStyle: {backgroundColor: '#fff', elevation: 0}}},
   ForgotPasswordScreen: {screen: ForgotPasswordScreen, navigationOptions: {headerStyle: {backgroundColor: '#fff', elevation: 0}}},
   HomeScreen: {screen: HomeScreen, navigationOptions: {header: null, headerStyle: {backgroundColor: '#fff', elevation: 0}}},
 });

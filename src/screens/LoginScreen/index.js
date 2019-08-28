@@ -6,9 +6,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 import MainScreen from '../MainScreen';
-import RegistrationScreen from '../RegistrationScreen';
+import RegistrationScreenOne from '../RegistrationScreen';
 import ForgotPasswordScreen from '../ForgotPasswordScreen';
 import GiveAwayShowScreen from '../GiveAwayShowScreen';
+import EcstaticButton from '../components/ecstaticButton.js'
 
 const FBLoginButton = require('./FBLoginButton');
 
@@ -19,8 +20,10 @@ class LoginScreen extends React.Component {
     this.state = {
       email: "",
       password: "",
-      isAllFieldsFilled: true,
+      isAllFieldsFilled: false,
       loginErrors: false,
+      buttonColor: 'rgba(57,243,187, 0.5)',
+      isDisabled: true
     }
 
     this._storeData = this._storeData.bind(this)
@@ -36,6 +39,7 @@ class LoginScreen extends React.Component {
       // saving error
     }
   }
+
 
   updateField = (hash) => {
     this.setState(hash)
@@ -54,11 +58,15 @@ class LoginScreen extends React.Component {
 
     if(requiredBlankFields.length == 0) {
       this.setState({
-        isAllFieldsFilled: false
+        isAllFieldsFilled: true,
+        buttonColor: "#39f3bb",
+        isDisabled: false
       })
     } else {
       this.setState({
-        isAllFieldsFilled: true
+        isAllFieldsFilled: false,
+        buttonColor: 'rgba(57,243,187, 0.5)',
+        isDisabled: true
       })
     }
   }
@@ -133,14 +141,18 @@ class LoginScreen extends React.Component {
               style={styles.forgotPasswordButton}> Forgot Password?
             </Text>
           </View>
-          <View style={{marginTop: '5%'}}>
-            <Button
-              onPress={() => this.handleSubmit()}
-              title="Login"
-              color={this.state.buttonColor}
-              disabled={this.state.isAllFieldsFilled}
-            />
-          </View>
+        </View>
+
+        <View style={{marginLeft: '5%', marginTop:'10%'}}>
+          <EcstaticButton
+            buttonMarginTopScalor={0}
+            buttonColor={this.state.buttonColor}
+            isDisabled={this.state.isDisabled}
+            buttonText={"Log In"}
+            navigationScreen={"GiveAwayShowScreen"}
+            navigation={this.props.navigation}
+            onPressFunc={() => this.handleSubmit()}
+          />
         </View>
 
         <View style={{
@@ -155,7 +167,7 @@ class LoginScreen extends React.Component {
         >
           <Text style= {{color: "#798498", textAlign: 'center'}}> Already have an account?</Text>
           <Text
-            onPress={() => navigate("RegistrationScreen", {navigation: navigate.navigate})}
+            onPress={() => navigate("RegistrationScreenOne", {navigation: navigate.navigate})}
             style={{fontWeight: 'bold'}}
           > Sign Up
           </Text>
@@ -175,7 +187,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '20%',
+    marginTop: '15%',
   },
   loginButton: {
     alignItems: 'center',

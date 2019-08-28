@@ -5,23 +5,9 @@ import Swiper from 'react-native-swiper'
 import Dimensions from 'Dimensions';
 
 import LoginScreen from '../LoginScreen';
-import RegistrationScreen from '../RegistrationScreen';
+import RegistrationScreenOne from '../RegistrationScreen';
 import IntroOnBoardScreenTemplate from './template.js'
-
-const styles = StyleSheet.create({
-  wrapper: {},
-  slides: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  signOrLogin: {
-    flexDirection:'row',
-    flexWrap:'wrap',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10
-  }
-})
+import EcstaticButton from '../components/ecstaticButton.js'
 
 const ecstaticLogo = require('../../assets/logo-mark.png')
 const ecstaticFontBlack = require('../../assets/logo-font-black.png')
@@ -40,7 +26,20 @@ class IntroOnBoardScreen extends React.Component {
     const {navigate} = this.props.navigation;
 
     const dotsScalorForScreen = window.height > 592 && window.width > 384 ? window.height * 0.75 : window.height * 0.81
-    const loginMarginScalorForScreen = window.height > 592 && window.width > 384 ? 75 : 0
+
+    let loginMarginScalorForScreen = null
+    let signUpButtonMarginTopScalor = null
+
+    if(window.height > 748 && window.width > 384) {
+      signUpButtonMarginTopScalor = 0
+      loginMarginScalorForScreen = 40
+    } else if (window.height > 592 && window.width > 384) {
+      signUpButtonMarginTopScalor = 0
+      loginMarginScalorForScreen = 40
+    } else {
+      signUpButtonMarginTopScalor = -10
+      loginMarginScalorForScreen = 20
+    }
 
     return(
       <View>
@@ -84,17 +83,21 @@ class IntroOnBoardScreen extends React.Component {
               mainText="Join the fun with fans all across the world"
               subText="Connect with fans everywhere in a wide range of ways. You can chat with other fans, exchange prizes in the aftermarket, explore media content, and more."
             />
-        </Swiper>
+          </Swiper>
 
-          <View style={{alignItems: 'center'}}>
-            <Button
-              onPress={() => navigate("RegistrationScreen", {navigation: navigate.navigate})}
-              title="Sign Up"
-              color="#3FF1BF"
+          <View style={{marginLeft: '5%'}}>
+            <EcstaticButton
+              buttonMarginTopScalor={signUpButtonMarginTopScalor}
+              buttonColor={"#3FF1BF"}
+              isDisabled={false}
+              buttonText={"Sign up"}
+              navigationScreen={"RegistrationScreenOne"}
+              navigation={this.props.navigation}
+              onPressFunc={() => navigate("RegistrationScreenOne", {navigation: navigate})}
             />
           </View>
-          <View style={styles.signOrLogin}>
-            <Text style= {{color: "#798498", textAlign: 'center', marginTop: loginMarginScalorForScreen}}> Already have an account?</Text>
+          <View style={Object.assign({}, styles.signOrLogin, {marginTop: loginMarginScalorForScreen})}>
+            <Text style= {{color: "#798498", textAlign: 'center'}}> Already have an account?</Text>
             <Text
               onPress={() => navigate("LoginScreen", {navigation: navigate.navigate})}
               style={{fontWeight: 'bold'}}
@@ -106,5 +109,21 @@ class IntroOnBoardScreen extends React.Component {
     )
   }
 }
+
+
+const styles = StyleSheet.create({
+  wrapper: {},
+  slides: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  signOrLogin: {
+    flexDirection:'row',
+    flexWrap:'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
+})
+
 
 export default IntroOnBoardScreen

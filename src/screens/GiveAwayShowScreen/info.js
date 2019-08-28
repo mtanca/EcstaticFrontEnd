@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, ScrollView, Image, FlatList, StyleSheet} from "react-native";
+import {View, Text, ScrollView} from "react-native";
 
 const moment = require('moment');
 
@@ -22,7 +22,6 @@ class GiveAwayInfo extends React.Component {
         <Text style= {{color: "#798498", marginTop: 5}}>
           {this.props.giveaway.description}
         </Text>
-
 
         <View style={{marginRight: '5%', marginTop: 5}}>
           <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 5}}>

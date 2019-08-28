@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, ScrollView, Image, StyleSheet, TouchableHighlight} from "react-native";
+import {View, Text, ScrollView, Image, TouchableHighlight} from "react-native";
 
 import GiveAwayShowScreen from '../GiveAwayShowScreen'
 
@@ -11,6 +11,9 @@ const time = require('../../assets/time.png')
 
 const moment = require('moment');
 
+/**
+ * Component for displaying the new section on the home screen for the user.
+*/
 class HomeScreenNew extends React.Component {
   constructor(props) {
     super(props)

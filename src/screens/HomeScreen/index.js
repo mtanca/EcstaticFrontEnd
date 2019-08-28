@@ -1,11 +1,11 @@
 import React from "react";
-import {View, Text, ScrollView, Image, FlatList, TouchableHighlight, StyleSheet} from "react-native";
+import {View, Text, ScrollView, Image, FlatList, StyleSheet} from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
 
 import MainScreen from '../MainScreen';
 import LoginScreen from '../LoginScreen'
 import SplashScreen from '../SplashScreen'
-import HomeScreenTop from './top.js'
+import UserSection from '../components/userSection.js'
 import HomeScreenNew from './new.js'
 
 const ninja = require('../../assets/Ninja.png')
@@ -16,7 +16,6 @@ const time = require('../../assets/time.png')
 const userFiller = require('../../assets/user-filler.png')
 
 class HomeScreen extends React.Component {
-
   constructor(props) {
     super(props)
 
@@ -33,7 +32,16 @@ class HomeScreen extends React.Component {
   }
 
   renderActiveGiveAwaysGrid(giveaway){
-    const imageScalor = window.height > 592 && window.width > 384 ? 175 : 185
+    let imageScalor = null
+
+    if(window.height > 748 && window.width > 384) {
+      imageScalor = 175
+    } else if (window.height > 592 && window.width > 384) {
+      imageScalor = 175
+    } else {
+      imageScalor = 185
+    }
+
     return (
       <View style={styles.gridItem}>
         <View>
@@ -51,16 +59,17 @@ class HomeScreen extends React.Component {
   }
 
   renderActiveGiveAways(){
-    var giveaways = this.state.data.giveaways
-      return(
-        <ScrollView style={{flex: 1}} contentContainerStyle={{justifyContent:'center', alignItems:'center'}} >
-          <FlatList
-            numColumns={2}
-            data={this.state.data.giveaways}
-            renderItem={(giveaway) => this.renderActiveGiveAwaysGrid(giveaway.item)}
-          />
-        </ScrollView>
-      );
+    let giveaways = this.state.data.giveaways
+
+    return(
+      <ScrollView style={{flex: 1}} contentContainerStyle={{justifyContent:'center', alignItems:'center'}} >
+        <FlatList
+          numColumns={2}
+          data={this.state.data.giveaways}
+          renderItem={(giveaway) => this.renderActiveGiveAwaysGrid(giveaway.item)}
+        />
+      </ScrollView>
+    );
   }
 
   componentDidMount(){
@@ -70,6 +79,7 @@ class HomeScreen extends React.Component {
   _fetchData = async () => {
     try {
       const userId = await AsyncStorage.getItem('@userId')
+
       fetch("http://192.168.1.14:4000/api/giveaways?id=" + userId, {
         method: 'GET',
         headers: {
@@ -114,7 +124,7 @@ class HomeScreen extends React.Component {
 
     return(
       <ScrollView>
-        <HomeScreenTop hasData={this.state.hasData} data={this.state.data} />
+        <UserSection hasData={this.state.hasData} data={this.state.data} />
         <ScrollView>
           <View style= {{marginTop: '5%'}}>
             <Text style={{marginLeft: 15, fontWeight: 'bold', fontSize: 20}}>New</Text>
@@ -141,7 +151,6 @@ class HomeScreen extends React.Component {
             <ScrollView
             >
               {
-                this.state.hasData &&
                 this.renderActiveGiveAways()
               }
             </ScrollView>

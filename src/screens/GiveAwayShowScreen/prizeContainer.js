@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, ScrollView, Image, FlatList, StyleSheet} from "react-native";
+import {View, Text, ScrollView, Image, FlatList} from "react-native";
 
 const ninja = require('../../assets/Ninja.png')
 const madisonBeers = require('../../assets/madison-beer.png')
@@ -48,10 +48,11 @@ class PrizeContainer extends React.Component {
 
   renderPrizeGrid(prize){
     const imageScalor = window.height > 592 && window.width > 384 ? 65 : 75
+
     return (
       <View>
         <View style={{marginRight: '5%', borderColor:'rgba(0, 0, 0, 0.050)', borderWidth: 1, borderRadius: 15}}>
-        <Image
+          <Image
             source={this.getPrizeImage(prize.image.file_name)}
             style={{width: imageScalor, height: imageScalor}}
           />

@@ -5,13 +5,16 @@ import AsyncStorage from '@react-native-community/async-storage';
 import PrizeContainer from './prizeContainer.js'
 import GiveAwayInfo from './info.js'
 import GiveAwayStatistics from './statistics.js'
-import HomeScreenTop from '../HomeScreen/top.js'
+import UserSection from '../components/userSection.js'
 
 const ninja = require('../../assets/Ninja.png')
 const madisonBeers = require('../../assets/madison-beer.png')
 const blackPink = require('../../assets/Blackpink.png')
 const khalid = require('../../assets/Khalid.png')
 
+/**
+ * The main container for a specific giveaway.
+*/
 class GiveAwayShowScreen extends React.Component {
   constructor(props){
     super(props)
@@ -20,14 +23,13 @@ class GiveAwayShowScreen extends React.Component {
       hasData: false,
       data: null
     }
-
-
-    this._signOut = this._signOut.bind(this)
   }
 
   componentDidMount() {
-    // Pass the giveawayId through navigation props from login screen to avoid race condition
-    // when saving the giveawayId in AsyncStorage.
+    // It's possible for the giveawayId to be passed via the navigation props from login screen.
+    // This is done to avoid a race condition between when we save the giveawayId in AsyncStorage after
+    // a successful loggin and when we need to use the giveawayId for fetch the GiveAway data
+    // from the server.
     defaultGiveAwayId = this.props.navigation.state.params.giveawayId || null
 
     this._fetchData(defaultGiveAwayId)
@@ -50,6 +52,7 @@ class GiveAwayShowScreen extends React.Component {
   _fetchData = async (defaultGiveAwayId) => {
     try {
       let giveawayId = await AsyncStorage.getItem('@giveawayId')
+
       if(giveawayId === null) {
         giveawayId = defaultGiveAwayId
       }
@@ -82,11 +85,12 @@ class GiveAwayShowScreen extends React.Component {
 
   render() {
     const window = Dimensions.get('window');
+
     return (
       <ScrollView>
       {
         this.state.hasData &&
-        <HomeScreenTop hasData={this.state.hasData} data={this.state.data} />
+        <UserSection hasData={this.state.hasData} data={this.state.data} />
       }
       {
         this.state.hasData &&
@@ -117,7 +121,7 @@ class GiveAwayShowScreen extends React.Component {
           <Button
             title="Buy Pack"
             color="#39f3bb"
-            accessibilityLabel="Learn more about this purple button"
+            accessibilityLabel="Click here to purchase a pack"
           />
         </View>
       }
