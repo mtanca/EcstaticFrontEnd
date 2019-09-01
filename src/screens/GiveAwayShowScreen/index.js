@@ -6,6 +6,7 @@ import PrizeContainer from './prizeContainer.js'
 import GiveAwayInfo from './info.js'
 import GiveAwayStatistics from './statistics.js'
 import UserSection from '../components/userSection.js'
+import EcstaticButton from '../components/ecstaticButton.js'
 
 const ninja = require('../../assets/Ninja.png')
 const madisonBeers = require('../../assets/madison-beer.png')
@@ -21,7 +22,9 @@ class GiveAwayShowScreen extends React.Component {
 
     this.state = {
       hasData: false,
-      data: null
+      data: null,
+      buttonText: 'Buy Pack ($9.99)',
+      buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm ($9.99)', buttonConfirmationFunc: () => this.handleSubmit()})
     }
   }
 
@@ -33,6 +36,14 @@ class GiveAwayShowScreen extends React.Component {
     defaultGiveAwayId = this.props.navigation.state.params.giveawayId || null
 
     this._fetchData(defaultGiveAwayId)
+  }
+
+
+  handleSubmit = () => {
+    this.setState({
+      buttonText: 'Buy Pack ($9.99)',
+      buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm ($9.99)', buttonConfirmationFunc: () => this.handleSubmit()})
+    })
   }
 
   getImage = (fileName) => {
@@ -118,11 +129,15 @@ class GiveAwayShowScreen extends React.Component {
       {
         this.state.hasData &&
         <View style={{marginTop: 30, marginBottom: '5%', width: window.width - 60, marginLeft: 60 / 2}}>
-          <Button
-            title="Buy Pack"
-            color="#39f3bb"
-            accessibilityLabel="Click here to purchase a pack"
-          />
+        <EcstaticButton
+          buttonMarginTopScalor={0}
+          buttonColor={"#39f3bb"}
+          isDisabled={false}
+          buttonText={this.state.buttonText}
+          navigationScreen={"GiveAwayShowScreen"}
+          navigation={this.props.navigation}
+          onPressFunc={() => this.state.buttonConfirmationFunc()}
+        />
         </View>
       }
 

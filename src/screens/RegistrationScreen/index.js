@@ -4,7 +4,7 @@ import {View, Text, Button, StyleSheet, Dimensions, TextInput, TouchableOpacity,
 import RegistrationScreenTwo from './two.js'
 import EcstaticButton from '../components/ecstaticButton.js'
 
-const FBLoginButton = require('../LoginScreen/FBLoginButton');
+import FBLoginButton from '../components/FBLoginButton';
 import { FormLabel, FormInput, FormValidationMessage, Icon } from 'react-native-elements'
 
 class RegistrationScreenOne extends React.Component {
@@ -145,7 +145,7 @@ class RegistrationScreenOne extends React.Component {
             navigation={this.props.navigation}
             onPressFunc={() => navigate("RegistrationScreenTwo", {navigation: navigate})}
           />
-          
+
           <View style={{flexDirection:'row', flexWrap:'wrap', alignItems: 'center', justifyContent: 'center', marginTop: logInMarginTopScalor}}>
             <Text style= {{color: "#798498", textAlign: 'center', marginTop: '6%'}}> Already have an account?</Text>
             <Text

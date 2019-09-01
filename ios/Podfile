@@ -29,6 +29,8 @@ target 'EcstaticFrontEnd' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+
   target 'EcstaticFrontEndTests' do
     inherit! :search_paths
     # Pods for testing

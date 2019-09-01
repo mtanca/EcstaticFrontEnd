@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { LoginButton } from 'react-native-fbsdk';
 
-export default class FBLoginButton extends Component {
-  render() {
+export default class FBLoginButton extends React.Component {
+  render () {
     return (
       <View>
         <LoginButton
@@ -21,8 +21,6 @@ export default class FBLoginButton extends Component {
           }
           onLogoutFinished={() => alert("User logged out")}/>
       </View>
-    );
+    )
   }
-};
-
-module.exports = FBLoginButton;
+}

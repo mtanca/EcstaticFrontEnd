@@ -11,7 +11,7 @@ import ForgotPasswordScreen from '../ForgotPasswordScreen';
 import GiveAwayShowScreen from '../GiveAwayShowScreen';
 import EcstaticButton from '../components/ecstaticButton.js'
 
-const FBLoginButton = require('./FBLoginButton');
+import FBLoginButton from '../components/FBLoginButton'
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -114,7 +114,7 @@ class LoginScreen extends React.Component {
     }
 
     return (
-      <View style={styles.container}>
+      <View>
         <Text style={{marginLeft: 15, fontWeight: 'bold', fontSize: 20}}>Log In</Text>
         <View style={styles.contentContainer}>
           <FBLoginButton />
