@@ -1,5 +1,6 @@
 import React from "react";
 import {View, Text, Image, StyleSheet, ScrollView, Button, Dimensions} from "react-native";
+
 import AsyncStorage from '@react-native-community/async-storage';
 
 import PrizeContainer from './prizeContainer.js'
@@ -23,8 +24,13 @@ class GiveAwayShowScreen extends React.Component {
     this.state = {
       hasData: false,
       data: null,
+      purchaseData: null,
       buttonText: 'Buy Pack ($9.99)',
-      buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm ($9.99)', buttonConfirmationFunc: () => this.handleSubmit()})
+      userId: null,
+      giveawayId: null,
+      buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm ($9.99)', buttonConfirmationFunc: () => this.handleSubmit()}),
+      purchaseHasErrors: false,
+      purchaseErrors: null
     }
   }
 
@@ -36,10 +42,50 @@ class GiveAwayShowScreen extends React.Component {
     defaultGiveAwayId = this.props.navigation.state.params.giveawayId || null
 
     this._fetchData(defaultGiveAwayId)
+    this._getUserAndGiveAwayInfo()
+  }
+
+  _getUserAndGiveAwayInfo = async () => {
+    try {
+      let userId = await AsyncStorage.getItem('@userId')
+      let giveawayId = await AsyncStorage.getItem('@giveawayId')
+
+      this.setState({
+        userId: userId,
+        giveawayId: giveawayId,
+      })
+    } catch(e) {
+
+    }
   }
 
 
   handleSubmit = () => {
+    fetch("http://192.168.1.14:4000/api/giveaways/" + this.state.data.giveaway.id + "/purchase", {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: this.state.userId,
+        giveaway_id: this.state.data.giveaway.id + "",
+      }),
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        if(responseJson.data.errors === null) {
+          this.setState({
+            hasData: true,
+            purchaseData: responseJson.data.purchase_result
+          })
+        } else {
+          this.setState({
+            purchaseHasErrors: true,
+            purchaseErrors: null,
+            purchaseData: null
+          })
+        }
+      })
     this.setState({
       buttonText: 'Buy Pack ($9.99)',
       buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm ($9.99)', buttonConfirmationFunc: () => this.handleSubmit()})

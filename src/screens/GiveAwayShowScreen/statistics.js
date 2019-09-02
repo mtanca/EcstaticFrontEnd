@@ -51,7 +51,7 @@ class GiveAwayStatistics extends React.Component {
 
   render() {
     const giveaway = this.props.giveaway
-    let statusSoldPercent = Math.floor(giveaway.state.packs_available / giveaway.capacity)
+    let statusSoldPercent = 100 - Math.floor(giveaway.state.packs_available / giveaway.capacity * 100)
 
     return(
       <View>
