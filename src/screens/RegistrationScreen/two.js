@@ -1,6 +1,7 @@
 import React from "react";
 import {View, Text, Button, StyleSheet, Dimensions, TextInput, TouchableOpacity, ScrollView} from "react-native";
 import {FormLabel, FormInput, FormValidationMessage, Icon} from 'react-native-elements'
+import AsyncStorage from '@react-native-community/async-storage';
 
 import EcstaticButton from '../components/ecstaticButton.js'
 
@@ -8,16 +9,21 @@ class RegistrationScreenTwo extends React.Component {
   constructor(props) {
     super(props)
 
+    const registrationScreenOneProps = this.props.navigation.state.params.props
+
     this.state ={
       nextButtonColor: 'rgba(57,243,187, 0.5)',
       isAllFieldsFilled: false,
       username: '',
       firstName: '',
       lastName: '',
+      canNavigate: false,
       age: '',
       giveawayUUID: '',
       registrationErrors: null,
-      isDisabled: true
+      registrationHasErrors: false,
+      isDisabled: true,
+      registrationScreenOneProps: registrationScreenOneProps
     }
 
     this.updateField = this.updateField.bind(this)
@@ -30,7 +36,16 @@ class RegistrationScreenTwo extends React.Component {
   }
 
   _enableSumbitButton = () => {
-    const fieldsNotToCheck = ["isAllFieldsFilled", "registrationErrors", "nextButtonColor"]
+    const fieldsNotToCheck = [
+      "canNavigate",
+      "isAllFieldsFilled",
+      "registrationErrors",
+      "nextButtonColor",
+      "isDisabled",
+      "registrationScreenOneProps",
+      "registrationHasErrors",
+      "registrationErrors"
+    ]
 
     let requiredBlankFields = Object.keys(this.state)
                                     .filter(key => !fieldsNotToCheck.includes(key) && this.state[key] == "")
@@ -48,6 +63,56 @@ class RegistrationScreenTwo extends React.Component {
         isDisabled: true
       })
     }
+  }
+
+  _navigate = () => {
+    this.props.navigation.navigate("GiveAwayShowScreen", {navigation: this.props.navigation.navigate, giveawayId: this.state.giveawayId})
+  }
+
+  _storeData = async (data) => {
+    try {
+      await AsyncStorage.setItem('@userId', data.userId + "")
+      await AsyncStorage.setItem('@isLoggedIn', 'true')
+      await AsyncStorage.setItem('@giveawayId', data.giveawayId + "")
+    } catch (e) {
+      console.log(e)
+      // saving error
+    }
+  }
+
+  handleSubmit = () => {
+    fetch("http://192.168.1.14:4000/api/users", {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: this.state.registrationScreenOneProps.email,
+        password: this.state.registrationScreenOneProps.password,
+        confirm_password: this.state.registrationScreenOneProps.confirmPassword,
+        age: this.state.age,
+        username: this.state.username,
+        first_name: this.state.firstName,
+        last_name: this.state.lastName,
+        giveawayUUID: this.state.giveawayUUID
+      }),
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        if(responseJson.data.errors == null) {
+          this._storeData(responseJson.data)
+          this.setState({
+            canNavigate: true,
+            registrationHasErrors: false,
+            giveawayId: responseJson.data.giveawayId
+          })
+        } else {
+          this.setState({
+            registrationHasErrors: true,
+            registrationErrors: responseJson.data.errors
+          })
+        }
+      })
   }
 
   render() {
@@ -79,6 +144,10 @@ class RegistrationScreenTwo extends React.Component {
           <Text style={{marginLeft: '5%', marginTop: '3%', color: "#798498"}}>You’re almost there! We just need a little more information to properly setup your account.</Text>
         </View>
 
+        {
+          this.state.registrationHasErrors &&
+          <Text style={{marginLeft: 15, fontWeight: 'bold', color: 'red'}}>{this.state.registrationErrors}</Text>
+        }
         <View style={{marginTop: '5%', marginLeft: '5%'}}>
           <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Create Username</Text>
           <View style={styles.formContainer}>
@@ -145,7 +214,7 @@ class RegistrationScreenTwo extends React.Component {
             buttonText={"Complete"}
             navigationScreen={"GiveAwayShowScreen"}
             navigation={this.props.navigation}
-            onPressFunc={() => navigate("GiveAwayShowScreen", {navigation: navigate})}
+            onPressFunc={() => this.handleSubmit()}
           />
 
           <View style={{flexDirection:'row', flexWrap:'wrap', alignItems: 'center', justifyContent: 'center', marginTop: logInMarginTopScalor}}>
@@ -157,6 +226,7 @@ class RegistrationScreenTwo extends React.Component {
             </Text>
           </View>
         </View>
+          {this.state.canNavigate && this._navigate()}
       </ScrollView>
     )
   }

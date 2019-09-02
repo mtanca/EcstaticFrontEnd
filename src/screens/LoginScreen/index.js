@@ -4,7 +4,6 @@ import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elemen
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-
 import MainScreen from '../MainScreen';
 import RegistrationScreenOne from '../RegistrationScreen';
 import ForgotPasswordScreen from '../ForgotPasswordScreen';

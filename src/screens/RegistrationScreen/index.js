@@ -143,7 +143,7 @@ class RegistrationScreenOne extends React.Component {
             buttonText={"Next"}
             navigationScreen={"RegistrationScreenTwo"}
             navigation={this.props.navigation}
-            onPressFunc={() => navigate("RegistrationScreenTwo", {navigation: navigate})}
+            onPressFunc={() => navigate("RegistrationScreenTwo", {navigation: navigate, props: this.state})}
           />
 
           <View style={{flexDirection:'row', flexWrap:'wrap', alignItems: 'center', justifyContent: 'center', marginTop: logInMarginTopScalor}}>
