@@ -24,7 +24,7 @@ class EcstaticButton extends React.Component {
           disabled={this.props.isDisabled}
           onPress={this.props.onPressFunc}
         >
-          <Text style={{color: 'white', frontWeight: 'bold'}}>{this.props.buttonText}</Text>
+          <Text style={{color: 'white', fontWeight: 'bold'}}>{this.props.buttonText}</Text>
         </TouchableOpacity>
       </View>
     )

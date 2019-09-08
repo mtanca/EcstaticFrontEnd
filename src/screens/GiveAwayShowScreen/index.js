@@ -25,12 +25,13 @@ class GiveAwayShowScreen extends React.Component {
       hasData: false,
       data: null,
       purchaseData: null,
-      buttonText: 'Buy Pack ($9.99)',
+      buttonText: `Buy Pack`,
       userId: null,
       giveawayId: null,
-      buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm ($9.99)', buttonConfirmationFunc: () => this.handleSubmit()}),
+      buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm', buttonConfirmationFunc: () => this.handleSubmit()}),
       purchaseHasErrors: false,
-      purchaseErrors: null
+      purchaseErrors: null,
+      probabilityData: null
     }
   }
 
@@ -41,10 +42,42 @@ class GiveAwayShowScreen extends React.Component {
     // from the server.
     defaultGiveAwayId = this.props.navigation.state.params.giveawayId || null
 
+    this._fetchGiveAwayProbabilitiesData(defaultGiveAwayId)
     this._fetchData(defaultGiveAwayId)
     this._getUserAndGiveAwayInfo()
   }
 
+  /**
+   * Fetches the prize probability data for the 'view odds' modal.
+  */
+  _fetchGiveAwayProbabilitiesData = async (defaultGiveAwayId) => {
+    try {
+      let giveawayId = await AsyncStorage.getItem('@giveawayId')
+
+      if(giveawayId === null) {
+        giveawayId = defaultGiveAwayId
+      }
+
+      fetch(`http://192.168.1.14:4000/api/giveaways/${giveawayId}/prizes`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }
+      }).then((response) => response.json())
+        .then((responseJson) => {
+          this.setState({
+            probabilityData: responseJson.data.give_away_prizes
+          })
+        })
+    } catch(e) {
+
+    }
+  }
+
+  /**
+   * Retrieves and sets variables in async storage in components state.
+  */
   _getUserAndGiveAwayInfo = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId')
@@ -55,11 +88,13 @@ class GiveAwayShowScreen extends React.Component {
         giveawayId: giveawayId,
       })
     } catch(e) {
-
     }
   }
 
-
+  /**
+   * The primary function for handling pack buying. This function returns the prize won
+   * by the user.
+  */
   handleSubmit = () => {
     fetch("http://192.168.1.14:4000/api/giveaways/" + this.state.data.giveaway.id + "/purchase", {
       method: 'POST',
@@ -87,8 +122,8 @@ class GiveAwayShowScreen extends React.Component {
         }
       })
     this.setState({
-      buttonText: 'Buy Pack ($9.99)',
-      buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm ($9.99)', buttonConfirmationFunc: () => this.handleSubmit()})
+      buttonText: `Buy Pack`,
+      buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm', buttonConfirmationFunc: () => this.handleSubmit()})
     })
   }
 
@@ -179,7 +214,7 @@ class GiveAwayShowScreen extends React.Component {
           buttonMarginTopScalor={0}
           buttonColor={"#39f3bb"}
           isDisabled={false}
-          buttonText={this.state.buttonText}
+          buttonText={this.state.buttonText + ` ($${this.state.data.cost_per_pack})`}
           navigationScreen={"GiveAwayShowScreen"}
           navigation={this.props.navigation}
           onPressFunc={() => this.state.buttonConfirmationFunc()}
