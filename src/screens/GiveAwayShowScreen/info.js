@@ -36,7 +36,9 @@ class GiveAwayInfo extends React.Component {
 
           <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 5}}>
             <Text style={{flex: 1, justifyContent: 'flex-start'}}>Pack Odds</Text>
-            <Text style={{fontWeight: 'bold', color: "#39f3bb"}}>View Odds</Text>
+            <Text
+            onPress={()=> this.props.toggleModalFunc()}
+            style={{fontWeight: 'bold', color: "#39f3bb"}}>View Odds</Text>
           </View>
         </View>
       </View>

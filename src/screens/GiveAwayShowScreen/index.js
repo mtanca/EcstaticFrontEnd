@@ -1,7 +1,9 @@
 import React from "react";
-import {View, Text, Image, StyleSheet, ScrollView, Button, Dimensions} from "react-native";
+import {View, Text, Image, StyleSheet, ScrollView, Button, Dimensions, TouchableOpacity} from "react-native";
 
 import AsyncStorage from '@react-native-community/async-storage';
+
+import Modal from "react-native-modal";
 
 import PrizeContainer from './prizeContainer.js'
 import GiveAwayInfo from './info.js'
@@ -13,6 +15,9 @@ const ninja = require('../../assets/Ninja.png')
 const madisonBeers = require('../../assets/madison-beer.png')
 const blackPink = require('../../assets/Blackpink.png')
 const khalid = require('../../assets/Khalid.png')
+
+const omgPrize = require('../../assets/omg-prize.png')
+const shirtPrize = require('../../assets/shirt-prize.png')
 
 /**
  * The main container for a specific giveaway.
@@ -31,7 +36,10 @@ class GiveAwayShowScreen extends React.Component {
       buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm', buttonConfirmationFunc: () => this.handleSubmit()}),
       purchaseHasErrors: false,
       purchaseErrors: null,
-      probabilityData: null
+      probabilityData: null,
+      isPrizeModalVisible: false,
+      isProbabilityModalVisible: false,
+
     }
   }
 
@@ -75,6 +83,96 @@ class GiveAwayShowScreen extends React.Component {
     }
   }
 
+  _togglePrizeModal = () =>
+  this.setState({isPrizeModalVisible: !this.state.isPrizeModalVisible});
+
+  _toggleProbabilityModal = () =>
+  this.setState({isProbabilityModalVisible: !this.state.isProbabilityModalVisible});
+
+  renderPrizeView = () => {
+    const window = Dimensions.get('window');
+    return(
+      <Modal style={{height: 250}} isVisible={this.state.isPrizeModalVisible}>
+      <View style={{flexDirection: 'row'}}>
+        <TouchableOpacity onPress={this._togglePrizeModal}>
+          <Text style={{color: 'white'}}>Close</Text>
+        </TouchableOpacity>
+        <View style={{marginLeft: window.height / 6, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{color: 'white', fontSize: 16}}>
+            Ninja Tee
+          </Text>
+          <Text style={{color: 'white', fontSize: 10}}>
+            Not Owned
+          </Text>
+        </View>
+      </View>
+
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          centerContent={true}
+          contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
+          pagingEnabled={true}
+          snapToAlignment={'center'}
+        >
+          <Image
+            source={shirtPrize}
+          />
+
+          <Image
+            source={shirtPrize}
+          />
+        </ScrollView>
+        <Text style={{textAlign: 'center', color: 'white', fontSize: 12}}>Swipe left or right to see other prizes</Text>
+      </Modal>
+    )
+  }
+
+  renderBlurModal = () =>  {
+    const window = Dimensions.get('window');
+    let probabilities = {
+      "Common": "100%",
+      "Uncommon": "10%",
+      "Rare": "5%",
+      "Super Rare": "1%",
+      "Ultra Rate": ".5%",
+      "Exclusive": ".1%"
+    }
+
+    if (!this.state.isProbabilityModalVisible)
+      return null
+    return(
+        <Modal
+          style={{flex: 1, height: 400}}
+          isVisible={this.state.isProbabilityModalVisible}
+          onRequestClose={() => {this._toggleProbabilityModal()}}
+          >
+          <TouchableOpacity
+            onPressOut={() => {this._toggleProbabilityModal()}}
+            style={{ justifyContent: 'center', height: '100%', width: "100%"}}
+          >
+            <View style={{height: 250, backgroundColor: 'white', borderRadius: 20}}>
+              <View style={{marginLeft: 20, marginRight: 20}}>
+                <Text style={{marginTop: 20, fontWeight: 'bold', fontSize: 20}}>Pack Odds</Text>
+                <View style={{marginTop: 10}}>
+                {
+                  Object.keys(probabilities).map((rarity) =>
+                  <View style={{marginTop: 5, flexDirection: 'row'}}>
+                    <Text>{rarity}</Text>
+                    <View style={{flex: 1, justifyContent: 'flex-end', flexDirection:'row'}}>
+                      <Text>{probabilities[rarity]}</Text>
+                    </View>
+                  </View>
+                  )
+                }
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </Modal>
+    )
+  }
+
   /**
    * Retrieves and sets variables in async storage in components state.
   */
@@ -113,6 +211,7 @@ class GiveAwayShowScreen extends React.Component {
             hasData: true,
             purchaseData: responseJson.data.purchase_result
           })
+          this._togglePrizeModal()
         } else {
           this.setState({
             purchaseHasErrors: true,
@@ -192,6 +291,13 @@ class GiveAwayShowScreen extends React.Component {
         />
       }
       {
+        this.renderBlurModal()
+      }
+      {
+        this.state.purchaseData &&
+        this.renderPrizeView()
+      }
+      {
         this.state.hasData &&
         <Text style={{fontWeight: 'bold', marginTop: '5%', marginLeft: 5, fontSize: 20}}>{this.state.data.giveaway.name}</Text>
       }
@@ -205,20 +311,20 @@ class GiveAwayShowScreen extends React.Component {
       }
       {
         this.state.hasData &&
-        <GiveAwayInfo giveaway={this.state.data.giveaway} />
+        <GiveAwayInfo toggleModalFunc={this._toggleProbabilityModal.bind(this)} giveaway={this.state.data.giveaway} />
       }
       {
         this.state.hasData &&
         <View style={{marginTop: 30, marginBottom: '5%', width: window.width - 60, marginLeft: 60 / 2}}>
-        <EcstaticButton
-          buttonMarginTopScalor={0}
-          buttonColor={"#39f3bb"}
-          isDisabled={false}
-          buttonText={this.state.buttonText + ` ($${this.state.data.cost_per_pack})`}
-          navigationScreen={"GiveAwayShowScreen"}
-          navigation={this.props.navigation}
-          onPressFunc={() => this.state.buttonConfirmationFunc()}
-        />
+          <EcstaticButton
+            buttonMarginTopScalor={0}
+            buttonColor={"#39f3bb"}
+            isDisabled={false}
+            buttonText={this.state.buttonText + ` ($${this.state.data.cost_per_pack})`}
+            navigationScreen={"GiveAwayShowScreen"}
+            navigation={this.props.navigation}
+            onPressFunc={() => this.state.buttonConfirmationFunc()}
+          />
         </View>
       }
 
