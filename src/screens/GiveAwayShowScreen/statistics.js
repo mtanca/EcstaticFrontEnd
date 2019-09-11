@@ -34,9 +34,15 @@ class GiveAwayStatistics extends React.Component {
       timeRemaining = giveaway.startTime
     }
 
+    let packDisplayTextBold = packsRemaining === giveaway.capacity ? `SOLD OUT` : packsRemaining
+    let packDisplayTextEnding = packsRemaining === giveaway.capacity ? `${giveaway.capacity}` : `${giveaway.capacity} sold`
+
     return(
       <View style={{flexDirection:'row', marginLeft: 5}}>
-        <Text>{packsRemaining} out of {giveaway.capacity} sold</Text>
+        <Text>
+          <Text style={{color: '#39f3bb', fontWeight: 'bold'}}>{packDisplayTextBold}</Text>
+          <Text> of {packDisplayTextEnding}</Text>
+        </Text>
         <View style={{flex: 1, justifyContent: 'flex-end', flexDirection:'row'}}>
         <Image
           source={time}

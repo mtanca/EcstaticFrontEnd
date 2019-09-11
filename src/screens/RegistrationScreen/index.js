@@ -4,8 +4,10 @@ import {View, Text, Button, StyleSheet, Dimensions, TextInput, TouchableOpacity,
 import RegistrationScreenTwo from './two.js'
 import EcstaticButton from '../components/ecstaticButton.js'
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import FBLoginButton from '../components/FBLoginButton';
-import { FormLabel, FormInput, FormValidationMessage, Icon } from 'react-native-elements'
+import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
 class RegistrationScreenOne extends React.Component {
   constructor(props) {
@@ -103,7 +105,7 @@ class RegistrationScreenOne extends React.Component {
         <View style={{marginLeft: '5%'}}>
           <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Email</Text>
           <View style={styles.formContainer}>
-            <Icon containerStyle={{marginLeft: 10, marginBottom: 5}} name="envelope" size={15} color="#b9bec9"/>
+            <Icon style={{marginLeft: 10, marginTop: 17}} name="envelope" size={15} color="#b9bec9"/>
             <TextInput
               style={styles.inputStyle}
                 autoCorrect={false}
@@ -114,7 +116,7 @@ class RegistrationScreenOne extends React.Component {
 
           <Text style={{marginTop: 15, paddingBottom: 5, fontWeight: 'bold'}}>Create Password</Text>
           <View style={styles.formContainer}>
-            <Icon containerStyle={{marginLeft: 10, marginBottom: 5}} name="lock-alt" size={15} color="#b9bec9"/>
+          <Icon style={{marginLeft: 10, marginTop: 17}} name="unlock-alt" size={15} color="#b9bec9"/>
             <TextInput
               style={styles.inputStyle}
                 autoCorrect={false}
@@ -126,7 +128,7 @@ class RegistrationScreenOne extends React.Component {
 
           <Text style={{marginTop: 15, paddingBottom: 5, fontWeight: 'bold'}}>Confirm Password</Text>
           <View style={styles.formContainer}>
-            <Icon containerStyle={{marginLeft: 10, marginBottom: 5}} name="lock-alt" size={15} color="#b9bec9"/>
+          <Icon style={{marginLeft: 10, marginTop: 17}} name="unlock-alt" size={15} color="#b9bec9"/>
             <TextInput
               style={styles.inputStyle}
                 autoCorrect={false}
@@ -173,6 +175,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
+    marginLeft: 5
   }
 })
 

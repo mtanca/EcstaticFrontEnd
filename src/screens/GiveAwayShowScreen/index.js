@@ -3,6 +3,8 @@ import {View, Text, Image, StyleSheet, ScrollView, Button, Dimensions, Touchable
 
 import AsyncStorage from '@react-native-community/async-storage';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import Modal from "react-native-modal";
 
 import PrizeContainer from './prizeContainer.js'
@@ -39,6 +41,7 @@ class GiveAwayShowScreen extends React.Component {
       probabilityData: null,
       isPrizeModalVisible: false,
       isProbabilityModalVisible: false,
+      currentDisplayPrize: null
 
     }
   }
@@ -53,6 +56,14 @@ class GiveAwayShowScreen extends React.Component {
     this._fetchGiveAwayProbabilitiesData(defaultGiveAwayId)
     this._fetchData(defaultGiveAwayId)
     this._getUserAndGiveAwayInfo()
+  }
+
+  getPrizePhoto = (prize) => {
+    if(prize.item !== "shirts"){
+      return shirtPrize
+    } else {
+      return omgPrize
+    }
   }
 
   /**
@@ -83,6 +94,22 @@ class GiveAwayShowScreen extends React.Component {
     }
   }
 
+  // Changes the name and the # of prizes owned by the user for each prize in the show prize modal
+  togglePrize = () => {
+    let currentDisplayPrize = this.state.currentDisplayPrize
+    let currentIndex = this.state.purchaseData.findIndex((element) =>
+      element === currentDisplayPrize
+    )
+
+    // Currently we only support giving away a max of 2 items. If the currentIndex is 0, change to 1 and
+    // visa verse
+    let newPrizeIndex = currentIndex === 0 ? 1 : 0
+    
+    this.setState({
+      currentDisplayPrize: this.state.purchaseData[newPrizeIndex]
+    })
+  }
+
   _togglePrizeModal = () =>
   this.setState({isPrizeModalVisible: !this.state.isPrizeModalVisible});
 
@@ -91,20 +118,24 @@ class GiveAwayShowScreen extends React.Component {
 
   renderPrizeView = () => {
     const window = Dimensions.get('window');
+
     return(
-      <Modal style={{height: 250}} isVisible={this.state.isPrizeModalVisible}>
-      <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity onPress={this._togglePrizeModal}>
-          <Text style={{color: 'white'}}>Close</Text>
-        </TouchableOpacity>
-        <View style={{marginLeft: window.height / 6, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{color: 'white', fontSize: 16}}>
-            Ninja Tee
+      <Modal style={{flex: 1, height: 250}} isVisible={this.state.isPrizeModalVisible}>
+      <View style={{flex: 1, flexDirection: 'row'}}>
+        <View style={{flex: 1, alignItems: "center" }}>
+          <Text style={{color: 'white', fontSize: 26}}>
+            {this.state.currentDisplayPrize.item}
           </Text>
-          <Text style={{color: 'white', fontSize: 10}}>
+          <Text style={{color: 'white', fontSize: 14}}>
             Not Owned
           </Text>
         </View>
+      </View>
+
+      <View style={{alignItems: 'center', justifyContent: 'center', marginTop: '30%'}}>
+      <TouchableOpacity onPress={this._togglePrizeModal}>
+        <Icon name="times-circle" size={70} color="white"/>
+      </TouchableOpacity>
       </View>
 
         <ScrollView
@@ -114,16 +145,20 @@ class GiveAwayShowScreen extends React.Component {
           contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
           pagingEnabled={true}
           snapToAlignment={'center'}
+          onMomentumScrollBegin={() => this.togglePrize()}
         >
+        {
+          this.state.purchaseData.map((prize) =>
           <Image
-            source={shirtPrize}
+            source={this.getPrizePhoto(prize)}
           />
-
-          <Image
-            source={shirtPrize}
-          />
+          )
+        }
         </ScrollView>
-        <Text style={{textAlign: 'center', color: 'white', fontSize: 12}}>Swipe left or right to see other prizes</Text>
+        {
+          this.state.purchaseData.length === 2 &&
+          <Text style={{textAlign: 'center', color: 'white', fontSize: 12}}>Swipe left or right to see other prizes</Text>
+        }
       </Modal>
     )
   }
@@ -209,7 +244,8 @@ class GiveAwayShowScreen extends React.Component {
         if(responseJson.data.errors === null) {
           this.setState({
             hasData: true,
-            purchaseData: responseJson.data.purchase_result
+            purchaseData: responseJson.data.purchase_result,
+            currentDisplayPrize: responseJson.data.purchase_result[0]
           })
           this._togglePrizeModal()
         } else {

@@ -11,6 +11,7 @@ const omg = require('../../assets/OMG.png')
 const rocketOn = require('../../assets/RocketOn.png')
 const dab = require('../../assets/Dab.png')
 const floss = require('../../assets/Floss.png')
+const ninjaTee = require('../../assets/shirt-prize.png')
 
 
 class PrizeContainer extends React.Component {
@@ -27,8 +28,10 @@ class PrizeContainer extends React.Component {
       return dab
     } else if(fileName === "Floss.png") {
       return floss
+    } else if(fileName === "OMG.png"){
+       return omg
     } else {
-      return omg
+      return ninjaTee
     }
   }
 
@@ -41,6 +44,8 @@ class PrizeContainer extends React.Component {
       return khalid
     } else if(fileName === "Ninja.png") {
       return ninja
+    }  else if(fileName === "Ninja Tee.png"){
+       return ninjaTee
     } else {
       return madisonBeers
     }

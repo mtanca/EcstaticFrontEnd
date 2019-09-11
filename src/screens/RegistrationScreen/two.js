@@ -1,6 +1,9 @@
 import React from "react";
 import {View, Text, Button, StyleSheet, Dimensions, TextInput, TouchableOpacity, ScrollView} from "react-native";
-import {FormLabel, FormInput, FormValidationMessage, Icon} from 'react-native-elements'
+import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import AsyncStorage from '@react-native-community/async-storage';
 
 import EcstaticButton from '../components/ecstaticButton.js'
@@ -151,7 +154,7 @@ class RegistrationScreenTwo extends React.Component {
         <View style={{marginTop: '5%', marginLeft: '5%'}}>
           <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Create Username</Text>
           <View style={styles.formContainer}>
-            <Icon containerStyle={{marginLeft: 10, marginBottom: 5}} name="envelope" size={15} color="#b9bec9"/>
+          <Icon style={{marginLeft: 10, marginTop: 17}} name="user" size={15} color="#b9bec9"/>
             <TextInput
               style={styles.inputStyle}
                 autoCorrect={false}
@@ -167,8 +170,8 @@ class RegistrationScreenTwo extends React.Component {
 
           <View style={{flexDirection: 'row'}}>
             <View style={Object.assign({}, styles.formContainer, {width: '45%'})}>
-              <Icon containerStyle={{marginLeft: 10, marginBottom: 5}} name="lock-alt" size={15} color="#b9bec9"/>
               <TextInput
+                style={{marginLeft: 5}}
                 autoCorrect={false}
                 placeholder={"Enter first name"}
                 onChangeText={(firstName) => this.updateField({firstName: firstName})}
@@ -176,8 +179,8 @@ class RegistrationScreenTwo extends React.Component {
             </View>
 
             <View style={Object.assign({}, styles.formContainer, {width: '45%'})}>
-              <Icon containerStyle={{marginLeft: 10, marginBottom: 5}} name="lock-alt" size={15} color="#b9bec9"/>
               <TextInput
+                style={{marginLeft: 5}}
                 autoCorrect={false}
                 placeholder={"Enter last name"}
                 onChangeText={(lastName) => this.updateField({lastName: lastName})}
@@ -187,7 +190,7 @@ class RegistrationScreenTwo extends React.Component {
 
             <Text style={{marginTop: 15, paddingBottom: 5, fontWeight: 'bold'}}>Age</Text>
             <View style={styles.formContainer}>
-              <Icon containerStyle={{marginLeft: 10, marginBottom: 5}} name="envelope" size={15} color="#b9bec9"/>
+            <Icon style={{marginLeft: 10, marginTop: 17}} name="calendar" size={15} color="#b9bec9"/>
               <TextInput
                 style={styles.inputStyle}
                   autoCorrect={false}
@@ -198,7 +201,7 @@ class RegistrationScreenTwo extends React.Component {
 
             <Text style={{marginTop: 15, paddingBottom: 5, fontWeight: 'bold'}}>Enter Invite Code</Text>
             <View style={styles.formContainer}>
-              <Icon containerStyle={{marginLeft: 10, marginBottom: 5}} name="envelope" size={15} color="#b9bec9"/>
+              <Icon style={{marginLeft: 10, marginTop: 17}} name="key" size={15} color="#b9bec9"/>
               <TextInput
                 style={styles.inputStyle}
                   autoCorrect={false}
@@ -245,6 +248,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
+    marginLeft: 5
   }
 })
 
