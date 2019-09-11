@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, ScrollView, Image, FlatList} from "react-native";
+import {View, Text, ScrollView, Image, FlatList, TouchableOpacity} from "react-native";
 
 const ninja = require('../../assets/Ninja.png')
 const madisonBeers = require('../../assets/madison-beer.png')
@@ -12,7 +12,7 @@ const rocketOn = require('../../assets/RocketOn.png')
 const dab = require('../../assets/Dab.png')
 const floss = require('../../assets/Floss.png')
 const ninjaTee = require('../../assets/shirt-prize.png')
-
+const omgPrize = require('../../assets/omg-prize.png')
 
 class PrizeContainer extends React.Component {
   constructor(props){
@@ -29,7 +29,7 @@ class PrizeContainer extends React.Component {
     } else if(fileName === "Floss.png") {
       return floss
     } else if(fileName === "OMG.png"){
-       return omg
+       return omgPrize
     } else {
       return ninjaTee
     }
@@ -51,17 +51,21 @@ class PrizeContainer extends React.Component {
     }
   }
 
+
   renderPrizeGrid(prize){
     const imageScalor = window.height > 592 && window.width > 384 ? 65 : 75
 
     return (
       <View>
-        <View style={{marginRight: '5%', borderColor:'rgba(0, 0, 0, 0.050)', borderWidth: 1, borderRadius: 15}}>
+        <TouchableOpacity
+          style={{marginRight: '5%', borderColor:'rgba(0, 0, 0, 0.050)', borderWidth: 1, borderRadius: 15}}
+          onPress={() => this.props.toggleModalFunc(prize)}
+        >
           <Image
             source={this.getPrizeImage(prize.image.file_name)}
             style={{width: imageScalor, height: imageScalor}}
           />
-        </View>
+        </TouchableOpacity>
         <View style={{marginTop: 5, flexDirection: 'row', flexWrap: 'wrap', marginBottom: 15}}>
           <Text style={{justifyContent: 'flex-start'}}>{prize.name}</Text>
         </View>

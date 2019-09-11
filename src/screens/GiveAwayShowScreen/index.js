@@ -21,6 +21,8 @@ const khalid = require('../../assets/Khalid.png')
 const omgPrize = require('../../assets/omg-prize.png')
 const shirtPrize = require('../../assets/shirt-prize.png')
 
+const moment = require('moment');
+
 /**
  * The main container for a specific giveaway.
 */
@@ -35,13 +37,16 @@ class GiveAwayShowScreen extends React.Component {
       buttonText: `Buy Pack`,
       userId: null,
       giveawayId: null,
+      giveawayStarted: true,
       buttonConfirmationFunc: () => this.setState({buttonText: 'Confirm', buttonConfirmationFunc: () => this.handleSubmit()}),
       purchaseHasErrors: false,
       purchaseErrors: null,
       probabilityData: null,
       isPrizeModalVisible: false,
       isProbabilityModalVisible: false,
-      currentDisplayPrize: null
+      isPrizeDescriptionModalVisible: false,
+      currentDisplayPrize: null,
+      currentDisplayShowModalPrize: null
 
     }
   }
@@ -56,6 +61,20 @@ class GiveAwayShowScreen extends React.Component {
     this._fetchGiveAwayProbabilitiesData(defaultGiveAwayId)
     this._fetchData(defaultGiveAwayId)
     this._getUserAndGiveAwayInfo()
+    this.handleGiveAwayDisable()
+  }
+
+  handleGiveAwayDisable = () => {
+    if(this.state.hasData === true) {
+      if(this.state.data.giveaway.start_time <= moment.now()) {
+        this.setState({
+          giveawayStarted: false
+        })
+        // Exit out of function.
+        return
+      }
+    }
+    setInterval(() => this.handleGiveAwayDisable(), 3000);
   }
 
   getPrizePhoto = (prize) => {
@@ -104,10 +123,19 @@ class GiveAwayShowScreen extends React.Component {
     // Currently we only support giving away a max of 2 items. If the currentIndex is 0, change to 1 and
     // visa verse
     let newPrizeIndex = currentIndex === 0 ? 1 : 0
-    
+
     this.setState({
       currentDisplayPrize: this.state.purchaseData[newPrizeIndex]
     })
+  }
+
+  // A callback function which gets executed in the PrizeContainer. This function toggles
+  // the visiblity of the modal and determines the prize to display in the show modal.
+  handleTogglePrizeModal = (prize) => {
+    this.setState({
+      isPrizeDescriptionModalVisible: !this.state.isPrizeDescriptionModalVisible,
+      currentDisplayShowModalPrize: prize
+    });
   }
 
   _togglePrizeModal = () =>
@@ -133,7 +161,7 @@ class GiveAwayShowScreen extends React.Component {
       </View>
 
       <View style={{alignItems: 'center', justifyContent: 'center', marginTop: '30%'}}>
-      <TouchableOpacity onPress={this._togglePrizeModal}>
+      <TouchableOpacity onPress={() => this._togglePrizeModal()}>
         <Icon name="times-circle" size={70} color="white"/>
       </TouchableOpacity>
       </View>
@@ -180,10 +208,10 @@ class GiveAwayShowScreen extends React.Component {
         <Modal
           style={{flex: 1, height: 400}}
           isVisible={this.state.isProbabilityModalVisible}
-          onRequestClose={() => {this._toggleProbabilityModal()}}
+          onRequestClose={() => this._toggleProbabilityModal()}
           >
           <TouchableOpacity
-            onPressOut={() => {this._toggleProbabilityModal()}}
+            onPressOut={() =>this._toggleProbabilityModal()}
             style={{ justifyContent: 'center', height: '100%', width: "100%"}}
           >
             <View style={{height: 250, backgroundColor: 'white', borderRadius: 20}}>
@@ -203,6 +231,41 @@ class GiveAwayShowScreen extends React.Component {
                 </View>
               </View>
             </View>
+          </TouchableOpacity>
+        </Modal>
+    )
+  }
+
+  renderPrizeShowModal = () =>  {
+    const window = Dimensions.get('window');
+
+    if (!this.state.isPrizeDescriptionModalVisible)
+      return null
+    return(
+        <Modal
+          style={{flex: 1, height: 250}}
+          isVisible={this.state.isPrizeDescriptionModalVisible}
+          onRequestClose={() => this.handleTogglePrizeModal(null)}
+        >
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{flex: 1, alignItems: "center" }}>
+              <Text style={{color: 'white', fontSize: 26}}>
+                {this.state.currentDisplayShowModalPrize.name}
+              </Text>
+              <Text style={{color: 'white', fontSize: 14}}>
+                Not Owned
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            onPressOut={() =>this.handleTogglePrizeModal(null)}
+            style={{ justifyContent: 'center', height: '100%', width: "100%"}}
+          >
+
+          <Image
+            source={this.getPrizePhoto(this.state.currentDisplayShowModalPrize.name)}
+          />
+
           </TouchableOpacity>
         </Modal>
     )
@@ -334,6 +397,11 @@ class GiveAwayShowScreen extends React.Component {
         this.renderPrizeView()
       }
       {
+        this.state.isPrizeDescriptionModalVisible &&
+        this.state.currentDisplayShowModalPrize &&
+        this.renderPrizeShowModal()
+      }
+      {
         this.state.hasData &&
         <Text style={{fontWeight: 'bold', marginTop: '5%', marginLeft: 5, fontSize: 20}}>{this.state.data.giveaway.name}</Text>
       }
@@ -343,7 +411,7 @@ class GiveAwayShowScreen extends React.Component {
       }
       {
         this.state.hasData &&
-        <PrizeContainer giveaway={this.state.data.giveaway} />
+        <PrizeContainer giveaway={this.state.data.giveaway} toggleModalFunc={this.handleTogglePrizeModal.bind(this)} />
       }
       {
         this.state.hasData &&
@@ -355,7 +423,7 @@ class GiveAwayShowScreen extends React.Component {
           <EcstaticButton
             buttonMarginTopScalor={0}
             buttonColor={"#39f3bb"}
-            isDisabled={false}
+            isDisabled={this.state.giveawayStarted}
             buttonText={this.state.buttonText + ` ($${this.state.data.cost_per_pack})`}
             navigationScreen={"GiveAwayShowScreen"}
             navigation={this.props.navigation}
