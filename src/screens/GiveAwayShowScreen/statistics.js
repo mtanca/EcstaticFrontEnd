@@ -20,7 +20,8 @@ class GiveAwayStatistics extends React.Component {
   }
 
   renderGiveAwayTime = (giveaway) => {
-    const packsRemaining = giveaway.capacity - giveaway.state.packs_available
+    const packs = giveaway.state.packs_available || giveaway.capacity
+    const packsRemaining = giveaway.capacity - packs
     const currentTime = moment().unix()
 
     let timeAvailableText = null
@@ -57,7 +58,9 @@ class GiveAwayStatistics extends React.Component {
 
   render() {
     const giveaway = this.props.giveaway
-    let statusSoldPercent = 100 - Math.floor(giveaway.state.packs_available / giveaway.capacity * 100)
+    const packsAvailable = giveaway.state.packs_available || giveaway.capacity
+
+    let statusSoldPercent = 100 - Math.floor(packsAvailable / giveaway.capacity * 100)
 
     return(
       <View>

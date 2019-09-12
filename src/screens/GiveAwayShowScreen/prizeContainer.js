@@ -11,8 +11,11 @@ const omg = require('../../assets/OMG.png')
 const rocketOn = require('../../assets/RocketOn.png')
 const dab = require('../../assets/Dab.png')
 const floss = require('../../assets/Floss.png')
+
 const ninjaTee = require('../../assets/shirt-prize.png')
 const omgPrize = require('../../assets/omg-prize.png')
+const privateQA = require('../../assets/private-qa-prize.png')
+const coinsPrize = require('../../assets/treasure-prize.png')
 
 class PrizeContainer extends React.Component {
   constructor(props){
@@ -28,26 +31,14 @@ class PrizeContainer extends React.Component {
       return dab
     } else if(fileName === "Floss.png") {
       return floss
-    } else if(fileName === "OMG.png"){
+    } else if(fileName === "omg-prize.png") {
        return omgPrize
-    } else {
+    } else if(fileName === "shirt-prize.png") {
       return ninjaTee
-    }
-  }
-
-  getImage = (fileName) => {
-    if(fileName === "madison-beer.png") {
-      return madisonBeers
-    } else if(fileName === "Blackpink.png") {
-      return blackPink
-    } else if(fileName === "Khalid.png") {
-      return khalid
-    } else if(fileName === "Ninja.png") {
-      return ninja
-    }  else if(fileName === "Ninja Tee.png"){
-       return ninjaTee
+    } else if(fileName === "private-qa-prize.png") {
+      return privateQA
     } else {
-      return madisonBeers
+      return coinsPrize
     }
   }
 

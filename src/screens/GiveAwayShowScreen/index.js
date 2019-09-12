@@ -18,8 +18,10 @@ const madisonBeers = require('../../assets/madison-beer.png')
 const blackPink = require('../../assets/Blackpink.png')
 const khalid = require('../../assets/Khalid.png')
 
+const ninjaTee = require('../../assets/shirt-prize.png')
 const omgPrize = require('../../assets/omg-prize.png')
-const shirtPrize = require('../../assets/shirt-prize.png')
+const privateQA = require('../../assets/private-qa-prize.png')
+const coinsPrize = require('../../assets/treasure-prize.png')
 
 const moment = require('moment');
 
@@ -77,11 +79,43 @@ class GiveAwayShowScreen extends React.Component {
     setInterval(() => this.handleGiveAwayDisable(), 3000);
   }
 
-  getPrizePhoto = (prize) => {
-    if(prize.item !== "shirts"){
-      return shirtPrize
+  getPrizePhoto = (fileName) => {
+    if(fileName === "Rocket On.png") {
+      return rocketOn
+    } else if(fileName === "Heals.png") {
+      return heals
+    } else if(fileName === "Dab.png") {
+      return dab
+    } else if(fileName === "Floss.png") {
+      return floss
+    } else if(fileName === "omg-prize.png") {
+       return omgPrize
+    } else if(fileName === "shirt-prize.png") {
+      return ninjaTee
+    } else if(fileName === "private-qa-prize.png") {
+      return privateQA
     } else {
-      return omgPrize
+      return coinsPrize
+    }
+  }
+
+  getPrizePhotoByName = (name) => {
+    if(name.includes("Rocket")) {
+      return rocketOn
+    } else if(name.includes("Heals")) {
+      return heals
+    } else if(name.includes("Dab")) {
+      return dab
+    } else if(name.includes("Floss")) {
+      return floss
+    } else if(name.includes("OMG")) {
+       return omgPrize
+    } else if(name.includes("Ninja")) {
+      return ninjaTee
+    } else if(name.includes("Private")) {
+      return privateQA
+    } else {
+      return coinsPrize
     }
   }
 
@@ -178,7 +212,7 @@ class GiveAwayShowScreen extends React.Component {
         {
           this.state.purchaseData.map((prize) =>
           <Image
-            source={this.getPrizePhoto(prize)}
+            source={this.getPrizePhotoByName(prize.item)}
           />
           )
         }
@@ -259,11 +293,11 @@ class GiveAwayShowScreen extends React.Component {
           </View>
           <TouchableOpacity
             onPressOut={() =>this.handleTogglePrizeModal(null)}
-            style={{ justifyContent: 'center', height: '100%', width: "100%"}}
+            style={{justifyContent: 'center', flexGrow: 1, alignItems: 'center', height: '100%', width: "100%"}}
           >
 
           <Image
-            source={this.getPrizePhoto(this.state.currentDisplayShowModalPrize.name)}
+            source={this.getPrizePhoto(this.state.currentDisplayShowModalPrize.image.file_name)}
           />
 
           </TouchableOpacity>
