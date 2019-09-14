@@ -1,13 +1,13 @@
-import React from "react";
-import {View, Text, ScrollView} from "react-native";
+import React from 'react';
+import {View, Text, ScrollView} from 'react-native';
 
 const moment = require('moment');
 
-class GiveAwayInfo extends React.Component {
+export default class GiveAwayInfo extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.getDate = this.getDate.bind(this)
+    this.getDate = this.getDate.bind(this);
   }
 
   getDate(startTime) {
@@ -15,17 +15,21 @@ class GiveAwayInfo extends React.Component {
   }
 
   render() {
-    return(
+    return (
       <View style={{marginLeft: 5}}>
-        <Text style={{marginTop: '5%', fontWeight: 'bold', fontSize: 20}}>Info</Text>
+        <Text style={{marginTop: '5%', fontWeight: 'bold', fontSize: 20}}>
+          Info
+        </Text>
 
-        <Text style= {{color: "#798498", marginTop: 5}}>
+        <Text style={{color: '#798498', marginTop: 5}}>
           {this.props.giveaway.description}
         </Text>
 
         <View style={{marginRight: '5%', marginTop: 5}}>
           <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 5}}>
-            <Text style={{flex: 1, justifyContent: 'flex-start'}}>Release Date</Text>
+            <Text style={{flex: 1, justifyContent: 'flex-start'}}>
+              Release Date
+            </Text>
             <Text>{this.getDate(this.props.giveaway.start_time)}</Text>
           </View>
 
@@ -35,15 +39,17 @@ class GiveAwayInfo extends React.Component {
           </View>
 
           <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 5}}>
-            <Text style={{flex: 1, justifyContent: 'flex-start'}}>Pack Odds</Text>
+            <Text style={{flex: 1, justifyContent: 'flex-start'}}>
+              Pack Odds
+            </Text>
             <Text
-            onPress={()=> this.props.toggleModalFunc()}
-            style={{fontWeight: 'bold', color: "#39f3bb"}}>View Odds</Text>
+              onPress={() => this.props.toggleModalFunc()}
+              style={{fontWeight: 'bold', color: '#39f3bb'}}>
+              View Odds
+            </Text>
           </View>
         </View>
       </View>
-    )
+    );
   }
 }
-
-export default GiveAwayInfo
