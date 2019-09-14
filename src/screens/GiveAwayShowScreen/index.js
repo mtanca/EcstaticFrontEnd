@@ -122,7 +122,7 @@ export default class GiveAwayShowScreen extends React.Component {
       return floss;
     } else if (name.includes('OMG')) {
       return omgPrize;
-    } else if (name.includes('Ninja')) {
+    } else if (name.includes('Shirt')) {
       return ninjaTee;
     } else if (name.includes('Private')) {
       return privateQA;
@@ -160,6 +160,9 @@ export default class GiveAwayShowScreen extends React.Component {
 
   // Changes the name and the # of prizes owned by the user for each prize in the show prize modal
   togglePrize = () => {
+    if (this.state.data.purchaseData && this.state.purchaseData.length === 1) {
+      return;
+    }
     let currentDisplayPrize = this.state.currentDisplayPrize;
     let currentIndex = this.state.purchaseData.findIndex(
       element => element === currentDisplayPrize,
@@ -202,7 +205,8 @@ export default class GiveAwayShowScreen extends React.Component {
         <View style={{flex: 1, flexDirection: 'row'}}>
           <View style={{flex: 1, alignItems: 'center'}}>
             <Text style={{color: 'white', fontSize: 26}}>
-              {this.state.currentDisplayPrize.item}
+              {this.state.currentDisplayPrize &&
+                this.state.currentDisplayPrize.item}
             </Text>
             <Text style={{color: 'white', fontSize: 14}}>Not Owned</Text>
           </View>
@@ -212,7 +216,7 @@ export default class GiveAwayShowScreen extends React.Component {
           style={{
             alignItems: 'center',
             justifyContent: 'center',
-            marginTop: '30%',
+            marginTop: '25%',
           }}>
           <TouchableOpacity onPress={() => this._togglePrizeModal()}>
             <Icon name="times-circle" size={70} color="white" />
@@ -224,14 +228,14 @@ export default class GiveAwayShowScreen extends React.Component {
           showsHorizontalScrollIndicator={false}
           centerContent={true}
           contentContainerStyle={{
+            width: window.width,
             justifyContent: 'center',
-            alignItems: 'center',
           }}
           pagingEnabled={true}
           snapToAlignment={'center'}
           onMomentumScrollBegin={() => this.togglePrize()}>
-          {this.state.purchaseData.map(prize => (
-            <Image source={this.getPrizePhotoByName(prize.item)} />
+          {this.state.purchaseData.map((prize, key) => (
+            <Image key={key} source={this.getPrizePhotoByName(prize.item)} />
           ))}
         </ScrollView>
         {this.state.purchaseData.length === 2 && (
