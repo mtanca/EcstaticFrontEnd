@@ -1,65 +1,63 @@
-import React from "react";
+import React from 'react';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import {View, Text, Button, StyleSheet} from "react-native";
+import {View, Text, Button, StyleSheet} from 'react-native';
 import IntroOnBoardScreen from '../IntroOnBoardScreen';
-import HomeScreen from '../HomeScreen'
-import GiveAwayShowScreen from '../GiveAwayShowScreen'
+import HomeScreen from '../HomeScreen';
+import GiveAwayShowScreen from '../GiveAwayShowScreen';
 
 class MainScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       isLoggedIn: false,
-      canRender: false
-    }
+      canRender: false,
+    };
   }
 
-  componentDidMount(){
-    this.getData()
+  componentDidMount() {
+    this.getData();
   }
 
   getData = async () => {
     try {
-      const isLoggedIn = await AsyncStorage.getItem('@isLoggedIn')
-      if(isLoggedIn !== null && isLoggedIn === "true") {
+      const isLoggedIn = await AsyncStorage.getItem('@isLoggedIn');
+      if (isLoggedIn !== null && isLoggedIn === 'true') {
         this.setState({
           isLoggedIn: true,
-          canRender: true
-        })
+          canRender: true,
+        });
       } else {
         this.setState({
           isLoggedIn: false,
-          canRender: true
-        })
+          canRender: true,
+        });
       }
-    } catch(e) {
+    } catch (e) {
       // error reading value
     }
-  }
+  };
 
   render() {
     const navigate = this.props.navigation;
 
-    if(this.state.isLoggedIn && this.state.canRender){
-      return(
+    if (this.state.isLoggedIn && this.state.canRender) {
+      return (
         <View>
-          {
-            this.state.canRender === true &&
+          {this.state.canRender === true && (
             <GiveAwayShowScreen navigation={navigate} />
-          }
+          )}
         </View>
-      )
+      );
     } else {
-      return(
+      return (
         <View>
-          {
-            this.state.canRender === true &&
-            <IntroOnBoardScreen navigation={navigate}/>
-          }
+          {this.state.canRender === true && (
+            <IntroOnBoardScreen navigation={navigate} />
+          )}
         </View>
-      )
+      );
     }
   }
 }
@@ -69,12 +67,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonsContainer:{
+  buttonsContainer: {
     marginTop: 100,
   },
   buttons: {
     marginTop: 30,
   },
-})
+});
 
 export default MainScreen;
