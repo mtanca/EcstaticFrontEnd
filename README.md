@@ -3,10 +3,11 @@
 ## React Native Setup
 
 - If you don't have React Native installed [click here](https://facebook.github.io/react-native/docs/getting-started). Make sure you are following the React Native CLI Quickstart!
+- For `ios` setup, navigate to `EcstaticFrontEnd/ios` and run `pod install`. Make sure that you have Cocoapods installed (`brew install cocoapods`)
 - Once the React Native CLI is installed, run the project using `react-native run-ios` or `react-native run-android`
 - If running the app for the first time, make sure to take the uuid of the give away created from running the `seeds.exs` file in the ecstatic backend repo and enter it while registering in the app
 
-## Running with Phoenix
+## Running Ecstatic Back End with Phoenix
 
 Phoenix is the server which feeds the app data.
 To start your Phoenix server:
