@@ -27,7 +27,6 @@ class IntroOnBoardScreenTemplate extends React.Component {
               fontWeight: 'bold',
               fontSize: 20,
               textAlign: 'center',
-              fontFamily: 'FiraSans',
             }}>
             {this.props.mainText}
           </Text>

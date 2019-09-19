@@ -37,6 +37,7 @@ class GiveAwayStatistics extends React.Component {
 
     let packDisplayTextBold =
       packsRemaining === giveaway.capacity ? `SOLD OUT` : packsRemaining;
+
     let packDisplayTextEnding =
       packsRemaining === giveaway.capacity
         ? `${giveaway.capacity}`

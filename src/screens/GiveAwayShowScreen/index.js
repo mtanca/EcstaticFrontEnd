@@ -88,7 +88,7 @@ export default class GiveAwayShowScreen extends React.Component {
         return;
       }
     }
-    setInterval(() => this.handleGiveAwayDisable(), 3000);
+    setInterval(() => this.handleGiveAwayDisable(), 1000);
   };
 
   getPrizePhoto = fileName => {
@@ -161,6 +161,9 @@ export default class GiveAwayShowScreen extends React.Component {
   // Changes the name and the # of prizes owned by the user for each prize in the show prize modal
   togglePrize = () => {
     if (this.state.data.purchaseData && this.state.purchaseData.length === 1) {
+      this.setState({
+        currentDisplayPrize: this.state.purchaseData[0],
+      });
       return;
     }
     let currentDisplayPrize = this.state.currentDisplayPrize;
@@ -171,10 +174,6 @@ export default class GiveAwayShowScreen extends React.Component {
     // Currently we only support giving away a max of 2 items. If the currentIndex is 0, change to 1 and
     // visa verse
     let newPrizeIndex = currentIndex === 0 ? 1 : 0;
-
-    this.setState({
-      currentDisplayPrize: this.state.purchaseData[newPrizeIndex],
-    });
   };
 
   // A callback function which gets executed in the PrizeContainer. This function toggles
@@ -199,10 +198,8 @@ export default class GiveAwayShowScreen extends React.Component {
     const window = Dimensions.get('window');
 
     return (
-      <Modal
-        style={{flex: 1, height: 250}}
-        isVisible={this.state.isPrizeModalVisible}>
-        <View style={{flex: 1, flexDirection: 'row'}}>
+      <Modal style={{flex: 1}} isVisible={this.state.isPrizeModalVisible}>
+        <View style={{flexDirection: 'row'}}>
           <View style={{flex: 1, alignItems: 'center'}}>
             <Text style={{color: 'white', fontSize: 26}}>
               {this.state.currentDisplayPrize &&
@@ -214,9 +211,8 @@ export default class GiveAwayShowScreen extends React.Component {
 
         <View
           style={{
+            flex: 1,
             alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: '25%',
           }}>
           <TouchableOpacity onPress={() => this._togglePrizeModal()}>
             <Icon name="times-circle" size={70} color="white" />
@@ -228,9 +224,11 @@ export default class GiveAwayShowScreen extends React.Component {
           showsHorizontalScrollIndicator={false}
           centerContent={true}
           contentContainerStyle={{
-            width: window.width,
             justifyContent: 'center',
+            alignItems: 'center',
+            flexGrow: 1,
           }}
+          snapToAlignment={'center'}
           pagingEnabled={true}
           snapToAlignment={'center'}
           onMomentumScrollBegin={() => this.togglePrize()}>
@@ -429,8 +427,15 @@ export default class GiveAwayShowScreen extends React.Component {
             hasData: true,
             data: responseJson.data,
           });
+        })
+        .catch(response => {
+          console.log('Retrying connection...');
+          setInterval(() => this._fetchData(defaultGiveAwayId), 1000);
         });
-    } catch (e) {}
+    } catch (e) {
+      console.log('Retrying connection...');
+      setInterval(() => this._fetchData(defaultGiveAwayId), 1000);
+    }
   };
 
   _signOut = navigate => {
