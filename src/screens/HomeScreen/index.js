@@ -99,7 +99,7 @@ export default class HomeScreen extends React.Component {
     try {
       const userId = await AsyncStorage.getItem('@userId');
 
-      fetch('http://192.168.1.14:4000/api/giveaways?id=' + userId, {
+      fetch('http://192.168.86.44:4000/api/giveaways?id=' + userId, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
