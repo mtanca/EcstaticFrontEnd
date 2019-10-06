@@ -8,6 +8,7 @@ import {
   Button,
   Dimensions,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -62,6 +63,7 @@ export default class GiveAwayShowScreen extends React.Component {
       isPrizeDescriptionModalVisible: false,
       currentDisplayPrize: null,
       currentDisplayShowModalPrize: null,
+      backButtonScrollPosition: 0,
     };
   }
 
@@ -448,19 +450,58 @@ export default class GiveAwayShowScreen extends React.Component {
     });
   };
 
+  updateBackButtonLoaction = e => {
+    const window = Dimensions.get('window');
+    let y = e.nativeEvent.contentOffset.y;
+
+    this.setState({
+      backButtonScrollPosition: y,
+    });
+  };
+
+  _navigateToBetaHomeScreen = () => {
+    this.props.navigation.navigate('BetaHomeScreen', {
+      navigation: this.props.navigation.navigate,
+    });
+  };
+
   render() {
     const window = Dimensions.get('window');
 
     return (
-      <ScrollView>
+      <ScrollView onScroll={event => this.updateBackButtonLoaction(event)}>
         {this.state.hasData && (
           <UserSection hasData={this.state.hasData} data={this.state.data} />
         )}
         {this.state.hasData && (
-          <Image
-            source={this.getImage(this.state.data.giveaway.image.file_name)}
-            style={{width: '100%'}}
-          />
+          <View>
+            <Image
+              source={this.getImage(this.state.data.giveaway.image.file_name)}
+              style={{width: '100%', marginBottom: 0}}
+            />
+
+            {/* Back button to beta home screen... */}
+            <TouchableOpacity
+              style={{
+                marginTop: 50,
+                marginLeft: 10,
+                borderRadius: 100,
+                height: 40,
+                width: 40,
+                backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                zIndex: 5,
+                position: 'absolute',
+                top: this.state.backButtonScrollPosition,
+              }}
+              onPress={() => this._navigateToBetaHomeScreen()}>
+              <Icon
+                style={{marginTop: '25%', marginLeft: '25%'}}
+                name="arrow-left"
+                size={20}
+                color="#1E1E1E"
+              />
+            </TouchableOpacity>
+          </View>
         )}
         {this.renderBlurModal()}
         {this.state.purchaseData && this.renderPrizeView()}
