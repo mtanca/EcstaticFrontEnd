@@ -101,7 +101,7 @@ class RegistrationScreenTwo extends React.Component {
   };
 
   handleSubmit = () => {
-    fetch('http://192.168.86.44:4000/api/users', {
+    fetch('http://192.168.1.34:4000/api/users', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
