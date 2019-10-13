@@ -144,7 +144,7 @@ export default class GiveAwayShowScreen extends React.Component {
         giveawayId = defaultGiveAwayId;
       }
 
-      fetch(`http://192.168.1.34:4000/api/giveaways/${giveawayId}/prizes`, {
+      fetch(`http://192.168.86.53:4000/api/giveaways/${giveawayId}/prizes`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -352,7 +352,7 @@ export default class GiveAwayShowScreen extends React.Component {
    */
   handleSubmit = () => {
     fetch(
-      'http://192.168.1.34:4000/api/giveaways/' +
+      'http://192.168.86.53:4000/api/giveaways/' +
         this.state.data.giveaway.id +
         '/purchase',
       {
@@ -416,7 +416,7 @@ export default class GiveAwayShowScreen extends React.Component {
         giveawayId = defaultGiveAwayId;
       }
 
-      fetch('http://192.168.1.34:4000/api/giveaways/' + giveawayId, {
+      fetch('http://192.168.86.53:4000/api/giveaways/' + giveawayId, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -477,7 +477,7 @@ export default class GiveAwayShowScreen extends React.Component {
           <View>
             <Image
               source={this.getImage(this.state.data.giveaway.image.file_name)}
-              style={{width: '100%', marginBottom: 0}}
+              style={{width: '100%', marginBottom: 0, borderRadius: 10}}
             />
 
             {/* Back button to beta home screen... */}

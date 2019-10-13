@@ -23,7 +23,6 @@ export default class UserSection extends React.Component {
           marginLeft: 5,
           marginTop: '5%',
           borderRadius: 60,
-          marginBottom: '5%',
         }}>
         <Image source={userProfileImage} style={{height: 40, width: 40}} />
       </View>
