@@ -78,7 +78,7 @@ class LoginScreen extends React.Component {
   };
 
   handleSubmit = () => {
-    fetch('http://192.168.1.14:4000/api/sessions', {
+    fetch('http://192.168.86.53:4000/api/sessions', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
