@@ -15,6 +15,8 @@ import SplashScreen from '../SplashScreen';
 import UserSection from '../components/userSection.js';
 import HomeScreenNew from './new.js';
 
+import {IP_ADDRESS} from '../../constants/constants.js';
+
 const ninja = require('../../assets/Ninja.png');
 const madisonBeers = require('../../assets/madison-beer.png');
 const blackPink = require('../../assets/Blackpink.png');
@@ -99,7 +101,7 @@ export default class HomeScreen extends React.Component {
     try {
       const userId = await AsyncStorage.getItem('@userId');
 
-      fetch('http://192.168.86.53:4000/api/giveaways?id=' + userId, {
+      fetch(`http://${IP_ADDRESS}:4000/api/giveaways?id=` + userId, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

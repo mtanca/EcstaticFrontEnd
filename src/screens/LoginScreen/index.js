@@ -14,6 +14,8 @@ import ForgotPasswordScreen from '../ForgotPasswordScreen';
 import GiveAwayShowScreen from '../GiveAwayShowScreen';
 import EcstaticButton from '../components/ecstaticButton.js';
 
+import {IP_ADDRESS} from '../../constants/constants.js';
+
 import FBLoginButton from '../components/FBLoginButton';
 
 class LoginScreen extends React.Component {
@@ -78,7 +80,7 @@ class LoginScreen extends React.Component {
   };
 
   handleSubmit = () => {
-    fetch('http://192.168.86.53:4000/api/sessions', {
+    fetch(`http://${IP_ADDRESS}:4000/api/sessions`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

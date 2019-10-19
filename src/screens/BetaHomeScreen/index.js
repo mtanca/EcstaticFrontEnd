@@ -18,6 +18,8 @@ const ninja = require('../../assets/Ninja.png');
 
 import UserSection from '../components/userSection.js';
 
+import {IP_ADDRESS} from '../../constants/constants.js';
+
 export default class BetaHomeScreen extends React.Component {
   constructor(props) {
     super(props);

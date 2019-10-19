@@ -23,6 +23,8 @@ import GiveAwayStatistics from './statistics.js';
 import UserSection from '../components/userSection.js';
 import EcstaticButton from '../components/ecstaticButton.js';
 
+import {IP_ADDRESS} from '../../constants/constants.js';
+
 const ninja = require('../../assets/Ninja.png');
 const madisonBeers = require('../../assets/madison-beer.png');
 const blackPink = require('../../assets/Blackpink.png');
@@ -144,7 +146,7 @@ export default class GiveAwayShowScreen extends React.Component {
         giveawayId = defaultGiveAwayId;
       }
 
-      fetch(`http://192.168.86.53:4000/api/giveaways/${giveawayId}/prizes`, {
+      fetch(`http://${IP_ADDRESS}:4000/api/giveaways/${giveawayId}/prizes`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -352,7 +354,7 @@ export default class GiveAwayShowScreen extends React.Component {
    */
   handleSubmit = () => {
     fetch(
-      'http://192.168.86.53:4000/api/giveaways/' +
+      `http://${IP_ADDRESS}:4000/api/giveaways/` +
         this.state.data.giveaway.id +
         '/purchase',
       {
@@ -416,7 +418,7 @@ export default class GiveAwayShowScreen extends React.Component {
         giveawayId = defaultGiveAwayId;
       }
 
-      fetch('http://192.168.86.53:4000/api/giveaways/' + giveawayId, {
+      fetch(`http://${IP_ADDRESS}:4000/api/giveaways/` + giveawayId, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
