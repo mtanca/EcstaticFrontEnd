@@ -11,6 +11,8 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import AsyncStorage from '@react-native-community/async-storage';
+
 const commentTextSVG = require('../../assets/comment_text.svg');
 const creditCardSVG = require('../../assets/credit_card.svg');
 const homeSVG = require('../../assets/home_vs.svg');
@@ -25,7 +27,12 @@ export default class BetaHomeScreen extends React.Component {
     super(props);
     this.state = {
       userSectionWidthOffset: null,
+      userGiveAwayData: null,
     };
+  }
+
+  componentDidMount() {
+    this._fetchUserGiveAwayData();
   }
 
   measureView(event) {
@@ -57,6 +64,30 @@ export default class BetaHomeScreen extends React.Component {
         </View>
       </View>
     );
+  };
+
+  /**
+   * Fetches the user's giveaway list
+   */
+  _fetchUserGiveAwayData = async () => {
+    try {
+      let userId = await AsyncStorage.getItem('@userId');
+      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}/giveaways`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          this.setState({
+            userGiveAwayData: responseJson.data.userGiveAways,
+          });
+        });
+    } catch (e) {
+      console.log('ERROR....' + e);
+    }
   };
 
   render() {
