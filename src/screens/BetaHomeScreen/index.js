@@ -11,10 +11,24 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import AsyncStorage from '@react-native-community/async-storage';
+
 const commentTextSVG = require('../../assets/comment_text.svg');
 const creditCardSVG = require('../../assets/credit_card.svg');
 const homeSVG = require('../../assets/home_vs.svg');
+
 const ninja = require('../../assets/Ninja.png');
+const madisonBeers = require('../../assets/madison-beer.png');
+const blackPink = require('../../assets/Blackpink.png');
+const khalid = require('../../assets/Khalid.png');
+
+const ninjaTee = require('../../assets/shirt-prize.png');
+const omgPrize = require('../../assets/omg-prize.png');
+const privateQA = require('../../assets/private-qa-prize.png');
+const coinsPrize = require('../../assets/treasure-prize.png');
+
+const moment = require('moment');
+const time = require('../../assets/time.png');
 
 import UserSection from '../components/userSection.js';
 
@@ -25,7 +39,12 @@ export default class BetaHomeScreen extends React.Component {
     super(props);
     this.state = {
       userSectionWidthOffset: null,
+      userGiveAwayData: null,
     };
+  }
+
+  componentDidMount() {
+    this._fetchUserGiveAwayData();
   }
 
   measureView(event) {
@@ -33,6 +52,48 @@ export default class BetaHomeScreen extends React.Component {
       userSectionWidthOffset: event.nativeEvent.layout.width,
     });
   }
+
+  renderGiveAwayStats = giveaway => {
+    const packs = giveaway.state.packs_available || giveaway.capacity;
+    const packsRemaining = giveaway.capacity - packs;
+    const currentTime = moment().unix();
+
+    let timeAvailableText = null;
+    let timeRemaining = null;
+
+    if (giveaway.start_time < currentTime) {
+      timeAvailableText = 'Ends in';
+      timeRemaining = giveaway.end_time;
+    } else {
+      timeAvailableText = 'Starts in';
+      timeRemaining = giveaway.startTime;
+    }
+
+    let packDisplayTextBold =
+      packsRemaining === giveaway.capacity ? `SOLD OUT` : packsRemaining;
+
+    let packDisplayTextEnding =
+      packsRemaining === giveaway.capacity
+        ? `${giveaway.capacity}`
+        : `${giveaway.capacity} sold`;
+
+    return (
+      <View style={{flexDirection: 'row', marginLeft: 15}}>
+        <Text>
+          <Text style={{fontWeight: 'bold'}}>{giveaway.name}</Text>
+          <Text> {giveaway.category}</Text>
+        </Text>
+        <View
+          style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row'}}>
+          <Image source={time} style={{marginTop: 5, marginRight: 5}} />
+          <Text>{timeAvailableText} </Text>
+          <Text style={{marginRight: 15, color: '#39f3bb'}}>
+            {moment.unix(timeRemaining).fromNow(true)}
+          </Text>
+        </View>
+      </View>
+    );
+  };
 
   navigationBar = () => {
     return (
@@ -57,6 +118,45 @@ export default class BetaHomeScreen extends React.Component {
         </View>
       </View>
     );
+  };
+
+  getImage = fileName => {
+    if (fileName === 'madison-beer.png') {
+      return madisonBeers;
+    } else if (fileName === 'Blackpink.png') {
+      return blackPink;
+    } else if (fileName === 'Khalid.png') {
+      return khalid;
+    } else if (fileName === 'Ninja.png') {
+      return ninja;
+    } else {
+      return madisonBeers;
+    }
+  };
+
+  /**
+   * Fetches the user's giveaway list
+   */
+  _fetchUserGiveAwayData = async () => {
+    try {
+      let userId = await AsyncStorage.getItem('@userId');
+      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}/giveaways`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          console.log(responseJson.data.userGiveAways);
+          this.setState({
+            userGiveAwayData: responseJson.data.userGiveAways,
+          });
+        });
+    } catch (e) {
+      console.log('ERROR....' + e);
+    }
   };
 
   render() {
@@ -85,6 +185,21 @@ export default class BetaHomeScreen extends React.Component {
             </View>
           )}
         </View>
+
+        {this.state.userGiveAwayData &&
+          this.state.userGiveAwayData.map((userGiveAway, key) => (
+            <View>
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Image
+                  key={key}
+                  source={this.getImage(userGiveAway.image.file_name)}
+                  style={{width: '95%', marginTop: 10, borderRadius: 10}}
+                />
+              </View>
+              {this.renderGiveAwayStats(userGiveAway)}
+            </View>
+          ))}
+
         {this.navigationBar()}
       </ScrollView>
     );

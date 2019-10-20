@@ -477,16 +477,18 @@ export default class GiveAwayShowScreen extends React.Component {
         )}
         {this.state.hasData && (
           <View>
-            <Image
-              source={this.getImage(this.state.data.giveaway.image.file_name)}
-              style={{width: '100%', marginBottom: 0, borderRadius: 10}}
-            />
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Image
+                source={this.getImage(this.state.data.giveaway.image.file_name)}
+                style={{width: '95%', marginTop: 10, borderRadius: 10}}
+              />
+            </View>
 
             {/* Back button to beta home screen... */}
             <TouchableOpacity
               style={{
                 marginTop: 50,
-                marginLeft: 10,
+                marginLeft: 25,
                 borderRadius: 100,
                 height: 40,
                 width: 40,
