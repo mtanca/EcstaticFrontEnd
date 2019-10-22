@@ -83,19 +83,29 @@ class PrizeContainer extends React.Component {
     );
   }
 
+  // We add this function so we can perform a condiional based on the prizes to display.
+  // If there are no prizes, display text stating so, if there are, display them
+  _renderPrizes = () => {
+    if (this.props.prizes.length === 0) {
+      return <Text> None to display </Text>;
+    } else {
+      return (
+        <FlatList
+          numColumns={4}
+          data={this.props.prizes}
+          renderItem={prize => this.renderPrizeGrid(prize.item)}
+        />
+      );
+    }
+  };
+
   render() {
     return (
       <View style={{marginLeft: 5, marginTop: '5%'}}>
         <Text style={{fontWeight: 'bold', fontSize: 20}}>
           {this.props.title}
         </Text>
-        <View style={{marginTop: 15}}>
-          <FlatList
-            numColumns={4}
-            data={this.props.prizes}
-            renderItem={prize => this.renderPrizeGrid(prize.item)}
-          />
-        </View>
+        <View style={{marginTop: 15}}>{this._renderPrizes()}</View>
       </View>
     );
   }
