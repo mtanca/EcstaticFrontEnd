@@ -86,7 +86,9 @@ class PrizeContainer extends React.Component {
   render() {
     return (
       <View style={{marginLeft: 5, marginTop: '5%'}}>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>Prizes</Text>
+        <Text style={{fontWeight: 'bold', fontSize: 20}}>
+          {this.props.title}
+        </Text>
         <View style={{marginTop: 15}}>
           <FlatList
             numColumns={4}

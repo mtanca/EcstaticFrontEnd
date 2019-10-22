@@ -529,6 +529,7 @@ export default class GiveAwayShowScreen extends React.Component {
         )}
         {this.state.hasData && (
           <PrizeContainer
+            title="Prizes"
             prizes={this.state.data.giveaway.prizes}
             toggleModalFunc={this.handleTogglePrizeModal.bind(this)}
           />

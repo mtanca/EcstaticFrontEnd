@@ -230,6 +230,7 @@ export default class BetaHomeScreen extends React.Component {
 
         {this.state.userPrizeData && (
           <PrizeContainer
+            title="Prizes Won"
             prizes={this.state.userPrizeData}
             toggleModalFunc={() => console.log('hello!')}
           />
