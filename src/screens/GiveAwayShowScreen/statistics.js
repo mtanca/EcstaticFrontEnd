@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, Image} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import PrizeContainer from './prizeContainer.js';
 import GiveAwayInfo from './info.js';
 
 const moment = require('moment');

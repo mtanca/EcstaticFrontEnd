@@ -17,9 +17,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Modal from 'react-native-modal';
 
-import PrizeContainer from './prizeContainer.js';
 import GiveAwayInfo from './info.js';
 import GiveAwayStatistics from './statistics.js';
+
+import PrizeContainer from '../components/prizeContainer.js';
 import UserSection from '../components/userSection.js';
 import EcstaticButton from '../components/ecstaticButton.js';
 
@@ -528,7 +529,7 @@ export default class GiveAwayShowScreen extends React.Component {
         )}
         {this.state.hasData && (
           <PrizeContainer
-            giveaway={this.state.data.giveaway}
+            prizes={this.state.data.giveaway.prizes}
             toggleModalFunc={this.handleTogglePrizeModal.bind(this)}
           />
         )}

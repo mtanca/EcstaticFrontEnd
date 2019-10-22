@@ -24,6 +24,9 @@ const omgPrize = require('../../assets/omg-prize.png');
 const privateQA = require('../../assets/private-qa-prize.png');
 const coinsPrize = require('../../assets/treasure-prize.png');
 
+/*
+The PrizeContainer component used to display prizes on the GiveAwayShowScreen and BetaHomeScreen.
+*/
 class PrizeContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -87,7 +90,7 @@ class PrizeContainer extends React.Component {
         <View style={{marginTop: 15}}>
           <FlatList
             numColumns={4}
-            data={this.props.giveaway.prizes}
+            data={this.props.prizes}
             renderItem={prize => this.renderPrizeGrid(prize.item)}
           />
         </View>
