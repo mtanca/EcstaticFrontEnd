@@ -32,6 +32,8 @@ const time = require('../../assets/time.png');
 
 import UserSection from '../components/userSection.js';
 
+import PrizeContainer from '../components/prizeContainer';
+
 import {IP_ADDRESS} from '../../constants/constants.js';
 
 export default class BetaHomeScreen extends React.Component {
@@ -40,11 +42,13 @@ export default class BetaHomeScreen extends React.Component {
     this.state = {
       userSectionWidthOffset: null,
       userGiveAwayData: null,
+      userPrizeData: null,
     };
   }
 
   componentDidMount() {
     this._fetchUserGiveAwayData();
+    this._fetchUserPrizeData();
   }
 
   measureView(event) {
@@ -95,7 +99,7 @@ export default class BetaHomeScreen extends React.Component {
     );
   };
 
-  navigationBar = () => {
+  renderNavigationBar = () => {
     return (
       <View style={styles.navigation}>
         <View style={{width: '60%', flexDirection: 'row'}}>
@@ -159,6 +163,30 @@ export default class BetaHomeScreen extends React.Component {
     }
   };
 
+  _fetchUserPrizeData = async () => {
+    try {
+      let userId = await AsyncStorage.getItem('@userId');
+      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}/prizes`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          console.log(responseJson.data.userPrizes.map);
+          this.setState({
+            userPrizeData: responseJson.data.userPrizes.map(
+              userPrize => userPrize.prize,
+            ),
+          });
+        });
+    } catch (e) {
+      console.log('ERROR....' + e);
+    }
+  };
+
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -200,7 +228,15 @@ export default class BetaHomeScreen extends React.Component {
             </View>
           ))}
 
-        {this.navigationBar()}
+        {this.state.userPrizeData && (
+          <PrizeContainer
+            title="Your Prizes"
+            prizes={this.state.userPrizeData}
+            toggleModalFunc={() => console.log('hello!')}
+          />
+        )}
+
+        {this.renderNavigationBar()}
       </ScrollView>
     );
   }
