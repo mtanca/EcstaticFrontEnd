@@ -11,6 +11,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import GiveAwayShowScreen from './src/screens/GiveAwayShowScreen';
 import BetaHomeScreen from './src/screens/BetaHomeScreen';
 import UserPaymentsScreen from './src/screens/UserPaymentsScreen';
+import UserPaymentHistoryScreen from './src/screens/UserPaymentsScreen/paymentHistory.js';
 
 import {View} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
@@ -65,6 +66,20 @@ const AppNavigator = createStackNavigator({
     screen: UserPaymentsScreen,
     navigationOptions: {header: null, headerLeft: null},
   },
+  UserPaymentHistoryScreen: {
+    screen: UserPaymentHistoryScreen,
+    navigationOptions: {
+      title: 'Payment History',
+      headerTitleStyle: {
+        alignItems: 'center',
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
+      },
+    },
+  },
+  headerLayoutPreset: 'center',
 });
 
 export default createAppContainer(AppNavigator);
