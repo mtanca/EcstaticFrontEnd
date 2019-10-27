@@ -53,16 +53,17 @@ class PrizeContainer extends React.Component {
   };
 
   renderPrizeGrid(prize) {
-    const imageScalor = window.height > 592 && window.width > 384 ? 65 : 75;
+    const imageScalor = window.height > 592 && window.width > 384 ? 50 : 60;
 
     return (
-      <View>
+      <View style={{width: '23%'}}>
         <TouchableOpacity
           style={{
-            marginRight: '5%',
             borderColor: 'rgba(0, 0, 0, 0.050)',
             borderWidth: 1,
             borderRadius: 15,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           onPress={() => this.props.toggleModalFunc(prize)}>
           <Image
@@ -75,15 +76,16 @@ class PrizeContainer extends React.Component {
             marginTop: 5,
             flexDirection: 'row',
             flexWrap: 'wrap',
-            marginBottom: 15,
           }}>
-          <Text style={{justifyContent: 'flex-start'}}>{prize.name}</Text>
+          <Text numberOfLines={1} style={{justifyContent: 'flex-start'}}>
+            {prize.name}
+          </Text>
         </View>
       </View>
     );
   }
 
-  // We add this function so we can perform a condiional based on the prizes to display.
+  // We add this function so we can perform a conditional based on the prizes to display.
   // If there are no prizes, display text stating so, if there are, display them
   _renderPrizes = () => {
     if (this.props.prizes.length === 0) {
@@ -93,6 +95,7 @@ class PrizeContainer extends React.Component {
         <FlatList
           numColumns={4}
           data={this.props.prizes}
+          columnWrapperStyle={{justifyContent: 'space-between'}}
           renderItem={prize => this.renderPrizeGrid(prize.item)}
         />
       );
@@ -101,11 +104,17 @@ class PrizeContainer extends React.Component {
 
   render() {
     return (
-      <View style={{marginLeft: 5, marginTop: '5%'}}>
+      <View>
         <Text style={{fontWeight: 'bold', fontSize: 20}}>
           {this.props.title}
         </Text>
-        <View style={{marginTop: 15}}>{this._renderPrizes()}</View>
+        <View
+          style={{
+            marginTop: 15,
+            width: '95%',
+          }}>
+          {this._renderPrizes()}
+        </View>
       </View>
     );
   }

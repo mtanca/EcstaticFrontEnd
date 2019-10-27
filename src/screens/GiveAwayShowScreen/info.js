@@ -23,6 +23,12 @@ export default class GiveAwayInfo extends React.Component {
 
         <Text style={{color: '#798498', marginTop: 5}}>
           {this.props.giveaway.description}
+          <Text
+            style={{color: '#39f3bb'}}
+            onPress={() => this.props.toggleTOSModalFunc()}>
+            {' '}
+            Terms and conditions
+          </Text>
         </Text>
 
         <View style={{marginRight: '5%', marginTop: 5}}>
@@ -43,7 +49,7 @@ export default class GiveAwayInfo extends React.Component {
               Pack Odds
             </Text>
             <Text
-              onPress={() => this.props.toggleModalFunc()}
+              onPress={() => this.props.toggleProbabilityModalFunc()}
               style={{fontWeight: 'bold', color: '#39f3bb'}}>
               View Odds
             </Text>
