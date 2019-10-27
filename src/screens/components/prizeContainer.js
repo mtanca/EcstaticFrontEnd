@@ -83,7 +83,7 @@ class PrizeContainer extends React.Component {
     );
   }
 
-  // We add this function so we can perform a condiional based on the prizes to display.
+  // We add this function so we can perform a conditional based on the prizes to display.
   // If there are no prizes, display text stating so, if there are, display them
   _renderPrizes = () => {
     if (this.props.prizes.length === 0) {
