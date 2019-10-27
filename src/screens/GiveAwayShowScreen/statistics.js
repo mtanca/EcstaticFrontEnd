@@ -43,7 +43,7 @@ class GiveAwayStatistics extends React.Component {
         : `${giveaway.capacity} sold`;
 
     return (
-      <View style={{flexDirection: 'row', marginLeft: 5}}>
+      <View style={{flexDirection: 'row'}}>
         <Text>
           <Text style={{color: '#39f3bb', fontWeight: 'bold'}}>
             {packDisplayTextBold}
@@ -75,7 +75,6 @@ class GiveAwayStatistics extends React.Component {
 
         <View
           style={{
-            marginLeft: 5,
             marginTop: 5,
             height: 8,
             width: '95%',

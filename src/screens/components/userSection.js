@@ -20,7 +20,6 @@ export default class UserSection extends React.Component {
     return (
       <View
         style={{
-          marginLeft: 5,
           marginTop: '5%',
           borderRadius: 60,
         }}>

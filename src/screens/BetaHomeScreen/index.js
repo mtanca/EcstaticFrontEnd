@@ -82,7 +82,7 @@ export default class BetaHomeScreen extends React.Component {
         : `${giveaway.capacity} sold`;
 
     return (
-      <View style={{flexDirection: 'row', marginLeft: 15}}>
+      <View style={{marginTop: 5, flexDirection: 'row'}}>
         <Text>
           <Text style={{fontWeight: 'bold'}}>{giveaway.name}</Text>
           <Text> {giveaway.category}</Text>
@@ -200,8 +200,10 @@ export default class BetaHomeScreen extends React.Component {
 
   _renderHeader = () => {
     return (
-      <View style={{flexDirection: 'row'}}>
-        <View onLayout={event => this.measureView(event)}>
+      <View style={styles.header}>
+        <View
+          style={styles.userInfo}
+          onLayout={event => this.measureView(event)}>
           <UserSection hasData={null} data={null} />
         </View>
         {this.state.userSectionWidthOffset && (
@@ -231,27 +233,43 @@ export default class BetaHomeScreen extends React.Component {
       <View style={styles.container}>
         {this._renderHeader()}
 
+        <View style={{marginTop: '5%', marginLeft: 10}}>
+          <Text style={{fontSize: 20, fontWeight: 'bold'}}> Experiences </Text>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#798498',
+            }}>
+            {' '}
+            Check out this exclusive experience
+          </Text>
+        </View>
+
         {this.state.userGiveAwayData &&
           this.state.userGiveAwayData.map((userGiveAway, key) => (
-            <View style={styles.giveawayInfoContainer}>
-              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <ScrollView style={styles.giveawayInfoContainer}>
+              <View style={{justifyContent: 'center'}}>
                 <Image
                   key={key}
                   source={this.getImage(userGiveAway.image.file_name)}
                   style={{width: '95%', marginTop: 10, borderRadius: 10}}
                 />
               </View>
-              {this.renderGiveAwayStats(userGiveAway)}
-            </View>
+              <View style={{marginLeft: 5}}>
+                {this.renderGiveAwayStats(userGiveAway)}
+                <View style={{marginTop: '5%'}}>
+                  {this.state.userPrizeData && (
+                    <PrizeContainer
+                      title="Prizes Won"
+                      prizes={this.state.userPrizeData}
+                      toggleModalFunc={() => console.log('hello!')}
+                    />
+                  )}
+                </View>
+              </View>
+            </ScrollView>
           ))}
 
-        {this.state.userPrizeData && (
-          <PrizeContainer
-            title="Prizes Won"
-            prizes={this.state.userPrizeData}
-            toggleModalFunc={() => console.log('hello!')}
-          />
-        )}
         <View
           style={{
             flex: 1,
@@ -269,11 +287,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  giveawayInfoContainer: {},
+  header: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    paddingBottom: 10,
+    borderLeftColor: 'white',
+    borderRightColor: 'white',
+    borderTopColor: 'white',
+    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+  },
+  giveawayInfoContainer: {
+    marginLeft: 10,
+  },
+  userInfo: {
+    marginLeft: 10,
+  },
   navigation: {
     alignItems: 'center',
     marginBottom: 10,
-    paddingTop: 10,
+    height: 50,
     width: '100%',
     borderWidth: 1,
     borderTopColor: 'rgba(0, 0, 0, 0.05)',

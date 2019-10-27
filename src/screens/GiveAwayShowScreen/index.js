@@ -474,11 +474,18 @@ export default class GiveAwayShowScreen extends React.Component {
     return (
       <ScrollView onScroll={event => this.updateBackButtonLoaction(event)}>
         {this.state.hasData && (
-          <UserSection hasData={this.state.hasData} data={this.state.data} />
+          <View style={styles.header}>
+            <View style={{marginLeft: 10}}>
+              <UserSection
+                hasData={this.state.hasData}
+                data={this.state.data}
+              />
+            </View>
+          </View>
         )}
         {this.state.hasData && (
           <View>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{marginLeft: 10}}>
               <Image
                 source={this.getImage(this.state.data.giveaway.image.file_name)}
                 style={{width: '95%', marginTop: 10, borderRadius: 10}}
@@ -514,31 +521,36 @@ export default class GiveAwayShowScreen extends React.Component {
           this.state.currentDisplayShowModalPrize &&
           this.renderPrizeShowModal()}
         {this.state.hasData && (
-          <Text
-            style={{
-              fontWeight: 'bold',
-              marginTop: '5%',
-              marginLeft: 5,
-              fontSize: 20,
-            }}>
-            {this.state.data.giveaway.name}
-          </Text>
-        )}
-        {this.state.hasData && (
-          <GiveAwayStatistics giveaway={this.state.data.giveaway} />
-        )}
-        {this.state.hasData && (
-          <PrizeContainer
-            title="Prizes"
-            prizes={this.state.data.giveaway.prizes}
-            toggleModalFunc={this.handleTogglePrizeModal.bind(this)}
-          />
-        )}
-        {this.state.hasData && (
-          <GiveAwayInfo
-            toggleModalFunc={this._toggleProbabilityModal.bind(this)}
-            giveaway={this.state.data.giveaway}
-          />
+          <View style={styles.contentContainer}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                marginTop: '5%',
+                fontSize: 20,
+              }}>
+              {this.state.data.giveaway.name}
+            </Text>
+            <GiveAwayStatistics giveaway={this.state.data.giveaway} />
+            <View style={{marginTop: '5%'}}>
+              <PrizeContainer
+                title="Prizes"
+                prizes={this.state.data.giveaway.prizes}
+                toggleModalFunc={this.handleTogglePrizeModal.bind(this)}
+              />
+            </View>
+            <View
+              style={{
+                marginTop: '5%',
+                height: 1,
+                width: '95%',
+                backgroundColor: 'rgba(0, 0, 0, 0.050)',
+              }}
+            />
+            <GiveAwayInfo
+              toggleModalFunc={this._toggleProbabilityModal.bind(this)}
+              giveaway={this.state.data.giveaway}
+            />
+          </View>
         )}
         {this.state.hasData && (
           <View
@@ -571,3 +583,18 @@ export default class GiveAwayShowScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    paddingBottom: 10,
+    borderLeftColor: 'white',
+    borderRightColor: 'white',
+    borderTopColor: 'white',
+    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+  },
+  contentContainer: {
+    marginLeft: 10,
+  },
+});
