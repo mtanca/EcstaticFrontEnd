@@ -10,6 +10,7 @@ import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import GiveAwayShowScreen from './src/screens/GiveAwayShowScreen';
 import BetaHomeScreen from './src/screens/BetaHomeScreen';
+import UserPaymentsScreen from './src/screens/UserPaymentsScreen';
 
 import {View} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
@@ -58,6 +59,10 @@ const AppNavigator = createStackNavigator({
   },
   BetaHomeScreen: {
     screen: BetaHomeScreen,
+    navigationOptions: {header: null, headerLeft: null},
+  },
+  UserPaymentsScreen: {
+    screen: UserPaymentsScreen,
     navigationOptions: {header: null, headerLeft: null},
   },
 });
