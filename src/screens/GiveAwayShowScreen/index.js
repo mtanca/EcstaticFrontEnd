@@ -63,6 +63,7 @@ export default class GiveAwayShowScreen extends React.Component {
       probabilityData: null,
       isPrizeModalVisible: false,
       isProbabilityModalVisible: false,
+      isTOCModalVisible: false,
       isPrizeDescriptionModalVisible: false,
       currentDisplayPrize: null,
       currentDisplayShowModalPrize: null,
@@ -195,6 +196,11 @@ export default class GiveAwayShowScreen extends React.Component {
     this.setState({isPrizeModalVisible: !this.state.isPrizeModalVisible});
 
   _toggleProbabilityModal = () =>
+    this.setState({
+      isProbabilityModalVisible: !this.state.isProbabilityModalVisible,
+    });
+
+  _toggleTOCModal = () =>
     this.setState({
       isProbabilityModalVisible: !this.state.isProbabilityModalVisible,
     });
@@ -547,7 +553,10 @@ export default class GiveAwayShowScreen extends React.Component {
               }}
             />
             <GiveAwayInfo
-              toggleModalFunc={this._toggleProbabilityModal.bind(this)}
+              toggleProbabilityModalFunc={this._toggleProbabilityModal.bind(
+                this,
+              )}
+              toggleTOSModalFunc={this._toggleTOCModal.bind(this)}
               giveaway={this.state.data.giveaway}
             />
           </View>
