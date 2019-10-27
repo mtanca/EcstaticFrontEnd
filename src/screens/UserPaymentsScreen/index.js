@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import UserSection from '../components/userSection.js';
 
 import UserPaymentHistoryScreen from './paymentHistory.js';
+import AddUserCreditCardScreen from './addCreditCard.js';
 
 export default class UserPaymentsScreen extends React.Component {
   constructor(props) {
@@ -138,6 +139,11 @@ export default class UserPaymentsScreen extends React.Component {
   _renderUserPaymentMethods = () => {
     return (
       <TouchableOpacity
+        onPress={() =>
+          this.props.navigation.navigate('AddUserCreditCardScreen', {
+            navigation: this.props.navigation.navigate,
+          })
+        }
         style={{
           marginTop: '5%',
           paddingTop: 10,
