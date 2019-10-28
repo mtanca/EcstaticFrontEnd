@@ -441,11 +441,11 @@ export default class GiveAwayShowScreen extends React.Component {
         })
         .catch(response => {
           console.log('Retrying connection...');
-          setInterval(() => this._fetchData(defaultGiveAwayId), 1000);
+          setInterval(() => this._fetchData(defaultGiveAwayId), 2000);
         });
     } catch (e) {
       console.log('Retrying connection...');
-      setInterval(() => this._fetchData(defaultGiveAwayId), 1000);
+      setInterval(() => this._fetchData(defaultGiveAwayId), 2000);
     }
   };
 
@@ -480,23 +480,11 @@ export default class GiveAwayShowScreen extends React.Component {
     return (
       <ScrollView onScroll={event => this.updateBackButtonLoaction(event)}>
         {this.state.hasData && (
-          <View style={styles.header}>
-            <View style={{marginLeft: 10}}>
-              <UserSection
-                hasData={this.state.hasData}
-                data={this.state.data}
-              />
-            </View>
-          </View>
-        )}
-        {this.state.hasData && (
           <View>
-            <View style={{marginLeft: 10}}>
-              <Image
-                source={this.getImage(this.state.data.giveaway.image.file_name)}
-                style={{width: '95%', marginTop: 10, borderRadius: 10}}
-              />
-            </View>
+            <Image
+              source={this.getImage(this.state.data.giveaway.image.file_name)}
+              style={{width: '100%'}}
+            />
 
             {/* Back button to beta home screen... */}
             <TouchableOpacity

@@ -115,7 +115,16 @@ export default class BetaHomeScreen extends React.Component {
             <Icon name="home" size={30} color="#1E1E1E" />
           </TouchableOpacity>
           <View style={{flex: 1, alignItems: 'center'}}>
-            <Icon name="credit-card" size={30} color="#1E1E1E" />
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('UserPaymentsScreen', {
+                  navigation: this.props.navigation.navigate,
+                  userId: 1,
+                })
+              }
+              style={{flex: 1, alignItems: 'center'}}>
+              <Icon name="credit-card" size={30} color="#1E1E1E" />
+            </TouchableOpacity>
           </View>
           <View style={{flex: 1, alignItems: 'center'}}>
             <Icon name="comments" size={30} color="#1E1E1E" />
