@@ -39,6 +39,9 @@ export default class AddUserCreditCard extends React.Component {
       hasEXPYearError: false,
       hasZipCodeError: false,
       hasCVVNumberError: false,
+
+      hasSubmissionErrors: false,
+      submissionErrors: '',
     };
   }
 
@@ -334,6 +337,7 @@ export default class AddUserCreditCard extends React.Component {
   };
 
   handleSubmit = () => {
+    var that = this;
     fetch(`http://${IP_ADDRESS}:4000/api/users/${this.state.userId}/payments`, {
       method: 'POST',
       headers: {
@@ -351,17 +355,14 @@ export default class AddUserCreditCard extends React.Component {
     })
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson.data.errors == null) {
-          this._storeData(responseJson.data);
-          this.setState({
-            canNavigate: true,
-            registrationHasErrors: false,
-            giveawayId: responseJson.data.giveawayId,
+        if (responseJson.data.is_valid === true) {
+          return this.props.navigation.navigate('UserPaymentsScreen', {
+            navigation: this.props.navigation.navigate,
           });
         } else {
           this.setState({
-            registrationHasErrors: true,
-            registrationErrors: responseJson.data.errors,
+            hasSubmissionErrors: true,
+            submissionErrors: responseJson.data.error,
           });
         }
       });
@@ -370,6 +371,11 @@ export default class AddUserCreditCard extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        {this.state.hasSubmissionErrors && (
+          <View style={{alignItems: 'center'}}>
+            <Text> {this.state.submissionErrors} </Text>
+          </View>
+        )}
         {this._renderCardNumberField()}
         {this._renderEXPAndYearFields()}
         {this._renderCVVField()}

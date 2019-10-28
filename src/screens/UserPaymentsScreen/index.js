@@ -228,7 +228,6 @@ export default class UserPaymentsScreen extends React.Component {
           })
         }
         style={{
-          marginTop: '5%',
           paddingTop: 10,
           paddingBottom: 10,
           alignItems: 'center',
@@ -311,7 +310,7 @@ export default class UserPaymentsScreen extends React.Component {
 
         {this._renderDefaultCard()}
 
-        <View style={{marginTop: '5%', marginLeft: 10}}>
+        <View style={{marginTop: '5%', marginLeft: 10, marginBottom: '5%'}}>
           <Text style={{fontSize: 20, fontWeight: 'bold'}}>
             {' '}
             Payment Methods
