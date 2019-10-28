@@ -28,14 +28,14 @@ export default class AddUserCreditCard extends React.Component {
       isSubmitButtonEnabled: false,
       submitButtonColor: 'rgba(57,243,187, 0.5)',
       ccNumber: '',
-      expDate: '',
+      expMonth: '',
       expYear: '',
       cvvNumber: '',
       zipCode: '',
       country: 'United States',
 
       hasCCNumberError: false,
-      hasEXPDateError: false,
+      hasexpMonthError: false,
       hasEXPYearError: false,
       hasZipCodeError: false,
       hasCVVNumberError: false,
@@ -69,7 +69,7 @@ export default class AddUserCreditCard extends React.Component {
       'isSubmitButtonEnabled',
       'isAllFieldsFilled',
       'hasCCNumberError',
-      'hasEXPDateError',
+      'hasexpMonthError',
       'hasEXPYearError',
       'hasZipCodeError',
       'hasCVVNumberError',
@@ -102,7 +102,7 @@ export default class AddUserCreditCard extends React.Component {
   allFieldLengthsVerfied = hash => {
     const minFieldLengths = {
       ccNumber: 10,
-      expDate: 4,
+      expMonth: 1,
       expYear: 4,
       cvvNumber: 3,
       zipCode: 5,
@@ -115,7 +115,7 @@ export default class AddUserCreditCard extends React.Component {
 
     if (
       this.state.ccNumber.length >= minFieldLengths.ccNumber &&
-      this.state.expDate.length >= minFieldLengths.expDate &&
+      this.state.expMonth.length >= minFieldLengths.expMonth &&
       this.state.expYear.length >= minFieldLengths.expYear &&
       this.state.cvvNumber.length >= minFieldLengths['cvvNumber'] &&
       this.state.zipCode.length >= minFieldLengths.zipCode
@@ -129,7 +129,7 @@ export default class AddUserCreditCard extends React.Component {
   verifyFieldLength = hash => {
     const minFieldLengths = {
       ccNumber: 10,
-      expDate: 4,
+      expMonth: 1,
       expYear: 4,
       cvvNumber: 3,
       zipCode: 5,
@@ -137,7 +137,7 @@ export default class AddUserCreditCard extends React.Component {
 
     const errorKeys = {
       ccNumber: 'hasCCNumberError',
-      expDate: 'hasEXPDateError',
+      expMonth: 'hasexpMonthError',
       expYear: 'hasEXPYearError',
       cvvNumber: 'hasCVVNumberError',
       zipCode: 'hasZipCodeError',
@@ -167,12 +167,13 @@ export default class AddUserCreditCard extends React.Component {
         </Text>
         <View style={styles.formContainer}>
           <Icon
-            style={{marginLeft: 10, alignSelf: 'center'}}
+            style={{marginLeft: 10}}
             name="credit-card"
             size={15}
             color="#b9bec9"
           />
           <TextInput
+            allowFontScaling={true}
             keyboardType={'number-pad'}
             autoCompleteType={'cc-number'}
             style={styles.inputStyle}
@@ -204,22 +205,23 @@ export default class AddUserCreditCard extends React.Component {
             flex: 1,
             justifyContent: 'space-between',
           }}>
-          <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Exp. Date</Text>
+          <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Exp. Month</Text>
           <View style={Object.assign({}, styles.formContainer, {width: '95%'})}>
             <TextInput
+              allowFontScaling={true}
               maxLength={4}
               keyboardType={'number-pad'}
               autoCompleteType={'cc-exp'}
               style={{marginLeft: 5}}
               autoCorrect={false}
-              placeholder={'MM/YY'}
-              onChangeText={expDate => this.updateField({expDate: expDate})}
-              onEndEditing={expDate =>
-                this.verifyFieldLength({expDate: expDate})
+              placeholder={'MM'}
+              onChangeText={expMonth => this.updateField({expMonth: expMonth})}
+              onEndEditing={expMonth =>
+                this.verifyFieldLength({expMonth: expMonth})
               }
             />
           </View>
-          {this.state.hasEXPDateError && (
+          {this.state.hasexpMonthError && (
             <Text>Exp. date must be a minimum of 4 digits</Text>
           )}
         </View>
@@ -229,6 +231,7 @@ export default class AddUserCreditCard extends React.Component {
           <View
             style={Object.assign({}, styles.formContainer, {width: '100%'})}>
             <TextInput
+              allowFontScaling={true}
               maxLength={4}
               keyboardType={'number-pad'}
               autoCompleteType={'cc-csc'}
@@ -251,10 +254,16 @@ export default class AddUserCreditCard extends React.Component {
 
   _renderCVVField = () => {
     return (
-      <View style={{flex: 1, width: '47.5%', marginTop: 10}}>
+      <View
+        style={{
+          flex: 1,
+          width: '47.5%',
+          marginTop: 10,
+        }}>
         <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>CVV</Text>
         <View style={styles.formContainer}>
           <TextInput
+            allowFontScaling={true}
             maxLength={4}
             keyboardType={'number-pad'}
             autoCompleteType={'cc-csc'}
@@ -274,16 +283,14 @@ export default class AddUserCreditCard extends React.Component {
   _renderCountryField = () => {
     return (
       <View>
-        <Text style={{marginTop: 10, paddingBottom: 5, fontWeight: 'bold'}}>
-          Country
-        </Text>
+        <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Country</Text>
         <View style={styles.formContainer}>
           <Picker
             selectedValue={this.state.country}
             style={{
               width: '100%',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignSelf: 'center',
             }}
             selectedValue={'United States'}
             onValueChange={(countryName, itemIndex) =>
@@ -310,6 +317,7 @@ export default class AddUserCreditCard extends React.Component {
         </Text>
         <View style={styles.formContainer}>
           <TextInput
+            allowFontScaling={true}
             maxLength={5}
             keyboardType={'number-pad'}
             autoCompleteType={'cc-number'}
@@ -334,7 +342,7 @@ export default class AddUserCreditCard extends React.Component {
       },
       body: JSON.stringify({
         ccNumber: this.state.ccNumber,
-        expDate: this.state.expDate,
+        expMonth: this.state.expMonth,
         expYear: this.state.expYear,
         cvvNumber: this.state.cvvNumber,
         country: this.state.country,
@@ -393,12 +401,16 @@ const styles = StyleSheet.create({
     width: '95%',
   },
   formContainer: {
+    height: 40,
     flexDirection: 'row',
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    borderRadius: 5,
+    borderRadius: 10,
+    alignItems: 'center',
   },
   inputStyle: {
     flex: 1,
+    width: '100%',
     marginLeft: 10,
+    alignSelf: 'center',
   },
 });

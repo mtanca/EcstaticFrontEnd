@@ -16,6 +16,10 @@ import UserSection from '../components/userSection.js';
 import UserPaymentHistoryScreen from './paymentHistory.js';
 import AddUserCreditCardScreen from './addCreditCard.js';
 
+import {IP_ADDRESS} from '../../constants/constants.js';
+
+import AsyncStorage from '@react-native-community/async-storage';
+
 export default class UserPaymentsScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -24,6 +28,32 @@ export default class UserPaymentsScreen extends React.Component {
       userPaymentData: null,
     };
   }
+
+  componentDidMount() {
+    this._fetchUserPaymentData();
+  }
+
+  _fetchUserPaymentData = async () => {
+    try {
+      let userId = await AsyncStorage.getItem('@userId');
+      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}/payments`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          console.log(responseJson.data.cards);
+          this.setState({
+            userPaymentData: responseJson.data.cards,
+          });
+        });
+    } catch (e) {
+      console.log('ERROR....' + e);
+    }
+  };
 
   _renderHeader = () => {
     return (
@@ -137,6 +167,59 @@ export default class UserPaymentsScreen extends React.Component {
   };
 
   _renderUserPaymentMethods = () => {
+    return (
+      <View>
+        {this.state.userPaymentData &&
+          this.state.userPaymentData.map(paymentMethod => (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('UserPaymentHistoryScreen', {
+                  navigation: this.props.navigation.navigate,
+                })
+              }
+              style={{
+                paddingTop: 10,
+                paddingBottom: 10,
+                alignItems: 'center',
+                height: 40,
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                borderWidth: 1,
+                borderTopColor: 'rgba(0, 0, 0, 0.05)',
+                borderLeftColor: 'white',
+                borderRightColor: 'white',
+                borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+              }}>
+              <Icon
+                style={{marginLeft: 10}}
+                name="shopping-bag"
+                size={15}
+                color="black"
+              />
+              <Text style={{marginLeft: 20, fontWeight: 'bold'}}>
+                {paymentMethod.brand} {paymentMethod.last4}
+              </Text>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row-reverse',
+                  marginLeft: '5%',
+                }}>
+                <Icon
+                  style={{marginLeft: 10}}
+                  name="chevron-right"
+                  size={15}
+                  color="#798498"
+                />
+              </View>
+            </TouchableOpacity>
+          ))}
+        {this._renderAddCard()}
+      </View>
+    );
+  };
+
+  _renderAddCard = () => {
     return (
       <TouchableOpacity
         onPress={() =>
