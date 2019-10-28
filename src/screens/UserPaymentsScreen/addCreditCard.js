@@ -337,7 +337,6 @@ export default class AddUserCreditCard extends React.Component {
   };
 
   handleSubmit = () => {
-    var that = this;
     fetch(`http://${IP_ADDRESS}:4000/api/users/${this.state.userId}/payments`, {
       method: 'POST',
       headers: {
@@ -355,7 +354,7 @@ export default class AddUserCreditCard extends React.Component {
     })
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson.data.is_valid === true) {
+        if (responseJson.data.isValid === true) {
           return this.props.navigation.navigate('UserPaymentsScreen', {
             navigation: this.props.navigation.navigate,
           });

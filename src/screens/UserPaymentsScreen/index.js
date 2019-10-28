@@ -20,6 +20,8 @@ import {IP_ADDRESS} from '../../constants/constants.js';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
+const visaLogo = require('../../assets/visa-logo.png');
+
 export default class UserPaymentsScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -166,6 +168,21 @@ export default class UserPaymentsScreen extends React.Component {
     );
   };
 
+  _renderCardBrand = brand => {
+    if (brand === 'Visa') {
+      return <Image source={visaLogo} style={{marginLeft: 10}} />;
+    } else {
+      return (
+        <Icon
+          style={{marginLeft: 10}}
+          name="shopping-bag"
+          size={15}
+          color="black"
+        />
+      );
+    }
+  };
+
   _renderUserPaymentMethods = () => {
     return (
       <View>
@@ -190,12 +207,7 @@ export default class UserPaymentsScreen extends React.Component {
                 borderRightColor: 'white',
                 borderBottomColor: 'rgba(0, 0, 0, 0.05)',
               }}>
-              <Icon
-                style={{marginLeft: 10}}
-                name="shopping-bag"
-                size={15}
-                color="black"
-              />
+              {this._renderCardBrand(paymentMethod.brand)}
               <Text style={{marginLeft: 20, fontWeight: 'bold'}}>
                 {paymentMethod.brand} {paymentMethod.last4}
               </Text>
