@@ -19,14 +19,14 @@ export default class EcstaticButton extends React.Component {
             marginTop: this.props.buttonMarginTopScalor,
             backgroundColor: this.props.buttonColor,
             borderRadius: 5,
-            height: 40,
+            height: 50,
             width: '95%',
             justifyContent: 'center',
             alignItems: 'center',
           }}
           disabled={this.props.isDisabled}
           onPress={this.props.onPressFunc}>
-          <Text style={{color: 'white', fontWeight: 'bold'}}>
+          <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>
             {this.props.buttonText}
           </Text>
         </TouchableOpacity>

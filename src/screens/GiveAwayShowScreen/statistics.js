@@ -43,18 +43,18 @@ class GiveAwayStatistics extends React.Component {
         : `${giveaway.capacity} sold`;
 
     return (
-      <View style={{flexDirection: 'row'}}>
-        <Text>
+      <View style={{marginTop: 5, flexDirection: 'row'}}>
+        <Text style={{fontSize: 15}}>
           <Text style={{color: '#39f3bb', fontWeight: 'bold'}}>
             {packDisplayTextBold}
           </Text>
-          <Text> of {packDisplayTextEnding}</Text>
+          <Text style={{color: '#798498'}}> of {packDisplayTextEnding}</Text>
         </Text>
         <View
           style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row'}}>
           <Image source={time} style={{marginTop: 5, marginRight: 5}} />
-          <Text>{timeAvailableText} </Text>
-          <Text style={{marginRight: 15, color: '#39f3bb'}}>
+          <Text style={{fontSize: 15}}>{timeAvailableText} </Text>
+          <Text style={{fontSize: 15, marginRight: 15, color: '#39f3bb'}}>
             {moment.unix(timeRemaining).fromNow(true)}
           </Text>
         </View>
@@ -75,7 +75,7 @@ class GiveAwayStatistics extends React.Component {
 
         <View
           style={{
-            marginTop: 5,
+            marginTop: 10,
             height: 8,
             width: '95%',
             flexDirection: 'row',

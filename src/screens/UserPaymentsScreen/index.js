@@ -73,9 +73,11 @@ export default class UserPaymentsScreen extends React.Component {
               alignItems: 'center',
             }}>
             <Text
+              adjustsFontSizeToFit={true}
+              allowFontScaling={true}
               style={{
                 fontWeight: 'bold',
-                fontSize: 20,
+                fontSize: 40,
                 // offset the text by the width of the userSection
                 marginLeft: this.state.userSectionWidthOffset * -1,
               }}>
@@ -140,13 +142,18 @@ export default class UserPaymentsScreen extends React.Component {
 
   _renderDefaultCard = () => {
     return (
-      <View
+      <TouchableOpacity
+        onPress={() =>
+          this.props.navigation.navigate('UserPaymentHistoryScreen', {
+            navigation: this.props.navigation.navigate,
+          })
+        }
         style={{
-          marginTop: '5%',
-          paddingTop: 10,
-          paddingBottom: 10,
+          marginTop: 10,
+          paddingTop: 12,
+          paddingBottom: 12,
           alignItems: 'center',
-          height: 40,
+          height: 50,
           flexDirection: 'row',
           flexWrap: 'wrap',
           borderWidth: 1,
@@ -159,12 +166,19 @@ export default class UserPaymentsScreen extends React.Component {
           style={{marginLeft: 10}}
           name="credit-card"
           size={20}
-          color="#1E1E1E"
+          color="black"
         />
-        <Text style={{marginLeft: 20, fontWeight: 'bold'}}>
+        <Text style={{marginLeft: 20, fontSize: 15, fontWeight: 'bold'}}>
           No card on default
         </Text>
-      </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row-reverse',
+            marginLeft: '5%',
+          }}
+        />
+      </TouchableOpacity>
     );
   };
 
@@ -176,7 +190,7 @@ export default class UserPaymentsScreen extends React.Component {
         <Icon
           style={{marginLeft: 10}}
           name="shopping-bag"
-          size={15}
+          size={20}
           color="black"
         />
       );
@@ -195,10 +209,11 @@ export default class UserPaymentsScreen extends React.Component {
                 })
               }
               style={{
-                paddingTop: 10,
-                paddingBottom: 10,
+                marginTop: 10,
+                paddingTop: 12,
+                paddingBottom: 12,
                 alignItems: 'center',
-                height: 40,
+                height: 50,
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 borderWidth: 1,
@@ -208,7 +223,7 @@ export default class UserPaymentsScreen extends React.Component {
                 borderBottomColor: 'rgba(0, 0, 0, 0.05)',
               }}>
               {this._renderCardBrand(paymentMethod.brand)}
-              <Text style={{marginLeft: 20, fontWeight: 'bold'}}>
+              <Text style={{marginLeft: 20, fontWeight: 'bold', fontSize: 15}}>
                 {paymentMethod.brand} {paymentMethod.last4}
               </Text>
               <View
@@ -220,7 +235,7 @@ export default class UserPaymentsScreen extends React.Component {
                 <Icon
                   style={{marginLeft: 10}}
                   name="chevron-right"
-                  size={15}
+                  size={20}
                   color="#798498"
                 />
               </View>
@@ -240,10 +255,10 @@ export default class UserPaymentsScreen extends React.Component {
           })
         }
         style={{
-          paddingTop: 10,
-          paddingBottom: 10,
+          paddingTop: 12,
+          paddingBottom: 12,
           alignItems: 'center',
-          height: 40,
+          height: 50,
           flexDirection: 'row',
           flexWrap: 'wrap',
           borderWidth: 1,
@@ -252,8 +267,14 @@ export default class UserPaymentsScreen extends React.Component {
           borderRightColor: 'white',
           borderBottomColor: 'rgba(0, 0, 0, 0.05)',
         }}>
-        <Icon style={{marginLeft: 10}} name="plus" size={15} color="#0076ff" />
-        <Text style={{marginLeft: 5, color: '#0076ff', fontWeight: 'bold'}}>
+        <Icon style={{marginLeft: 15}} name="plus" size={20} color="#0076ff" />
+        <Text
+          style={{
+            marginLeft: 5,
+            fontSize: 15,
+            color: '#0076ff',
+            fontWeight: 'bold',
+          }}>
           Add Card
         </Text>
       </TouchableOpacity>
@@ -270,10 +291,10 @@ export default class UserPaymentsScreen extends React.Component {
         }
         style={{
           marginTop: 10,
-          paddingTop: 10,
-          paddingBottom: 10,
+          paddingTop: 12,
+          paddingBottom: 12,
           alignItems: 'center',
-          height: 40,
+          height: 50,
           flexDirection: 'row',
           flexWrap: 'wrap',
           borderWidth: 1,
@@ -285,10 +306,10 @@ export default class UserPaymentsScreen extends React.Component {
         <Icon
           style={{marginLeft: 10}}
           name="shopping-bag"
-          size={15}
+          size={20}
           color="black"
         />
-        <Text style={{marginLeft: 20, fontWeight: 'bold'}}>
+        <Text style={{marginLeft: 20, fontSize: 15, fontWeight: 'bold'}}>
           Payment History
         </Text>
         <View
@@ -300,11 +321,45 @@ export default class UserPaymentsScreen extends React.Component {
           <Icon
             style={{marginLeft: 10}}
             name="chevron-right"
-            size={15}
+            size={20}
             color="#798498"
           />
         </View>
       </TouchableOpacity>
+    );
+  };
+
+  _renderOne = () => {
+    return (
+      <View
+        style={{
+          marginTop: 15,
+          marginLeft: 10,
+        }}>
+        <Text
+          adjustsFontSizeToFit={true}
+          allowFontScaling={true}
+          style={{fontSize: 20, fontWeight: 'bold'}}>
+          Payment Default
+        </Text>
+      </View>
+    );
+  };
+
+  _renderTwo = () => {
+    return (
+      <View
+        style={{
+          marginTop: 15,
+          marginLeft: 10,
+        }}>
+        <Text
+          adjustsFontSizeToFit={true}
+          allowFontScaling={true}
+          style={{fontSize: 20, fontWeight: 'bold'}}>
+          Payment Methods
+        </Text>
+      </View>
     );
   };
 
@@ -313,21 +368,11 @@ export default class UserPaymentsScreen extends React.Component {
       <View style={styles.container}>
         {this._renderHeader()}
 
-        <View style={{marginTop: '5%', marginLeft: 10}}>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-            {' '}
-            Payment Default
-          </Text>
-        </View>
+        {this._renderOne()}
 
         {this._renderDefaultCard()}
 
-        <View style={{marginTop: '5%', marginLeft: 10, marginBottom: '5%'}}>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-            {' '}
-            Payment Methods
-          </Text>
-        </View>
+        {this._renderTwo()}
 
         {this._renderUserPaymentMethods()}
 
@@ -353,9 +398,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    marginTop: '5%',
     flexDirection: 'row',
     borderWidth: 1,
-    paddingBottom: 10,
     borderLeftColor: 'white',
     borderRightColor: 'white',
     borderTopColor: 'white',
@@ -372,5 +417,8 @@ const styles = StyleSheet.create({
     borderRightColor: 'white',
     borderBottomColor: 'white',
     justifyContent: 'flex-end',
+  },
+  userInfo: {
+    marginLeft: 10,
   },
 });
