@@ -6,10 +6,13 @@ import {
   View,
   Text,
   StyleSheet,
+  Dimensions,
   TouchableOpacity,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import Modal from 'react-native-modal';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -43,6 +46,7 @@ export default class BetaHomeScreen extends React.Component {
       userSectionWidthOffset: null,
       userGiveAwayData: null,
       userPrizeData: null,
+      isPrizeDescriptionModalVisible: false,
     };
   }
 
@@ -56,6 +60,36 @@ export default class BetaHomeScreen extends React.Component {
       userSectionWidthOffset: event.nativeEvent.layout.width,
     });
   }
+
+  // A callback function which gets executed in the PrizeContainer. This function toggles
+  // the visiblity of the modal and determines the prize to display in the show modal.
+  handleTogglePrizeModal = prize => {
+    this.setState({
+      isPrizeDescriptionModalVisible: !this.state
+        .isPrizeDescriptionModalVisible,
+      currentDisplayShowModalPrize: prize,
+    });
+  };
+
+  getPrizePhoto = fileName => {
+    if (fileName === 'Rocket On.png') {
+      return rocketOn;
+    } else if (fileName === 'Heals.png') {
+      return heals;
+    } else if (fileName === 'Dab.png') {
+      return dab;
+    } else if (fileName === 'Floss.png') {
+      return floss;
+    } else if (fileName === 'omg-prize.png') {
+      return omgPrize;
+    } else if (fileName === 'shirt-prize.png') {
+      return ninjaTee;
+    } else if (fileName === 'private-qa-prize.png') {
+      return privateQA;
+    } else {
+      return coinsPrize;
+    }
+  };
 
   renderGiveAwayStats = giveaway => {
     const packs = giveaway.state.packs_available || giveaway.capacity;
@@ -247,6 +281,43 @@ export default class BetaHomeScreen extends React.Component {
     );
   };
 
+  renderPrizeShowModal = () => {
+    const window = Dimensions.get('window');
+
+    if (!this.state.isPrizeDescriptionModalVisible) return null;
+    return (
+      <Modal
+        style={{flex: 1, height: 250}}
+        isVisible={this.state.isPrizeDescriptionModalVisible}
+        onRequestClose={() => this.handleTogglePrizeModal(null)}>
+        <View style={{flexDirection: 'row'}}>
+          <View style={{flex: 1, alignItems: 'center', marginTop: 80}}>
+            <Text style={{color: 'white', fontSize: 30}}>
+              {this.state.currentDisplayShowModalPrize.name}
+            </Text>
+            <Text style={{color: 'white', fontSize: 15}}>Not Owned</Text>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          onPressOut={() => this.handleTogglePrizeModal(null)}
+          style={{
+            justifyContent: 'center',
+            flexGrow: 1,
+            alignItems: 'center',
+            height: '100%',
+            width: '100%',
+          }}>
+          <Image
+            source={this.getPrizePhoto(
+              this.state.currentDisplayShowModalPrize.image.file_name,
+            )}
+          />
+        </TouchableOpacity>
+      </Modal>
+    );
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -263,6 +334,9 @@ export default class BetaHomeScreen extends React.Component {
             Check out this exclusive experience
           </Text>
         </View>
+
+        {this.state.isPrizeDescriptionModalVisible &&
+          this.renderPrizeShowModal()}
 
         {this.state.userGiveAwayData &&
           this.state.userGiveAwayData.map((userGiveAway, key) => (
@@ -281,7 +355,7 @@ export default class BetaHomeScreen extends React.Component {
                     <PrizeContainer
                       title="Prizes Won"
                       prizes={this.state.userPrizeData}
-                      toggleModalFunc={() => console.log('hello!')}
+                      toggleModalFunc={this.handleTogglePrizeModal.bind(this)}
                     />
                   )}
                 </View>

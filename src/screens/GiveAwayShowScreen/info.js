@@ -49,7 +49,7 @@ export default class GiveAwayInfo extends React.Component {
           </View>
 
           <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 10}}>
-            <Text style={{flex: 1, justifyContent: 'flex-start', fontSize: 12}}>
+            <Text style={{flex: 1, justifyContent: 'flex-start', fontSize: 15}}>
               Pack Odds
             </Text>
             <Text
