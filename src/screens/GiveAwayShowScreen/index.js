@@ -27,6 +27,7 @@ import EcstaticButton from '../components/ecstaticButton.js';
 import {IP_ADDRESS} from '../../constants/constants.js';
 
 const ninja = require('../../assets/Ninja.png');
+const ninjaHeader = require('../../assets/ninjaHeader.png');
 const madisonBeers = require('../../assets/madison-beer.png');
 const blackPink = require('../../assets/Blackpink.png');
 const khalid = require('../../assets/Khalid.png');
@@ -313,14 +314,15 @@ export default class GiveAwayShowScreen extends React.Component {
         style={{flex: 1, height: 250}}
         isVisible={this.state.isPrizeDescriptionModalVisible}
         onRequestClose={() => this.handleTogglePrizeModal(null)}>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <Text style={{color: 'white', fontSize: 26}}>
+        <View style={{flexDirection: 'row'}}>
+          <View style={{flex: 1, alignItems: 'center', marginTop: 80}}>
+            <Text style={{color: 'white', fontSize: 30}}>
               {this.state.currentDisplayShowModalPrize.name}
             </Text>
-            <Text style={{color: 'white', fontSize: 14}}>Not Owned</Text>
+            <Text style={{color: 'white', fontSize: 15}}>Not Owned</Text>
           </View>
         </View>
+
         <TouchableOpacity
           onPressOut={() => this.handleTogglePrizeModal(null)}
           style={{
@@ -412,6 +414,8 @@ export default class GiveAwayShowScreen extends React.Component {
       return khalid;
     } else if (fileName === 'Ninja.png') {
       return ninja;
+    } else if (fileName === 'ninjaHeader.png') {
+      return ninjaHeader;
     } else {
       return madisonBeers;
     }
@@ -449,16 +453,6 @@ export default class GiveAwayShowScreen extends React.Component {
     }
   };
 
-  _signOut = navigate => {
-    AsyncStorage.removeItem('@isLoggedIn');
-    AsyncStorage.removeItem('@userId');
-    AsyncStorage.removeItem('@giveawayId');
-
-    this.props.navigation.navigate('SplashScreen', {
-      navigation: this.props.navigation.navigate,
-    });
-  };
-
   updateBackButtonLoaction = e => {
     const window = Dimensions.get('window');
     let y = e.nativeEvent.contentOffset.y;
@@ -492,8 +486,8 @@ export default class GiveAwayShowScreen extends React.Component {
                 marginTop: 50,
                 marginLeft: 25,
                 borderRadius: 100,
-                height: 40,
-                width: 40,
+                height: 60,
+                width: 60,
                 backgroundColor: 'rgba(0, 0, 0, 0.25)',
                 zIndex: 5,
                 position: 'absolute',
@@ -503,7 +497,7 @@ export default class GiveAwayShowScreen extends React.Component {
               <Icon
                 style={{marginTop: '25%', marginLeft: '25%'}}
                 name="arrow-left"
-                size={20}
+                size={30}
                 color="#1E1E1E"
               />
             </TouchableOpacity>
@@ -514,13 +508,14 @@ export default class GiveAwayShowScreen extends React.Component {
         {this.state.isPrizeDescriptionModalVisible &&
           this.state.currentDisplayShowModalPrize &&
           this.renderPrizeShowModal()}
+
         {this.state.hasData && (
           <View style={styles.contentContainer}>
             <Text
               style={{
                 fontWeight: 'bold',
                 marginTop: '5%',
-                fontSize: 20,
+                fontSize: 25,
               }}>
               {this.state.data.giveaway.name}
             </Text>
@@ -570,12 +565,6 @@ export default class GiveAwayShowScreen extends React.Component {
             />
           </View>
         )}
-
-        <Text
-          style={{marginTop: 20, textAlign: 'center'}}
-          onPress={() => this._signOut()}>
-          PRESS HERE TO SIGN OUT
-        </Text>
       </ScrollView>
     );
   }

@@ -17,11 +17,11 @@ export default class GiveAwayInfo extends React.Component {
   render() {
     return (
       <View style={{marginLeft: 5}}>
-        <Text style={{marginTop: '5%', fontWeight: 'bold', fontSize: 20}}>
+        <Text style={{marginTop: '5%', fontWeight: 'bold', fontSize: 25}}>
           Info
         </Text>
 
-        <Text style={{color: '#798498', marginTop: 5}}>
+        <Text style={{color: '#798498', marginTop: 10, fontSize: 15}}>
           {this.props.giveaway.description}
           <Text
             style={{color: '#39f3bb'}}
@@ -33,24 +33,28 @@ export default class GiveAwayInfo extends React.Component {
 
         <View style={{marginRight: '5%', marginTop: 5}}>
           <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 5}}>
-            <Text style={{flex: 1, justifyContent: 'flex-start'}}>
+            <Text style={{flex: 1, justifyContent: 'flex-start', fontSize: 15}}>
               Release Date
             </Text>
-            <Text>{this.getDate(this.props.giveaway.start_time)}</Text>
+            <Text style={{fontSize: 15}}>
+              {this.getDate(this.props.giveaway.start_time)}
+            </Text>
           </View>
 
-          <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 5}}>
-            <Text style={{flex: 1, justifyContent: 'flex-start'}}>Edition</Text>
-            <Text>{this.props.giveaway.edition}</Text>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 10}}>
+            <Text style={{flex: 1, justifyContent: 'flex-start', fontSize: 15}}>
+              Edition
+            </Text>
+            <Text style={{fontSize: 15}}>{this.props.giveaway.edition}</Text>
           </View>
 
-          <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 5}}>
-            <Text style={{flex: 1, justifyContent: 'flex-start'}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', marginTop: 10}}>
+            <Text style={{flex: 1, justifyContent: 'flex-start', fontSize: 12}}>
               Pack Odds
             </Text>
             <Text
               onPress={() => this.props.toggleProbabilityModalFunc()}
-              style={{fontWeight: 'bold', color: '#39f3bb'}}>
+              style={{fontSize: 15, fontWeight: 'bold', color: '#39f3bb'}}>
               View Odds
             </Text>
           </View>

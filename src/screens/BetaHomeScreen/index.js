@@ -83,15 +83,15 @@ export default class BetaHomeScreen extends React.Component {
 
     return (
       <View style={{marginTop: 5, flexDirection: 'row'}}>
-        <Text>
+        <Text style={{fontSize: 15}}>
           <Text style={{fontWeight: 'bold'}}>{giveaway.name}</Text>
           <Text> {giveaway.category}</Text>
         </Text>
         <View
           style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row'}}>
           <Image source={time} style={{marginTop: 5, marginRight: 5}} />
-          <Text>{timeAvailableText} </Text>
-          <Text style={{marginRight: 15, color: '#39f3bb'}}>
+          <Text style={{fontSize: 15}}>{timeAvailableText} </Text>
+          <Text style={{fontSize: 15, marginRight: 15, color: '#39f3bb'}}>
             {moment.unix(timeRemaining).fromNow(true)}
           </Text>
         </View>
@@ -156,6 +156,16 @@ export default class BetaHomeScreen extends React.Component {
     } else {
       return madisonBeers;
     }
+  };
+
+  _signOut = navigate => {
+    AsyncStorage.removeItem('@isLoggedIn');
+    AsyncStorage.removeItem('@userId');
+    AsyncStorage.removeItem('@giveawayId');
+
+    this.props.navigation.navigate('SplashScreen', {
+      navigation: this.props.navigation.navigate,
+    });
   };
 
   /**
@@ -225,7 +235,7 @@ export default class BetaHomeScreen extends React.Component {
             <Text
               style={{
                 fontWeight: 'bold',
-                fontSize: 20,
+                fontSize: 25,
                 // offset the text by the width of the userSection
                 marginLeft: this.state.userSectionWidthOffset * -1,
               }}>
@@ -243,10 +253,10 @@ export default class BetaHomeScreen extends React.Component {
         {this._renderHeader()}
 
         <View style={{marginTop: '5%', marginLeft: 10}}>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}> Experiences </Text>
+          <Text style={{fontSize: 25, fontWeight: 'bold'}}> Experiences </Text>
           <Text
             style={{
-              fontSize: 15,
+              fontSize: 20,
               color: '#798498',
             }}>
             {' '}
@@ -278,6 +288,12 @@ export default class BetaHomeScreen extends React.Component {
               </View>
             </ScrollView>
           ))}
+
+        <Text
+          style={{marginTop: 20, textAlign: 'center'}}
+          onPress={() => this._signOut()}>
+          PRESS HERE TO SIGN OUT
+        </Text>
 
         <View
           style={{

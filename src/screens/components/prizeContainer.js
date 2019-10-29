@@ -53,7 +53,7 @@ class PrizeContainer extends React.Component {
   };
 
   renderPrizeGrid(prize) {
-    const imageScalor = window.height > 592 && window.width > 384 ? 50 : 60;
+    const imageScalor = window.height > 592 && window.width > 384 ? 60 : 70;
 
     return (
       <View style={{width: '23%'}}>
@@ -61,6 +61,8 @@ class PrizeContainer extends React.Component {
           style={{
             borderColor: 'rgba(0, 0, 0, 0.050)',
             borderWidth: 1,
+            paddingLeft: 5,
+            paddingRight: 5,
             borderRadius: 15,
             justifyContent: 'center',
             alignItems: 'center',
@@ -105,7 +107,7 @@ class PrizeContainer extends React.Component {
   render() {
     return (
       <View>
-        <Text style={{fontWeight: 'bold', fontSize: 20}}>
+        <Text style={{fontWeight: 'bold', fontSize: 25}}>
           {this.props.title}
         </Text>
         <View
