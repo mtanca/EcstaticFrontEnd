@@ -15,6 +15,7 @@ import UserSection from '../components/userSection.js';
 
 import UserPaymentHistoryScreen from './paymentHistory.js';
 import CreditCardForm from '../components/ccForm.js';
+import UserNavigationBar from '../components/userNavigationBar';
 
 import {IP_ADDRESS} from '../../constants/constants.js';
 
@@ -100,51 +101,6 @@ export default class UserPaymentsScreen extends React.Component {
       userSectionWidthOffset: event.nativeEvent.layout.width,
     });
   }
-
-  renderNavigationBar = () => {
-    return (
-      <View style={styles.navigation}>
-        <View style={{width: '70%', flexDirection: 'row'}}>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate('GiveAwayShowScreen', {
-                navigation: this.props.navigation.navigate,
-                // FIX ME!!!
-                giveaway: 1,
-              })
-            }
-            style={{flex: 1, alignItems: 'center'}}>
-            <Icon name="home" size={30} color="#1E1E1E" />
-          </TouchableOpacity>
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate('UserPaymentsScreen', {
-                  navigation: this.props.navigation.navigate,
-                  userId: 1,
-                })
-              }
-              style={{flex: 1, alignItems: 'center'}}>
-              <Icon name="credit-card" size={30} color="#1E1E1E" />
-            </TouchableOpacity>
-          </View>
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <Icon name="comments" size={30} color="#1E1E1E" />
-          </View>
-        </View>
-
-        <View
-          style={{
-            marginTop: 15,
-            height: 5,
-            width: '45%',
-            backgroundColor: 'rgba(0, 0, 0, 0.05)',
-            borderRadius: 10,
-          }}
-        />
-      </View>
-    );
-  };
 
   _renderDefaultCard = () => {
     return (
@@ -409,7 +365,7 @@ export default class UserPaymentsScreen extends React.Component {
             height: '100%',
             justifyContent: 'flex-end',
           }}>
-          {this.renderNavigationBar()}
+          <UserNavigationBar navigation={this.props.navigation} />
         </View>
       </View>
     );
@@ -428,18 +384,6 @@ const styles = StyleSheet.create({
     borderRightColor: 'white',
     borderTopColor: 'white',
     borderBottomColor: 'rgba(0, 0, 0, 0.05)',
-  },
-  navigation: {
-    alignItems: 'center',
-    marginBottom: 10,
-    height: 50,
-    width: '100%',
-    borderWidth: 1,
-    borderTopColor: 'rgba(0, 0, 0, 0.05)',
-    borderLeftColor: 'white',
-    borderRightColor: 'white',
-    borderBottomColor: 'white',
-    justifyContent: 'flex-end',
   },
   userInfo: {
     marginLeft: 10,
