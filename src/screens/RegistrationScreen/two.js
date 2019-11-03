@@ -85,7 +85,7 @@ class RegistrationScreenTwo extends React.Component {
   };
 
   _navigate = () => {
-    this.props.navigation.navigate('GiveAwayShowScreen', {
+    this.props.navigation.navigate('BetaHomeScreen', {
       navigation: this.props.navigation.navigate,
       giveawayId: this.state.giveawayId,
     });
