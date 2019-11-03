@@ -476,7 +476,9 @@ export default class GiveAwayShowScreen extends React.Component {
         {this.state.hasData && (
           <View>
             <Image
-              source={this.getImage(this.state.data.giveaway.image.file_name)}
+              source={this.getImage(
+                this.state.data.giveaway.show_image.file_name,
+              )}
               style={{width: '100%'}}
             />
 

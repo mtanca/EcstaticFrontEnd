@@ -344,7 +344,7 @@ export default class BetaHomeScreen extends React.Component {
               <View style={{justifyContent: 'center'}}>
                 <Image
                   key={key}
-                  source={this.getImage(userGiveAway.image.file_name)}
+                  source={this.getImage(userGiveAway.main_image.file_name)}
                   style={{width: '95%', marginTop: 10, borderRadius: 10}}
                 />
               </View>
@@ -387,9 +387,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    marginTop: '5%',
     flexDirection: 'row',
     borderWidth: 1,
-    paddingBottom: 10,
     borderLeftColor: 'white',
     borderRightColor: 'white',
     borderTopColor: 'white',

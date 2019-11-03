@@ -15,6 +15,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import RNPickerSelect from 'react-native-picker-select';
+
 import {IP_ADDRESS} from '../../constants/constants.js';
 
 var countries = require('country-data').countries;
@@ -48,6 +50,13 @@ export default class AddUserCreditCard extends React.Component {
   componentDidMount() {
     this.getUserID();
   }
+
+  renderCountries = () => {
+    const arr = countries.all.map(c => c.name).sort();
+    const uniqueCountries = new Set(arr);
+
+    return [...uniqueCountries].map(c => ({label: c, value: c}));
+  };
 
   getUserID = async () => {
     try {
@@ -215,7 +224,7 @@ export default class AddUserCreditCard extends React.Component {
               maxLength={4}
               keyboardType={'number-pad'}
               autoCompleteType={'cc-exp'}
-              style={{marginLeft: 5}}
+              style={{marginLeft: 5, width: '100%'}}
               autoCorrect={false}
               placeholder={'MM'}
               onChangeText={expMonth => this.updateField({expMonth: expMonth})}
@@ -238,7 +247,7 @@ export default class AddUserCreditCard extends React.Component {
               maxLength={4}
               keyboardType={'number-pad'}
               autoCompleteType={'cc-csc'}
-              style={{marginLeft: 5}}
+              style={{marginLeft: 5, width: '100%'}}
               autoCorrect={false}
               placeholder={'2020'}
               onChangeText={expYear => this.updateField({expYear: expYear})}
@@ -248,7 +257,7 @@ export default class AddUserCreditCard extends React.Component {
             />
           </View>
           {this.state.hasEXPYearError && (
-            <Text>Exp. yeah must be a minimum of 4 digits</Text>
+            <Text>Exp. year must be a minimum of 4 digits</Text>
           )}
         </View>
       </View>
@@ -270,7 +279,7 @@ export default class AddUserCreditCard extends React.Component {
             maxLength={4}
             keyboardType={'number-pad'}
             autoCompleteType={'cc-csc'}
-            style={{marginLeft: 5}}
+            style={{marginLeft: 5, width: '100%'}}
             autoCorrect={false}
             placeholder={'123'}
             onChangeText={cvvNumber => this.updateField({cvvNumber: cvvNumber})}
@@ -285,29 +294,30 @@ export default class AddUserCreditCard extends React.Component {
 
   _renderCountryField = () => {
     return (
-      <View>
+      <View style={{width: '100%'}}>
         <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Country</Text>
-        <View style={styles.formContainer}>
-          <Picker
-            selectedValue={this.state.country}
-            style={{
-              width: '100%',
-              justifyContent: 'center',
-              alignSelf: 'center',
-            }}
-            selectedValue={'United States'}
-            onValueChange={(countryName, itemIndex) =>
-              this.setState({country: countryName})
-            }>
-            {countries.all.map(c => (
-              <Picker.Item
-                style={{alignSelf: 'center'}}
-                label={c.name}
-                value={c.name}
-              />
-            ))}
-          </Picker>
-        </View>
+        <RNPickerSelect
+          placeholder={{
+            label: 'United States',
+            value: 'United States',
+          }}
+          style={{
+            ...pickerSelectStyles,
+            iconContainer: {
+              top: 10,
+              right: 12,
+            },
+          }}
+          onValueChange={value => console.log(value)}
+          items={this.renderCountries()}
+          textInputProps={{
+            marginLeft: 10,
+            color: 'black',
+          }}
+          Icon={() => {
+            return <Icon name="md-arrow-down" size={24} color="#b9bec9" />;
+          }}
+        />
       </View>
     );
   };
@@ -406,7 +416,9 @@ const styles = StyleSheet.create({
     width: '95%',
   },
   formContainer: {
-    height: 40,
+    width: '100%',
+    backgroundColor: 'red',
+    height: 50,
     flexDirection: 'row',
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
     borderRadius: 10,
@@ -417,5 +429,30 @@ const styles = StyleSheet.create({
     width: '100%',
     marginLeft: 10,
     alignSelf: 'center',
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOSContainer: {
+    marginLeft: -10,
+    justifyContent: 'flex-start',
+  },
+  inputIOS: {
+    height: 50,
+    borderRadius: 10,
+    paddingTop: 15,
+    paddingHorizontal: 10,
+    paddingBottom: 15,
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+  },
+  inputAndroid: {
+    borderRadius: 10,
+    height: 50,
+    paddingTop: 15,
+    paddingHorizontal: 10,
+    paddingBottom: 15,
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
   },
 });
