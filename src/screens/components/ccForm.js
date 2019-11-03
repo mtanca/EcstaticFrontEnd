@@ -21,7 +21,7 @@ import {IP_ADDRESS} from '../../constants/constants.js';
 
 var countries = require('country-data').countries;
 
-export default class AddUserCreditCard extends React.Component {
+export default class CredirCardForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -77,6 +77,7 @@ export default class AddUserCreditCard extends React.Component {
 
   _enableSumbitButton = hash => {
     const fieldsNotToCheck = [
+      'userId',
       'submitButtonColor',
       'isSubmitButtonEnabled',
       'isAllFieldsFilled',
@@ -85,6 +86,8 @@ export default class AddUserCreditCard extends React.Component {
       'hasEXPYearError',
       'hasZipCodeError',
       'hasCVVNumberError',
+      'hasSubmissionErrors',
+      'submissionErrors',
     ];
 
     let currentKey = Object.keys(hash)[0];
