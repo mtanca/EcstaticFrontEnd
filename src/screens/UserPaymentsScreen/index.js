@@ -152,7 +152,7 @@ export default class UserPaymentsScreen extends React.Component {
     if (defaultCard) {
       return this._renderPaymentInformation(navigationScreen, defaultCard);
     } else {
-      return this._renderNoDefaultPayment(navigationScreen, defaultCard);
+      return this._renderNoDefaultPayment();
     }
   };
 
