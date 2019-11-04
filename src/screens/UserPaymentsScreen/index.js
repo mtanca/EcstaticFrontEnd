@@ -157,22 +157,16 @@ export default class UserPaymentsScreen extends React.Component {
   };
 
   _renderCardBrand = brand => {
-    if (brand === 'Visa') {
-      return <Image source={visaLogo} style={{marginLeft: 10}} />;
-    } else if (brand === 'American Express') {
-      return (
-        <Image
-          source={amexLogo}
-          style={{resizeMode: 'contain', height: 25, width: 35, marginLeft: 10}}
-        />
-      );
-    } else if (brand === 'Discover') {
-      return (
-        <Image
-          source={discoverLogo}
-          style={{resizeMode: 'contain', height: 25, width: 35, marginLeft: 10}}
-        />
-      );
+    const brandsLogoMapper = {
+      Visa: visaLogo,
+      'American Express': amexLogo,
+      Discover: discoverLogo,
+    };
+
+    const logo = brandsLogoMapper[brand];
+
+    if (logo) {
+      return <Image source={logo} style={{marginLeft: 10}} />;
     } else {
       return (
         <Icon
