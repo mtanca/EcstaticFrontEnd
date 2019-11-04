@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  TouchableHighlight,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -34,8 +35,8 @@ const moment = require('moment');
 const time = require('../../assets/time.png');
 
 import UserSection from '../components/userSection.js';
-
 import PrizeContainer from '../components/prizeContainer';
+import UserNavigationBar from '../components/userNavigationBar';
 
 import {IP_ADDRESS} from '../../constants/constants.js';
 
@@ -129,51 +130,6 @@ export default class BetaHomeScreen extends React.Component {
             {moment.unix(timeRemaining).fromNow(true)}
           </Text>
         </View>
-      </View>
-    );
-  };
-
-  renderNavigationBar = () => {
-    return (
-      <View style={styles.navigation}>
-        <View style={{width: '70%', flexDirection: 'row'}}>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate('GiveAwayShowScreen', {
-                navigation: this.props.navigation.navigate,
-                // FIX ME!!!
-                giveaway: 1,
-              })
-            }
-            style={{flex: 1, alignItems: 'center'}}>
-            <Icon name="home" size={30} color="#1E1E1E" />
-          </TouchableOpacity>
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate('UserPaymentsScreen', {
-                  navigation: this.props.navigation.navigate,
-                  userId: 1,
-                })
-              }
-              style={{flex: 1, alignItems: 'center'}}>
-              <Icon name="credit-card" size={30} color="#1E1E1E" />
-            </TouchableOpacity>
-          </View>
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <Icon name="comments" size={30} color="#1E1E1E" />
-          </View>
-        </View>
-
-        <View
-          style={{
-            marginTop: 15,
-            height: 5,
-            width: '45%',
-            backgroundColor: 'rgba(0, 0, 0, 0.05)',
-            borderRadius: 10,
-          }}
-        />
       </View>
     );
   };
@@ -318,6 +274,13 @@ export default class BetaHomeScreen extends React.Component {
     );
   };
 
+  _navigateToGiveAwayShow = giveawayId => {
+    this.props.navigation.navigate('GiveAwayShowScreen', {
+      navigation: this.props.navigation.navigate,
+      giveaway: giveawayId,
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -341,13 +304,16 @@ export default class BetaHomeScreen extends React.Component {
         {this.state.userGiveAwayData &&
           this.state.userGiveAwayData.map((userGiveAway, key) => (
             <ScrollView style={styles.giveawayInfoContainer}>
-              <View style={{justifyContent: 'center'}}>
+              <TouchableHighlight
+                underlayColor={'transparent'}
+                onPress={() => this._navigateToGiveAwayShow(userGiveAway.id)}
+                style={{justifyContent: 'center'}}>
                 <Image
                   key={key}
                   source={this.getImage(userGiveAway.main_image.file_name)}
                   style={{width: '95%', marginTop: 10, borderRadius: 10}}
                 />
-              </View>
+              </TouchableHighlight>
               <View style={{marginLeft: 5}}>
                 {this.renderGiveAwayStats(userGiveAway)}
                 <View style={{marginTop: '5%'}}>
@@ -375,7 +341,7 @@ export default class BetaHomeScreen extends React.Component {
             height: '100%',
             justifyContent: 'flex-end',
           }}>
-          {this.renderNavigationBar()}
+          <UserNavigationBar navigation={this.props.navigation} />
         </View>
       </View>
     );
@@ -400,17 +366,5 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     marginLeft: 10,
-  },
-  navigation: {
-    alignItems: 'center',
-    marginBottom: 10,
-    height: 50,
-    width: '100%',
-    borderWidth: 1,
-    borderTopColor: 'rgba(0, 0, 0, 0.05)',
-    borderLeftColor: 'white',
-    borderRightColor: 'white',
-    borderBottomColor: 'white',
-    justifyContent: 'flex-end',
   },
 });

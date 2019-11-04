@@ -9,18 +9,21 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-// THIS COMPONENT HAS NOT BEEN ADDED. REMOVE THIS COMMENT AFTER BEING ADDED
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 export default class UserNavigationBar extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <View style={styles.navigation}>
         <View style={{width: '70%', flexDirection: 'row'}}>
           <TouchableOpacity
             onPress={() =>
-              this.props.navigation.navigate('GiveAwayShowScreen', {
+              this.props.navigation.navigate('BetaHomeScreen', {
                 navigation: this.props.navigation.navigate,
-                // FIX ME!!!
-                giveaway: 1,
               })
             }
             style={{flex: 1, alignItems: 'center'}}>
@@ -56,3 +59,19 @@ export default class UserNavigationBar extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  navigation: {
+    alignItems: 'center',
+    marginBottom: 10,
+    height: 60,
+    width: '100%',
+    borderWidth: 1,
+    paddingTop: 30,
+    borderTopColor: 'rgba(0, 0, 0, 0.05)',
+    borderLeftColor: 'white',
+    borderRightColor: 'white',
+    borderBottomColor: 'white',
+    justifyContent: 'flex-end',
+  },
+});

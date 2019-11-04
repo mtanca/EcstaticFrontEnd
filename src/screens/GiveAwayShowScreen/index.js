@@ -472,89 +472,99 @@ export default class GiveAwayShowScreen extends React.Component {
     const window = Dimensions.get('window');
 
     return (
-      <ScrollView onScroll={event => this.updateBackButtonLoaction(event)}>
-        {this.state.hasData && (
-          <View>
-            <Image
-              source={this.getImage(
-                this.state.data.giveaway.show_image.file_name,
-              )}
-              style={{width: '100%'}}
-            />
-
-            {/* Back button to beta home screen... */}
-            <TouchableOpacity
-              style={{
-                marginTop: 50,
-                marginLeft: 25,
-                borderRadius: 100,
-                height: 60,
-                width: 60,
-                backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                zIndex: 5,
-                position: 'absolute',
-                top: this.state.backButtonScrollPosition,
-              }}
-              onPress={() => this._navigateToBetaHomeScreen()}>
-              <Icon
-                style={{marginTop: '25%', marginLeft: '25%'}}
-                name="arrow-left"
-                size={30}
-                color="#1E1E1E"
+      <View style={{flex: 1}}>
+        <ScrollView>
+          {this.state.hasData && (
+            <View>
+              <Image
+                source={this.getImage(
+                  this.state.data.giveaway.show_image.file_name,
+                )}
+                style={{width: '100%'}}
               />
-            </TouchableOpacity>
-          </View>
-        )}
-        {this.renderBlurModal()}
-        {this.state.purchaseData && this.renderPrizeView()}
-        {this.state.isPrizeDescriptionModalVisible &&
-          this.state.currentDisplayShowModalPrize &&
-          this.renderPrizeShowModal()}
 
-        {this.state.hasData && (
-          <View style={styles.contentContainer}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                marginTop: '5%',
-                fontSize: 25,
-              }}>
-              {this.state.data.giveaway.name}
-            </Text>
-            <GiveAwayStatistics giveaway={this.state.data.giveaway} />
-            <View style={{marginTop: '5%'}}>
-              <PrizeContainer
-                title="Prizes"
-                prizes={this.state.data.giveaway.prizes}
-                toggleModalFunc={this.handleTogglePrizeModal.bind(this)}
+              {/* Back button to beta home screen... */}
+              <TouchableOpacity
+                style={{
+                  marginTop: 60,
+                  marginLeft: 25,
+                  borderRadius: 100,
+                  height: 60,
+                  width: 60,
+                  backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                  zIndex: 5,
+                  position: 'absolute',
+                  top: this.state.backButtonScrollPosition,
+                }}
+                onPress={() => this._navigateToBetaHomeScreen()}>
+                <Icon
+                  style={{marginTop: '25%', marginLeft: '25%'}}
+                  name="arrow-left"
+                  size={30}
+                  color="rgba(255, 255, 255, 0.5)"
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+          {this.renderBlurModal()}
+          {this.state.purchaseData && this.renderPrizeView()}
+          {this.state.isPrizeDescriptionModalVisible &&
+            this.state.currentDisplayShowModalPrize &&
+            this.renderPrizeShowModal()}
+
+          {this.state.hasData && (
+            <View style={styles.contentContainer}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  marginTop: '5%',
+                  fontSize: 25,
+                }}>
+                {this.state.data.giveaway.name}
+              </Text>
+              <GiveAwayStatistics giveaway={this.state.data.giveaway} />
+              <View style={{marginTop: '5%'}}>
+                <PrizeContainer
+                  title="Prizes"
+                  prizes={this.state.data.giveaway.prizes}
+                  toggleModalFunc={this.handleTogglePrizeModal.bind(this)}
+                />
+              </View>
+              <View
+                style={{
+                  marginTop: '5%',
+                  height: 1,
+                  width: '95%',
+                  backgroundColor: 'rgba(0, 0, 0, 0.050)',
+                }}
+              />
+              <GiveAwayInfo
+                toggleProbabilityModalFunc={this._toggleProbabilityModal.bind(
+                  this,
+                )}
+                toggleTOSModalFunc={this._toggleTOCModal.bind(this)}
+                giveaway={this.state.data.giveaway}
               />
             </View>
-            <View
-              style={{
-                marginTop: '5%',
-                height: 1,
-                width: '95%',
-                backgroundColor: 'rgba(0, 0, 0, 0.050)',
-              }}
-            />
-            <GiveAwayInfo
-              toggleProbabilityModalFunc={this._toggleProbabilityModal.bind(
-                this,
-              )}
-              toggleTOSModalFunc={this._toggleTOCModal.bind(this)}
-              giveaway={this.state.data.giveaway}
-            />
-          </View>
-        )}
+          )}
+        </ScrollView>
         {this.state.hasData && (
           <View
             style={{
-              marginTop: 30,
-              marginBottom: '5%',
-              width: window.width - 60,
-              marginLeft: 60 / 2,
+              width: '100%',
+              marginBottom: 5,
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              borderWidth: 1,
+              paddingTop: 10,
+              borderTopColor: 'rgba(0, 0, 0, 0.05)',
+              borderLeftColor: 'white',
+              borderRightColor: 'white',
+              borderBottomColor: 'white',
+              justifyContent: 'flex-end',
             }}>
             <EcstaticButton
+              buttonWidth={'80%'}
               buttonMarginTopScalor={0}
               buttonColor={'#39f3bb'}
               isDisabled={this.state.giveawayStarted}
@@ -567,7 +577,7 @@ export default class GiveAwayShowScreen extends React.Component {
             />
           </View>
         )}
-      </ScrollView>
+      </View>
     );
   }
 }

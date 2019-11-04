@@ -5,6 +5,7 @@ import {View, Text, Button, StyleSheet} from 'react-native';
 import IntroOnBoardScreen from '../IntroOnBoardScreen';
 import HomeScreen from '../HomeScreen';
 import GiveAwayShowScreen from '../GiveAwayShowScreen';
+import BetaHomeScreen from '../BetaHomeScreen';
 
 class MainScreen extends React.Component {
   constructor(props) {
@@ -44,15 +45,15 @@ class MainScreen extends React.Component {
 
     if (this.state.isLoggedIn && this.state.canRender) {
       return (
-        <View>
+        <View style={{flex: 1}}>
           {this.state.canRender === true && (
-            <GiveAwayShowScreen navigation={navigate} />
+            <BetaHomeScreen navigation={navigate} />
           )}
         </View>
       );
     } else {
       return (
-        <View>
+        <View style={{flex: 1}}>
           {this.state.canRender === true && (
             <IntroOnBoardScreen navigation={navigate} />
           )}
