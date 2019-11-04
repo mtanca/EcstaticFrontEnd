@@ -35,6 +35,7 @@ export default class UserPaymentsScreen extends React.Component {
     this.state = {
       userSectionWidthOffset: null,
       userPaymentData: null,
+      userDefaultPaymentData: null,
     };
   }
 
@@ -57,6 +58,7 @@ export default class UserPaymentsScreen extends React.Component {
           console.log(responseJson.data.cards);
           this.setState({
             userPaymentData: responseJson.data.cards,
+            userDefaultPaymentData: responseJson.data.defaultCard,
           });
         });
     } catch (e) {
@@ -102,7 +104,7 @@ export default class UserPaymentsScreen extends React.Component {
     });
   }
 
-  _renderDefaultCard = () => {
+  _renderNoDefaultPayment = () => {
     return (
       <TouchableOpacity
         onPress={() =>
@@ -144,6 +146,16 @@ export default class UserPaymentsScreen extends React.Component {
     );
   };
 
+  _renderDefaultCard = () => {
+    const defaultCard = this.state.userDefaultPaymentData;
+    const navigationScreen = 'CreditCardForm';
+    if (defaultCard) {
+      return this._renderPaymentInformation(navigationScreen, defaultCard);
+    } else {
+      return this._renderNoDefaultPayment(navigationScreen, defaultCard);
+    }
+  };
+
   _renderCardBrand = brand => {
     if (brand === 'Visa') {
       return <Image source={visaLogo} style={{marginLeft: 10}} />;
@@ -173,54 +185,61 @@ export default class UserPaymentsScreen extends React.Component {
     }
   };
 
-  _renderUserPaymentMethods = () => {
+  // Make into component
+  _renderPaymentInformation = (navigationScreen, paymentMethod) => {
     return (
       <GestureRecognizer onSwipeLeft={this.onSwipeLeft}>
-        <View>
-          {this.state.userPaymentData &&
-            this.state.userPaymentData.map(paymentMethod => (
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('CreditCardForm', {
-                    navigation: this.props.navigation.navigate,
-                  })
-                }
-                style={{
-                  paddingTop: 12,
-                  paddingBottom: 12,
-                  alignItems: 'center',
-                  height: 50,
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  borderWidth: 1,
-                  borderTopColor: 'rgba(0, 0, 0, 0.05)',
-                  borderLeftColor: 'white',
-                  borderRightColor: 'white',
-                  borderBottomColor: 'rgba(0, 0, 0, 0.05)',
-                }}>
-                {this._renderCardBrand(paymentMethod.brand)}
-                <Text
-                  style={{marginLeft: 20, fontWeight: 'bold', fontSize: 15}}>
-                  {paymentMethod.brand} {paymentMethod.last4}
-                </Text>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'row-reverse',
-                    marginLeft: '5%',
-                  }}>
-                  <Icon
-                    style={{marginLeft: 10}}
-                    name="chevron-right"
-                    size={20}
-                    color="#798498"
-                  />
-                </View>
-              </TouchableOpacity>
-            ))}
-          {this._renderAddCard()}
-        </View>
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate(navigationScreen, {
+              navigation: this.props.navigation.navigate,
+            })
+          }
+          style={{
+            paddingTop: 12,
+            paddingBottom: 12,
+            alignItems: 'center',
+            height: 50,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            borderWidth: 1,
+            borderTopColor: 'rgba(0, 0, 0, 0.05)',
+            borderLeftColor: 'white',
+            borderRightColor: 'white',
+            borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+          }}>
+          {this._renderCardBrand(paymentMethod.brand)}
+          <Text style={{marginLeft: 20, fontWeight: 'bold', fontSize: 15}}>
+            {paymentMethod.brand} {paymentMethod.last4}
+          </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row-reverse',
+              marginLeft: '5%',
+            }}>
+            <Icon
+              style={{marginLeft: 10}}
+              name="chevron-right"
+              size={20}
+              color="#798498"
+            />
+          </View>
+        </TouchableOpacity>
       </GestureRecognizer>
+    );
+  };
+
+  _renderUserPaymentMethods = () => {
+    const navigationScreen = 'CreditCardForm';
+    return (
+      <View>
+        {this.state.userPaymentData &&
+          this.state.userPaymentData.map(paymentMethod =>
+            this._renderPaymentInformation(navigationScreen, paymentMethod),
+          )}
+        {this._renderAddCard()}
+      </View>
     );
   };
 
@@ -313,6 +332,7 @@ export default class UserPaymentsScreen extends React.Component {
         style={{
           marginTop: 15,
           marginLeft: 10,
+          marginBottom: 10,
         }}>
         <Text
           adjustsFontSizeToFit={true}
