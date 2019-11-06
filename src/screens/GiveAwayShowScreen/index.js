@@ -308,6 +308,8 @@ export default class GiveAwayShowScreen extends React.Component {
   renderPrizeShowModal = () => {
     const window = Dimensions.get('window');
 
+    const data = this.state.currentDisplayShowModalPrize.image.file_name;
+
     if (!this.state.isPrizeDescriptionModalVisible) return null;
     return (
       <Modal
