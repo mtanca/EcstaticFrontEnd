@@ -135,14 +135,16 @@ export default class BetaHomeScreen extends React.Component {
   };
 
   getImage = fileName => {
-    if (fileName === 'madison-beer.png') {
-      return madisonBeers;
-    } else if (fileName === 'Blackpink.png') {
-      return blackPink;
-    } else if (fileName === 'Khalid.png') {
-      return khalid;
-    } else if (fileName === 'Ninja.png') {
-      return ninja;
+    const nameImageMapper = {
+      'madison-beer.png': madisonBeers,
+      'Blackpink.png': blackPink,
+      'Khalid.png': khalid,
+      'Ninja.png': ninja,
+    };
+
+    const image = nameImageMapper[fileName];
+    if (image) {
+      return image;
     } else {
       return madisonBeers;
     }

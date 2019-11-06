@@ -33,20 +33,20 @@ class PrizeContainer extends React.Component {
   }
 
   getPrizeImage = fileName => {
-    if (fileName === 'Rocket On.png') {
-      return rocketOn;
-    } else if (fileName === 'Heals.png') {
-      return heals;
-    } else if (fileName === 'Dab.png') {
-      return dab;
-    } else if (fileName === 'Floss.png') {
-      return floss;
-    } else if (fileName === 'omg-prize.png') {
-      return omgPrize;
-    } else if (fileName === 'shirt-prize.png') {
-      return ninjaTee;
-    } else if (fileName === 'private-qa-prize.png') {
-      return privateQA;
+    const nameImageMapper = {
+      'Rocket On.png': rocketOn,
+      'Heals.png': heals,
+      'Dab.png': dab,
+      'Floss.png': floss,
+      'omg-prize.png': omgPrize,
+      'shirt-prize.png': ninjaTee,
+      'private-qa-prize.png': privateQA,
+    };
+
+    const image = nameImageMapper[fileName];
+
+    if (image) {
+      return image;
     } else {
       return coinsPrize;
     }
