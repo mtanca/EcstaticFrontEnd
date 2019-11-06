@@ -48,6 +48,7 @@ export default class BetaHomeScreen extends React.Component {
       userGiveAwayData: null,
       userPrizeData: null,
       isPrizeDescriptionModalVisible: false,
+      userPrizes: null,
     };
   }
 
@@ -197,15 +198,33 @@ export default class BetaHomeScreen extends React.Component {
       })
         .then(response => response.json())
         .then(responseJson => {
-          console.log(responseJson.data.userPrizes.map);
+          console.log(responseJson.data.userPrizes);
+
+          const prizeMapping = responseJson.data.userPrizes;
+
           this.setState({
-            userPrizeData: responseJson.data.userPrizes.map(
-              userPrize => userPrize.prize,
+            userPrizes: prizeMapping,
+            userPrizeData: Object.keys(prizeMapping).map(
+              // The PrizeContainer only needs a single prize from this map to display
+              prizeName => prizeMapping[prizeName][0].prize,
             ),
           });
         });
     } catch (e) {
       console.log('ERROR....' + e);
+    }
+  };
+
+  _userPrizeOwn = () => {
+    const prizeMapping = this.state.userPrizes;
+
+    const amountOwned =
+      prizeMapping[this.state.currentDisplayShowModalPrize.name].length;
+
+    if (amountOwned < 1) {
+      return 'Not owned';
+    } else {
+      return `Owned x${amountOwned}`;
     }
   };
 
@@ -253,7 +272,9 @@ export default class BetaHomeScreen extends React.Component {
             <Text style={{color: 'white', fontSize: 30}}>
               {this.state.currentDisplayShowModalPrize.name}
             </Text>
-            <Text style={{color: 'white', fontSize: 15}}>Not Owned</Text>
+            <Text style={{color: 'white', fontSize: 15}}>
+              {this._userPrizeOwn()}
+            </Text>
           </View>
         </View>
 
