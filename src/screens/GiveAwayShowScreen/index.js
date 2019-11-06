@@ -308,6 +308,8 @@ export default class GiveAwayShowScreen extends React.Component {
   renderPrizeShowModal = () => {
     const window = Dimensions.get('window');
 
+    const data = this.state.currentDisplayShowModalPrize.image.file_name;
+
     if (!this.state.isPrizeDescriptionModalVisible) return null;
     return (
       <Modal
@@ -570,7 +572,8 @@ export default class GiveAwayShowScreen extends React.Component {
               buttonColor={'#39f3bb'}
               isDisabled={this.state.giveawayStarted}
               buttonText={
-                this.state.buttonText + ` ($${this.state.data.cost_per_pack})`
+                this.state.buttonText +
+                ` ($${(this.state.data.giveaway.price / 100).toFixed(2)})`
               }
               navigationScreen={'GiveAwayShowScreen'}
               navigation={this.props.navigation}
