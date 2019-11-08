@@ -94,7 +94,7 @@ export default class UserPaymentHistoryScreen extends React.Component {
 
   _renderPaymentHistory = () => {
     return (
-      <View>
+      <ScrollView>
         {this.state.userPaymentHistoryData.map(paymentHistory => (
           <View
             style={{
@@ -125,7 +125,7 @@ export default class UserPaymentHistoryScreen extends React.Component {
             </View>
           </View>
         ))}
-      </View>
+      </ScrollView>
     );
   };
 

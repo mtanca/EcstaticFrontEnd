@@ -308,25 +308,25 @@ export default class BetaHomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         {this._renderHeader()}
-
-        <View style={{marginTop: '5%', marginLeft: 10}}>
-          <Text style={{fontSize: 25, fontWeight: 'bold'}}> Experiences </Text>
-          <Text
-            style={{
-              fontSize: 20,
-              color: '#798498',
-            }}>
-            {' '}
-            Check out this exclusive experience
-          </Text>
-        </View>
-
         {this.state.isPrizeDescriptionModalVisible &&
           this.renderPrizeShowModal()}
-
         {this.state.userGiveAwayData &&
           this.state.userGiveAwayData.map((userGiveAway, key) => (
             <ScrollView style={styles.giveawayInfoContainer}>
+              <View style={{marginTop: '5%'}}>
+                <Text style={{fontSize: 25, fontWeight: 'bold'}}>
+                  {' '}
+                  Experiences
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: '#798498',
+                  }}>
+                  {' '}
+                  Check out this exclusive experience
+                </Text>
+              </View>
               <TouchableHighlight
                 underlayColor={'transparent'}
                 onPress={() => this._navigateToGiveAwayShow(userGiveAway.id)}
@@ -351,13 +351,11 @@ export default class BetaHomeScreen extends React.Component {
               </View>
             </ScrollView>
           ))}
-
         <Text
           style={{marginTop: 20, textAlign: 'center'}}
           onPress={() => this._signOut()}>
           PRESS HERE TO SIGN OUT
         </Text>
-
         <View
           style={{
             flex: 1,
