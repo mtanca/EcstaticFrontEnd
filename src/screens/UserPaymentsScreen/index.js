@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import LottieView from 'lottie-react-native';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import UserSection from '../components/userSection.js';
@@ -55,10 +57,12 @@ export default class UserPaymentsScreen extends React.Component {
       })
         .then(response => response.json())
         .then(responseJson => {
+          const defaultCard = responseJson.data.defaultCard;
+
           console.log(responseJson.data.cards);
           this.setState({
             userPaymentData: responseJson.data.cards,
-            userDefaultPaymentData: responseJson.data.defaultCard,
+            userDefaultPaymentData: defaultCard === [] ? false : defaultCard,
           });
         });
     } catch (e) {
@@ -146,13 +150,32 @@ export default class UserPaymentsScreen extends React.Component {
     );
   };
 
+  _renderLoading = () => {
+    return (
+      <View style={{justifyContent: 'center'}}>
+        <LottieView
+          style={{
+            height: 50,
+            width: 50,
+          }}
+          source={require('../../assets/loading.json')}
+          autoPlay
+          loop
+        />
+      </View>
+    );
+  };
+
   _renderDefaultCard = () => {
     const defaultCard = this.state.userDefaultPaymentData;
     const navigationScreen = 'CreditCardForm';
-    if (defaultCard) {
-      return this._renderPaymentInformation(navigationScreen, defaultCard);
-    } else {
+
+    if (defaultCard === null) {
+      return this._renderLoading();
+    } else if (defaultCard === false) {
       return this._renderNoDefaultPayment();
+    } else {
+      return this._renderPaymentInformation(navigationScreen, defaultCard);
     }
   };
 
@@ -226,10 +249,15 @@ export default class UserPaymentsScreen extends React.Component {
 
   _renderUserPaymentMethods = () => {
     const navigationScreen = 'CreditCardForm';
+    const paymentMethods = this.state.userPaymentData;
+
+    if (paymentMethods === null) {
+      return this._renderLoading();
+    }
     return (
       <View>
-        {this.state.userPaymentData &&
-          this.state.userPaymentData.map(paymentMethod =>
+        {paymentMethods &&
+          paymentMethods.map(paymentMethod =>
             this._renderPaymentInformation(navigationScreen, paymentMethod),
           )}
         {this._renderAddCard()}
@@ -320,7 +348,7 @@ export default class UserPaymentsScreen extends React.Component {
     );
   };
 
-  _renderOne = () => {
+  _renderPaymentDefaultHeader = () => {
     return (
       <View
         style={{
@@ -338,7 +366,7 @@ export default class UserPaymentsScreen extends React.Component {
     );
   };
 
-  _renderTwo = () => {
+  _renderPaymentMethodsHeader = () => {
     return (
       <View
         style={{
@@ -361,11 +389,11 @@ export default class UserPaymentsScreen extends React.Component {
       <View style={styles.container}>
         {this._renderHeader()}
 
-        {this._renderOne()}
+        {this._renderPaymentDefaultHeader()}
 
         {this._renderDefaultCard()}
 
-        {this._renderTwo()}
+        {this._renderPaymentMethodsHeader()}
 
         {this._renderUserPaymentMethods()}
 

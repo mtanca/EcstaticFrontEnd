@@ -351,6 +351,7 @@ export default class BetaHomeScreen extends React.Component {
               </View>
             </ScrollView>
           ))}
+
         <Text
           style={{marginTop: 20, textAlign: 'center'}}
           onPress={() => this._signOut()}>

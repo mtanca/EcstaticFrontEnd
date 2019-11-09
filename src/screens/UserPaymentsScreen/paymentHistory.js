@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import LottieView from 'lottie-react-native';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {IP_ADDRESS} from '../../constants/constants.js';
@@ -47,8 +49,10 @@ export default class UserPaymentHistoryScreen extends React.Component {
         .then(response => response.json())
         .then(responseJson => {
           console.log(responseJson.data.paymentHistory);
+          const paymentHistory = responseJson.data.paymentHistory;
           this.setState({
-            userPaymentHistoryData: responseJson.data.paymentHistory,
+            userPaymentHistoryData:
+              paymentHistory === [] ? false : paymentHistory,
           });
         });
     } catch (e) {
@@ -129,11 +133,25 @@ export default class UserPaymentHistoryScreen extends React.Component {
     );
   };
 
+  _renderLoading = () => {
+    return (
+      <View style={{flex: 1}}>
+        <LottieView
+          source={require('../../assets/loading.json')}
+          autoPlay
+          loop
+        />
+      </View>
+    );
+  };
+
   _renderScreen = () => {
-    if (this.state.userPaymentHistoryData) {
-      return this._renderPaymentHistory();
-    } else {
+    if (this.state.userPaymentHistoryData === null) {
+      return this._renderLoading();
+    } else if (this.state.userPaymentHistoryData === false) {
       return this._renderNoPaymentHistory();
+    } else {
+      return this._renderPaymentHistory();
     }
   };
 
