@@ -36,12 +36,6 @@ export default class CreditCardForm extends React.Component {
       zipCode: '',
       country: 'United States',
 
-      hasCCNumberError: false,
-      hasexpMonthError: false,
-      hasEXPYearError: false,
-      hasZipCodeError: false,
-      hasCVVNumberError: false,
-
       hasSubmissionErrors: false,
       submissionErrors: '',
     };
@@ -81,12 +75,6 @@ export default class CreditCardForm extends React.Component {
       'submitButtonColor',
       'isSubmitButtonEnabled',
       'isAllFieldsFilled',
-      'hasCCNumberError',
-      'hasexpMonthError',
-      'hasEXPYearError',
-      'hasZipCodeError',
-      'hasCVVNumberError',
-      'hasSubmissionErrors',
       'submissionErrors',
     ];
 
@@ -141,39 +129,6 @@ export default class CreditCardForm extends React.Component {
     }
   };
 
-  verifyFieldLength = hash => {
-    const minFieldLengths = {
-      ccNumber: 10,
-      expMonth: 1,
-      expYear: 4,
-      cvvNumber: 3,
-      zipCode: 5,
-    };
-
-    const errorKeys = {
-      ccNumber: 'hasCCNumberError',
-      expMonth: 'hasexpMonthError',
-      expYear: 'hasEXPYearError',
-      cvvNumber: 'hasCVVNumberError',
-      zipCode: 'hasZipCodeError',
-    };
-
-    let currentKey = Object.keys(hash)[0];
-    let currentValue = this.state[currentKey];
-
-    result = {};
-
-    if (currentValue.length < minFieldLengths[currentKey]) {
-      result[errorKeys[currentKey]] = true;
-      this.setState(result);
-      return true;
-    } else {
-      result[errorKeys[currentKey]] = false;
-      this.setState(result);
-      return false;
-    }
-  };
-
   _renderCardNumberField = () => {
     return (
       <View>
@@ -194,15 +149,10 @@ export default class CreditCardForm extends React.Component {
             style={styles.inputStyle}
             autoCorrect={false}
             placeholder={'1234'}
+            returnKeyType={'done'}
             onChangeText={ccNumber => this.updateField({ccNumber: ccNumber})}
-            onEndEditing={ccNumber =>
-              this.verifyFieldLength({ccNumber: ccNumber})
-            }
           />
         </View>
-        {this.state.hasCCNumberError && (
-          <Text>Card length must be a minimum of 10 digits</Text>
-        )}
       </View>
     );
   };
@@ -224,21 +174,16 @@ export default class CreditCardForm extends React.Component {
           <View style={Object.assign({}, styles.formContainer, {width: '95%'})}>
             <TextInput
               allowFontScaling={true}
-              maxLength={4}
+              maxLength={2}
               keyboardType={'number-pad'}
               autoCompleteType={'cc-exp'}
               style={{marginLeft: 5, width: '100%'}}
               autoCorrect={false}
               placeholder={'MM'}
+              returnKeyType={'done'}
               onChangeText={expMonth => this.updateField({expMonth: expMonth})}
-              onEndEditing={expMonth =>
-                this.verifyFieldLength({expMonth: expMonth})
-              }
             />
           </View>
-          {this.state.hasexpMonthError && (
-            <Text>Exp. date must be a minimum of 4 digits</Text>
-          )}
         </View>
 
         <View style={{flex: 1}}>
@@ -254,14 +199,8 @@ export default class CreditCardForm extends React.Component {
               autoCorrect={false}
               placeholder={'2020'}
               onChangeText={expYear => this.updateField({expYear: expYear})}
-              onEndEditing={expYear =>
-                this.verifyFieldLength({expYear: expYear})
-              }
             />
           </View>
-          {this.state.hasEXPYearError && (
-            <Text>Exp. year must be a minimum of 4 digits</Text>
-          )}
         </View>
       </View>
     );
@@ -285,12 +224,10 @@ export default class CreditCardForm extends React.Component {
             style={{marginLeft: 5, width: '100%'}}
             autoCorrect={false}
             placeholder={'123'}
+            returnKeyType={'done'}
             onChangeText={cvvNumber => this.updateField({cvvNumber: cvvNumber})}
           />
         </View>
-        {this.state.hasCVVNumberError && (
-          <Text>cvv number must be a minimum of 3 digits</Text>
-        )}
       </View>
     );
   };
@@ -339,12 +276,10 @@ export default class CreditCardForm extends React.Component {
             autoCompleteType={'cc-number'}
             style={styles.inputStyle}
             autoCorrect={false}
+            returnKeyType={'done'}
             onChangeText={zipCode => this.updateField({zipCode: zipCode})}
           />
         </View>
-        {this.state.hasZipCodeError && (
-          <Text>zip code must be a minimum of 5 digits</Text>
-        )}
       </View>
     );
   };
@@ -399,7 +334,7 @@ export default class CreditCardForm extends React.Component {
             onPress={() => this.handleSubmit()}
             disabled={this.isSubmitButtonEnabled}
             style={{
-              height: 30,
+              height: 50,
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: this.state.submitButtonColor,

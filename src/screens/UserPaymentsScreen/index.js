@@ -189,7 +189,9 @@ export default class UserPaymentsScreen extends React.Component {
     const logo = brandsLogoMapper[brand];
 
     if (logo) {
-      return <Image source={logo} style={{marginLeft: 10}} />;
+      return (
+        <Image source={logo} style={{marginLeft: 10, resizeMode: 'contain'}} />
+      );
     } else {
       return (
         <Icon
