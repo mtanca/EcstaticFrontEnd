@@ -110,13 +110,13 @@ class RegistrationScreenTwo extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: this.state.registrationScreenOneProps.email,
+        email: this.state.registrationScreenOneProps.email.toLowerCase(),
         password: this.state.registrationScreenOneProps.password,
         confirm_password: this.state.registrationScreenOneProps.confirmPassword,
         age: this.state.age,
-        username: this.state.username,
-        first_name: this.state.firstName,
-        last_name: this.state.lastName,
+        username: this.state.username.toLowerCase(),
+        first_name: this.state.firstName.toLowerCase(),
+        last_name: this.state.lastName.toLowerCase(),
         giveawayUUID: this.state.giveawayUUID,
       }),
     })
