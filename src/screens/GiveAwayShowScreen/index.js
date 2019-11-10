@@ -281,7 +281,7 @@ export default class GiveAwayShowScreen extends React.Component {
             style={{height: 250, backgroundColor: 'white', borderRadius: 20}}>
             <View style={{marginLeft: 20, marginRight: 20}}>
               <Text style={{marginTop: 20, fontWeight: 'bold', fontSize: 20}}>
-                Pack Odds
+                Prize Odds
               </Text>
               <View style={{marginTop: 10}}>
                 {Object.keys(probabilities).map(rarity => (
@@ -489,11 +489,11 @@ export default class GiveAwayShowScreen extends React.Component {
               {/* Back button to beta home screen... */}
               <TouchableOpacity
                 style={{
-                  marginTop: 60,
+                  marginTop: 40,
                   marginLeft: 25,
                   borderRadius: 100,
-                  height: 60,
-                  width: 60,
+                  height: 50,
+                  width: 50,
                   backgroundColor: 'rgba(0, 0, 0, 0.25)',
                   zIndex: 5,
                   position: 'absolute',
@@ -503,8 +503,8 @@ export default class GiveAwayShowScreen extends React.Component {
                 <Icon
                   style={{marginTop: '25%', marginLeft: '25%'}}
                   name="arrow-left"
-                  size={30}
-                  color="rgba(255, 255, 255, 0.5)"
+                  size={25}
+                  color="white"
                 />
               </TouchableOpacity>
             </View>
