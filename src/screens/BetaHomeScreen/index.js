@@ -50,6 +50,7 @@ export default class BetaHomeScreen extends React.Component {
       userGiveAwayData: null,
       userPrizeData: null,
       isPrizeDescriptionModalVisible: false,
+      isProfileModalVisible: false,
       userPrizes: null,
     };
   }
@@ -72,6 +73,14 @@ export default class BetaHomeScreen extends React.Component {
       isPrizeDescriptionModalVisible: !this.state
         .isPrizeDescriptionModalVisible,
       currentDisplayShowModalPrize: prize,
+    });
+  };
+
+  // A callback function which gets executed in the PrizeContainer. This function toggles
+  // the visiblity of the modal and determines the prize to display in the show modal.
+  handleToggleProfileModal = () => {
+    this.setState({
+      isProfileModalVisible: !this.state.isProfileModalVisible,
     });
   };
 
@@ -314,10 +323,34 @@ export default class BetaHomeScreen extends React.Component {
     });
   };
 
+  _renderProfileModal = () => {
+    const window = Dimensions.get('window');
+
+    if (!this.state.isProfileModalVisible) return null;
+    return (
+      <Modal
+        style={{flex: 1, height: '110%'}}
+        isVisible={this.state.isProfileModalVisible}
+        onRequestClose={() => this.handleToggleProfileModal(null)}>
+        <View
+          style={{
+            marginLeft: -30,
+            backgroundColor: 'white',
+            width: '75%',
+            height: window.height,
+          }}
+        />
+      </Modal>
+    );
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        {this._renderHeader()}
+        <TouchableOpacity onPress={() => this.handleToggleProfileModal()}>
+          {this._renderHeader()}
+        </TouchableOpacity>
+        {this._renderProfileModal()}
         {this.state.isPrizeDescriptionModalVisible &&
           this.renderPrizeShowModal()}
         {this.state.userGiveAwayData &&
