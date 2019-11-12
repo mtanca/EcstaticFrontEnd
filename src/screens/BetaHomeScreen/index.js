@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   TouchableHighlight,
+  Animated,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -52,6 +53,7 @@ export default class BetaHomeScreen extends React.Component {
       isPrizeDescriptionModalVisible: false,
       isProfileModalVisible: false,
       userPrizes: null,
+      profileModalMarginLeft: new Animated.Value(-400),
     };
   }
 
@@ -327,21 +329,34 @@ export default class BetaHomeScreen extends React.Component {
     const window = Dimensions.get('window');
 
     if (!this.state.isProfileModalVisible) return null;
+    this.slide();
+
     return (
       <Modal
-        style={{flex: 1, height: '110%'}}
+        style={{flex: 1, height: window.height}}
         isVisible={this.state.isProfileModalVisible}
         onRequestClose={() => this.handleToggleProfileModal(null)}>
-        <View
+        <Animated.View
           style={{
-            marginLeft: -30,
-            backgroundColor: 'white',
-            width: '75%',
-            height: window.height,
-          }}
-        />
+            transform: [{translateX: this.state.profileModalMarginLeft}],
+          }}>
+          <View
+            style={{
+              backgroundColor: 'white',
+              width: '80%',
+              height: window.height,
+            }}
+          />
+        </Animated.View>
       </Modal>
     );
+  };
+
+  slide = () => {
+    Animated.spring(this.state.profileModalMarginLeft, {
+      toValue: -30,
+      delay: 250,
+    }).start();
   };
 
   render() {
