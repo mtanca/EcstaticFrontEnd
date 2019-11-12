@@ -360,6 +360,15 @@ export default class BetaHomeScreen extends React.Component {
     this.props.navigation.navigate('UserProfileScreen');
   };
 
+  _navigateToUserPaymentsScreen = () => {
+    this.slideRight();
+    this.handleToggleProfileModal(null);
+    this.props.navigation.navigate('UserPaymentsScreen', {
+      navigation: this.props.navigation.navigate,
+      userId: 1,
+    });
+  };
+
   _renderProfileHeader = () => {
     return (
       <View
@@ -414,7 +423,11 @@ export default class BetaHomeScreen extends React.Component {
             <Icon name="credit-card" size={25} color="black" />
           </View>
           <View style={{flex: 8}}>
-            <Text style={{marginLeft: 10, fontSize: 20}}>Payment</Text>
+            <Text
+              onPress={() => this._navigateToUserPaymentsScreen()}
+              style={{marginLeft: 10, fontSize: 20}}>
+              Payment
+            </Text>
           </View>
         </View>
         <View style={styles.profileSetting}>
