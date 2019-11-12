@@ -402,7 +402,11 @@ export default class BetaHomeScreen extends React.Component {
             <Icon name="home" size={25} color="black" />
           </View>
           <View style={{flex: 8}}>
-            <Text style={{marginLeft: 10, fontSize: 20}}>Home</Text>
+            <Text
+              onPress={() => this.handleToggleProfileModal(null)}
+              style={{marginLeft: 10, fontSize: 20}}>
+              Home
+            </Text>
           </View>
         </View>
         <View style={styles.profileSetting}>
