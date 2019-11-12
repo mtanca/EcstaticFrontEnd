@@ -38,6 +38,8 @@ import UserSection from '../components/userSection.js';
 import PrizeContainer from '../components/prizeContainer';
 import UserNavigationBar from '../components/userNavigationBar';
 
+import CategoryTitle from '../components/categoryTitle.js';
+
 import {IP_ADDRESS} from '../../constants/constants.js';
 
 export default class BetaHomeScreen extends React.Component {
@@ -118,13 +120,21 @@ export default class BetaHomeScreen extends React.Component {
         : `${giveaway.capacity} sold`;
 
     return (
-      <View style={{marginTop: 5, flexDirection: 'row'}}>
-        <Text style={{fontSize: 15}}>
-          <Text style={{fontWeight: 'bold'}}>{giveaway.name}</Text>
-          <Text> {giveaway.category}</Text>
-        </Text>
+      <View style={{marginTop: 5, flexDirection: 'row', flexWrap: 'wrap'}}>
+        <View style={{alignItems: 'center', paddingTop: 5, paddingBottom: 5}}>
+          <Text style={{fontSize: 15}}>
+            <Text style={{fontWeight: 'bold'}}>{giveaway.name}</Text>
+          </Text>
+        </View>
+        <CategoryTitle category={giveaway.category} />
         <View
-          style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row'}}>
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingBottom: 5,
+          }}>
           <Image source={time} style={{marginTop: 5, marginRight: 5}} />
           <Text style={{fontSize: 15}}>{timeAvailableText} </Text>
           <Text style={{fontSize: 15, marginRight: 15, color: '#39f3bb'}}>
