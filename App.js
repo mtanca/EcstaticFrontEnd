@@ -96,6 +96,16 @@ const AppNavigator = createStackNavigator({
   },
   UserProfileScreen: {
     screen: UserProfileScreen,
+    navigationOptions: {
+      title: 'Profile',
+      headerTitleStyle: {
+        alignItems: 'center',
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
+      },
+    },
   },
 });
 

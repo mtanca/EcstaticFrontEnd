@@ -60,6 +60,7 @@ export default class BetaHomeScreen extends React.Component {
   componentDidMount() {
     this._fetchUserGiveAwayData();
     this._fetchUserPrizeData();
+    this._fetchUserFirstName();
   }
 
   measureView(event) {
@@ -247,6 +248,19 @@ export default class BetaHomeScreen extends React.Component {
     }
   };
 
+  _fetchUserFirstName = async () => {
+    try {
+      let userFirstName = await AsyncStorage.getItem('@userFirstName');
+      this.setState({
+        userFirstName: userFirstName,
+      });
+    } catch (e) {
+      this.setState({
+        userFirstName: 'Not Available',
+      });
+    }
+  };
+
   _userPrizeOwn = () => {
     const prizeMapping = this.state.userPrizes;
 
@@ -266,7 +280,11 @@ export default class BetaHomeScreen extends React.Component {
         <View
           style={styles.userInfo}
           onLayout={event => this.measureView(event)}>
-          <UserSection hasData={null} data={null} />
+          <UserSection
+            onPressFunc={() => this.handleToggleProfileModal(null)}
+            hasData={null}
+            data={null}
+          />
         </View>
         {this.state.userSectionWidthOffset && (
           <View
@@ -354,22 +372,23 @@ export default class BetaHomeScreen extends React.Component {
           borderTopColor: 'white',
         }}>
         <View style={{flexDirection: 'row', marginTop: 30, marginLeft: 30}}>
-          <UserSection hasData={null} data={null} />
-          <Text style={{marginTop: 15, marginLeft: 15}}>
+          <UserSection onPressFunc={() => null} hasData={null} data={null} />
+          <View
+            style={{flexDirection: 'column', marginTop: 10, marginLeft: 10}}>
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>
-              Rachel {'\n'}
+              {this.state.userFirstName}
             </Text>
             <Text
               onPress={() => this._navigateToUserProfile()}
               style={{
+                marginTop: 3,
                 fontSize: 15,
-                marginTop: 5,
                 fontWeight: 'bold',
                 color: '#39f3bb',
               }}>
               View Profile
             </Text>
-          </Text>
+          </View>
         </View>
       </View>
     );
@@ -480,9 +499,7 @@ export default class BetaHomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => this.handleToggleProfileModal()}>
-          {this._renderHeader()}
-        </TouchableOpacity>
+        {this._renderHeader()}
         {this._renderProfileModal()}
         {this.state.isPrizeDescriptionModalVisible &&
           this.renderPrizeShowModal()}
