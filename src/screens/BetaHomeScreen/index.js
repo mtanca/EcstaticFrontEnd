@@ -336,6 +336,12 @@ export default class BetaHomeScreen extends React.Component {
     });
   };
 
+  _navigateToUserProfile = () => {
+    this.slideRight();
+    this.handleToggleProfileModal(null);
+    this.props.navigation.navigate('UserProfileScreen');
+  };
+
   _renderProfileHeader = () => {
     return (
       <View
@@ -351,10 +357,10 @@ export default class BetaHomeScreen extends React.Component {
           <UserSection hasData={null} data={null} />
           <Text style={{marginTop: 15, marginLeft: 15}}>
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>
-              {' '}
               Rachel {'\n'}
             </Text>
             <Text
+              onPress={() => this._navigateToUserProfile()}
               style={{
                 fontSize: 15,
                 marginTop: 5,
@@ -373,25 +379,45 @@ export default class BetaHomeScreen extends React.Component {
     return (
       <View style={{marginLeft: 30}}>
         <View style={styles.profileSetting}>
-          <Icon name="home" size={25} color="black" />
-          <Text style={{marginLeft: 10, fontSize: 20}}>Home</Text>
+          <View style={{flex: 1}}>
+            <Icon name="home" size={25} color="black" />
+          </View>
+          <View style={{flex: 8}}>
+            <Text style={{marginLeft: 10, fontSize: 20}}>Home</Text>
+          </View>
         </View>
         <View style={styles.profileSetting}>
-          <Icon name="credit-card" size={25} color="black" />
-          <Text style={{marginLeft: 10, fontSize: 20}}>Payment</Text>
+          <View style={{flex: 1}}>
+            <Icon name="credit-card" size={25} color="black" />
+          </View>
+          <View style={{flex: 8}}>
+            <Text style={{marginLeft: 10, fontSize: 20}}>Payment</Text>
+          </View>
         </View>
         <View style={styles.profileSetting}>
-          <Icon name="comments" size={25} color="black" />
-          <Text style={{marginLeft: 10, fontSize: 20}}>FAQs</Text>
+          <View style={{flex: 1}}>
+            <Icon name="comments" size={25} color="black" />
+          </View>
+          <View style={{flex: 8}}>
+            <Text style={{marginLeft: 10, fontSize: 20}}>FAQs</Text>
+          </View>
         </View>
         <View style={styles.profileSetting}>
-          <Icon name="bell" size={25} color="black" />
-          <Text style={{marginLeft: 10, fontSize: 20}}>Notifications</Text>
+          <View style={{flex: 1}}>
+            <Icon name="bell" size={25} color="black" />
+          </View>
+          <View style={{flex: 8}}>
+            <Text style={{marginLeft: 10, fontSize: 20}}>Notifications</Text>
+          </View>
         </View>
         <View
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
-          <Icon name="sign-out" size={25} color="black" />
-          <Text style={{marginLeft: 10, fontSize: 20}}>Log Out</Text>
+          <View style={{flex: 1}}>
+            <Icon name="sign-out" size={25} color="black" />
+          </View>
+          <View style={{flex: 8}}>
+            <Text style={{marginLeft: 10, fontSize: 20}}>Log Out</Text>
+          </View>
         </View>
       </View>
     );

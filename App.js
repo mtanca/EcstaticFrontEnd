@@ -13,6 +13,7 @@ import BetaHomeScreen from './src/screens/BetaHomeScreen';
 import UserPaymentsScreen from './src/screens/UserPaymentsScreen';
 import UserPaymentHistoryScreen from './src/screens/UserPaymentsScreen/paymentHistory.js';
 import CreditCardForm from './src/screens/components/ccForm.js';
+import UserProfileScreen from './src/screens/UserProfileScreen';
 
 import {View} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
@@ -92,6 +93,9 @@ const AppNavigator = createStackNavigator({
         fontWeight: 'bold',
       },
     },
+  },
+  UserProfileScreen: {
+    screen: UserProfileScreen,
   },
 });
 
