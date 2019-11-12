@@ -435,7 +435,11 @@ export default class BetaHomeScreen extends React.Component {
             <Icon name="sign-out" size={25} color="black" />
           </View>
           <View style={{flex: 8}}>
-            <Text style={{marginLeft: 10, fontSize: 20}}>Log Out</Text>
+            <Text
+              onPress={() => this._signOut()}
+              style={{marginLeft: 10, fontSize: 20}}>
+              Log Out
+            </Text>
           </View>
         </View>
       </View>
@@ -545,11 +549,6 @@ export default class BetaHomeScreen extends React.Component {
             </ScrollView>
           ))}
 
-        <Text
-          style={{marginTop: 20, textAlign: 'center'}}
-          onPress={() => this._signOut()}>
-          PRESS HERE TO SIGN OUT
-        </Text>
         <View
           style={{
             flex: 1,
