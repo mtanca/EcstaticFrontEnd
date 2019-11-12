@@ -78,9 +78,15 @@ export default class BetaHomeScreen extends React.Component {
     });
   };
 
-  // A callback function which gets executed in the PrizeContainer. This function toggles
-  // the visiblity of the modal and determines the prize to display in the show modal.
+  // This function toggles
+  // the visiblity of the modal and determines the display of the user's profile.
   handleToggleProfileModal = () => {
+    const slideDirection = !this.state.isProfileModalVisible
+      ? this.slideLeft
+      : this.slideRight;
+
+    slideDirection();
+
     this.setState({
       isProfileModalVisible: !this.state.isProfileModalVisible,
     });
@@ -144,9 +150,14 @@ export default class BetaHomeScreen extends React.Component {
             justifyContent: 'flex-end',
             flexDirection: 'row',
             alignItems: 'center',
-            paddingBottom: 5,
           }}>
-          <Image source={time} style={{marginTop: 5, marginRight: 5}} />
+          <Image
+            source={time}
+            style={{
+              marginRight: 5,
+              alignSelf: 'center',
+            }}
+          />
           <Text style={{fontSize: 15}}>{timeAvailableText} </Text>
           <Text style={{fontSize: 15, marginRight: 15, color: '#39f3bb'}}>
             {moment.unix(timeRemaining).fromNow(true)}
@@ -325,14 +336,73 @@ export default class BetaHomeScreen extends React.Component {
     });
   };
 
-  // Think function is a shitty hack I am doibng because my UI skills suck.
+  _renderProfileHeader = () => {
+    return (
+      <View
+        style={{
+          paddingBottom: 20,
+          borderWidth: 1,
+          borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+          borderRightColor: 'white',
+          borderLeftColor: 'white',
+          borderTopColor: 'white',
+        }}>
+        <View style={{flexDirection: 'row', marginTop: 30, marginLeft: 30}}>
+          <UserSection hasData={null} data={null} />
+          <Text style={{marginTop: 15, marginLeft: 15}}>
+            <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+              {' '}
+              Rachel {'\n'}
+            </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                marginTop: 5,
+                fontWeight: 'bold',
+                color: '#39f3bb',
+              }}>
+              View Profile
+            </Text>
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
+  _renderProfileOptions = () => {
+    return (
+      <View style={{marginLeft: 30}}>
+        <View style={styles.profileSetting}>
+          <Icon name="home" size={25} color="black" />
+          <Text style={{marginLeft: 10, fontSize: 20}}>Home</Text>
+        </View>
+        <View style={styles.profileSetting}>
+          <Icon name="credit-card" size={25} color="black" />
+          <Text style={{marginLeft: 10, fontSize: 20}}>Payment</Text>
+        </View>
+        <View style={styles.profileSetting}>
+          <Icon name="comments" size={25} color="black" />
+          <Text style={{marginLeft: 10, fontSize: 20}}>FAQs</Text>
+        </View>
+        <View style={styles.profileSetting}>
+          <Icon name="bell" size={25} color="black" />
+          <Text style={{marginLeft: 10, fontSize: 20}}>Notifications</Text>
+        </View>
+        <View
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
+          <Icon name="sign-out" size={25} color="black" />
+          <Text style={{marginLeft: 10, fontSize: 20}}>Log Out</Text>
+        </View>
+      </View>
+    );
+  };
+
+  // This function is a shitty hack I am doing because my UI skills suck.
   // We use a modal to render the blur view and display the user's profile.
   _renderProfileModal = () => {
     const window = Dimensions.get('window');
 
     if (!this.state.isProfileModalVisible) return null;
-    this.slide();
-
     return (
       <Modal
         style={{flex: 1, height: window.height}}
@@ -347,8 +417,10 @@ export default class BetaHomeScreen extends React.Component {
               backgroundColor: 'white',
               width: '80%',
               height: window.height,
-            }}
-          />
+            }}>
+            {this._renderProfileHeader()}
+            {this._renderProfileOptions()}
+          </View>
         </Animated.View>
 
         <TouchableOpacity
@@ -365,10 +437,17 @@ export default class BetaHomeScreen extends React.Component {
     );
   };
 
-  slide = () => {
+  slideLeft = () => {
     Animated.spring(this.state.profileModalMarginLeft, {
       toValue: -30,
       delay: 250,
+    }).start();
+  };
+
+  slideRight = () => {
+    Animated.spring(this.state.profileModalMarginLeft, {
+      toValue: -400,
+      delay: 0,
     }).start();
   };
 
@@ -459,5 +538,10 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     marginLeft: 10,
+  },
+  profileSetting: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 30,
   },
 });
