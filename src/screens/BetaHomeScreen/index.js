@@ -325,6 +325,8 @@ export default class BetaHomeScreen extends React.Component {
     });
   };
 
+  // Think function is a shitty hack I am doibng because my UI skills suck.
+  // We use a modal to render the blur view and display the user's profile.
   _renderProfileModal = () => {
     const window = Dimensions.get('window');
 
@@ -348,6 +350,17 @@ export default class BetaHomeScreen extends React.Component {
             }}
           />
         </Animated.View>
+
+        <TouchableOpacity
+          onPressOut={() => this.handleToggleProfileModal(null)}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: '70%',
+            height: window.height,
+            width: window.width,
+          }}
+        />
       </Modal>
     );
   };
