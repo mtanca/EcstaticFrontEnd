@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, ScrollView, Image, StyleSheet} from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  ScrollView,
+  Image,
+  StyleSheet,
+} from 'react-native';
 
 const defaultUserProfileImage = require('../../assets/user-filler.png');
 
@@ -18,13 +24,14 @@ export default class UserSection extends React.Component {
       : defaultUserProfileImage;
 
     return (
-      <View
+      <TouchableOpacity
+        onPress={this.props.onPressFunc}
         style={{
           marginTop: '5%',
           borderRadius: 60,
         }}>
         <Image source={userProfileImage} style={{height: 40, width: 40}} />
-      </View>
+      </TouchableOpacity>
     );
   }
 }

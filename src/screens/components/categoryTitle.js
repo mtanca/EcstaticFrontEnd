@@ -44,7 +44,7 @@ const CategoryTitle = function({category}) {
         marginLeft: 5,
         alignItems: 'center',
         padding: 5,
-        borderRadius: 10,
+        borderRadius: 5,
         borderWidth: 1,
       }}>
       <Text style={{color, fontWeight: 700}}>{category}</Text>

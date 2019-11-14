@@ -38,6 +38,7 @@ class LoginScreen extends React.Component {
   _storeData = async data => {
     try {
       await AsyncStorage.setItem('@userId', data.userId + '');
+      await AsyncStorage.setItem('@userFirstName', data.userFirstName + '');
       await AsyncStorage.setItem('@isLoggedIn', 'true');
       await AsyncStorage.setItem('@giveawayId', data.giveawayId + '');
     } catch (e) {
