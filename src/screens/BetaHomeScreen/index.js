@@ -79,8 +79,7 @@ export default class BetaHomeScreen extends React.Component {
     });
   };
 
-  // This function toggles
-  // the visiblity of the modal and determines the display of the user's profile.
+  // This function toggles the visiblity of the modal and determines the display of the user's profile.
   handleToggleProfileModal = () => {
     const slideDirection = !this.state.isProfileModalVisible
       ? this.slideLeft
@@ -294,13 +293,15 @@ export default class BetaHomeScreen extends React.Component {
               alignItems: 'center',
             }}>
             <Text
+              adjustsFontSizeToFit={true}
+              allowFontScaling={true}
               style={{
                 fontWeight: 'bold',
-                fontSize: 25,
+                fontSize: 40,
                 // offset the text by the width of the userSection
                 marginLeft: this.state.userSectionWidthOffset * -1,
               }}>
-              HOME
+              Home
             </Text>
           </View>
         )}
@@ -382,8 +383,7 @@ export default class BetaHomeScreen extends React.Component {
         }}>
         <View style={{flexDirection: 'row', marginTop: 30, marginLeft: 30}}>
           <UserSection onPressFunc={() => null} hasData={null} data={null} />
-          <View
-            style={{flexDirection: 'column', marginTop: 10, marginLeft: 10}}>
+          <View style={{flexDirection: 'column', marginLeft: 10}}>
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>
               {this.state.userFirstName}
             </Text>

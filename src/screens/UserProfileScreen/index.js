@@ -87,17 +87,17 @@ export default class UserProfileScreen extends React.Component {
         }}>
         <View style={{flexDirection: 'row'}}>
           <UserSection onPressFunc={() => null} hasData={null} data={null} />
-          <View
-            style={{flexDirection: 'column', marginTop: 10, marginLeft: 10}}>
+          <View style={{flexDirection: 'column', marginLeft: 10}}>
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>
               {this.state.userData.first_name} {this.state.userData.last_name}
+              <Icon name="edit" size={15} color="rgba(184, 190, 201, 1)" />
             </Text>
             <Text
               style={{
                 marginTop: 3,
                 fontSize: 15,
                 fontWeight: 'bold',
-                color: 'grey',
+                color: 'rgba(184, 190, 201, 1)',
               }}>
               Joined{' '}
               {moment(this.state.userData.inserted_at).format('MMMM YYYY')}
@@ -112,6 +112,15 @@ export default class UserProfileScreen extends React.Component {
     console.log('USER INFO: ' + userInfo);
     const value = userInfo === undefined ? '+ Add' : userInfo;
 
+    const iconTitleMapping = {
+      Username: 'user-circle',
+      Email: 'envelope',
+      Phone: 'phone',
+      'Shipping Address': 'map-marker',
+      Age: 'calendar',
+      Password: 'unlock-alt',
+    };
+
     return (
       <View>
         <View
@@ -124,7 +133,7 @@ export default class UserProfileScreen extends React.Component {
             borderRightColor: 'white',
           }}>
           <View style={{flex: 1, justifyContent: 'center', marginLeft: 20}}>
-            <Icon name="credit-card" size={20} color="black" />
+            <Icon name={iconTitleMapping[title]} size={20} color="black" />
           </View>
           <TouchableOpacity
             style={{
