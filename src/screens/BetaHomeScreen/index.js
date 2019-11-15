@@ -79,8 +79,7 @@ export default class BetaHomeScreen extends React.Component {
     });
   };
 
-  // This function toggles
-  // the visiblity of the modal and determines the display of the user's profile.
+  // This function toggles the visiblity of the modal and determines the display of the user's profile.
   handleToggleProfileModal = () => {
     const slideDirection = !this.state.isProfileModalVisible
       ? this.slideLeft

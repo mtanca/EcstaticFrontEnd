@@ -112,6 +112,15 @@ export default class UserProfileScreen extends React.Component {
     console.log('USER INFO: ' + userInfo);
     const value = userInfo === undefined ? '+ Add' : userInfo;
 
+    const iconTitleMapping = {
+      Username: 'user-circle',
+      Email: 'envelope',
+      Phone: 'phone',
+      'Shipping Address': 'map-marker',
+      Age: 'calendar',
+      Password: 'unlock-alt',
+    };
+
     return (
       <View>
         <View
@@ -124,7 +133,7 @@ export default class UserProfileScreen extends React.Component {
             borderRightColor: 'white',
           }}>
           <View style={{flex: 1, justifyContent: 'center', marginLeft: 20}}>
-            <Icon name="credit-card" size={20} color="black" />
+            <Icon name={iconTitleMapping[title]} size={20} color="black" />
           </View>
           <TouchableOpacity
             style={{

@@ -7,7 +7,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Animated,
+  Dimensions,
 } from 'react-native';
+
+import Modal from 'react-native-modal';
 
 import LottieView from 'lottie-react-native';
 
@@ -38,11 +42,14 @@ export default class UserPaymentsScreen extends React.Component {
       userSectionWidthOffset: null,
       userPaymentData: null,
       userDefaultPaymentData: null,
+      isProfileModalVisible: false,
+      profileModalMarginLeft: new Animated.Value(-400),
     };
   }
 
   componentDidMount() {
     this._fetchUserPaymentData();
+    this._fetchUserFirstName();
   }
 
   _fetchUserPaymentData = async () => {
@@ -70,13 +77,30 @@ export default class UserPaymentsScreen extends React.Component {
     }
   };
 
+  _fetchUserFirstName = async () => {
+    try {
+      let userFirstName = await AsyncStorage.getItem('@userFirstName');
+      this.setState({
+        userFirstName: userFirstName,
+      });
+    } catch (e) {
+      this.setState({
+        userFirstName: 'Not Available',
+      });
+    }
+  };
+
   _renderHeader = () => {
     return (
       <View style={styles.header}>
         <View
           style={styles.userInfo}
           onLayout={event => this.measureView(event)}>
-          <UserSection hasData={null} data={null} />
+          <UserSection
+            onPressFunc={() => this.handleToggleProfileModal(null)}
+            hasData={null}
+            data={null}
+          />
         </View>
         {this.state.userSectionWidthOffset && (
           <View
@@ -386,10 +410,184 @@ export default class UserPaymentsScreen extends React.Component {
     );
   };
 
+  _renderProfileHeader = () => {
+    return (
+      <View
+        style={{
+          paddingBottom: 20,
+          borderWidth: 1,
+          borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+          borderRightColor: 'white',
+          borderLeftColor: 'white',
+          borderTopColor: 'white',
+        }}>
+        <View style={{flexDirection: 'row', marginTop: 30, marginLeft: 30}}>
+          <UserSection onPressFunc={() => null} hasData={null} data={null} />
+          <View style={{flexDirection: 'column', marginLeft: 10}}>
+            <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+              {this.state.userFirstName}
+            </Text>
+            <Text
+              onPress={() => this._navigateToUserProfile()}
+              style={{
+                marginTop: 3,
+                fontSize: 15,
+                fontWeight: 'bold',
+                color: '#39f3bb',
+              }}>
+              View Profile
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  _renderProfileOptions = () => {
+    return (
+      <View style={{marginLeft: 30}}>
+        <View style={styles.profileSetting}>
+          <View style={{flex: 1}}>
+            <Icon name="home" size={25} color="black" />
+          </View>
+          <View style={{flex: 8}}>
+            <Text
+              onPress={() => this._navigateToBetaHomeScreen()}
+              style={{marginLeft: 10, fontSize: 20}}>
+              Home
+            </Text>
+          </View>
+        </View>
+        <View style={styles.profileSetting}>
+          <View style={{flex: 1}}>
+            <Icon name="credit-card" size={25} color="black" />
+          </View>
+          <View style={{flex: 8}}>
+            <Text
+              onPress={() => this.handleToggleProfileModal(null)}
+              style={{marginLeft: 10, fontSize: 20}}>
+              Payment
+            </Text>
+          </View>
+        </View>
+        <View style={styles.profileSetting}>
+          <View style={{flex: 1}}>
+            <Icon name="comments" size={25} color="black" />
+          </View>
+          <View style={{flex: 8}}>
+            <Text style={{marginLeft: 10, fontSize: 20}}>FAQs</Text>
+          </View>
+        </View>
+        <View style={styles.profileSetting}>
+          <View style={{flex: 1}}>
+            <Icon name="bell" size={25} color="black" />
+          </View>
+          <View style={{flex: 8}}>
+            <Text style={{marginLeft: 10, fontSize: 20}}>Notifications</Text>
+          </View>
+        </View>
+        <View
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 30}}>
+          <View style={{flex: 1}}>
+            <Icon name="sign-out" size={25} color="black" />
+          </View>
+          <View style={{flex: 8}}>
+            <Text
+              onPress={() => this._signOut()}
+              style={{marginLeft: 10, fontSize: 20}}>
+              Log Out
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  // This function toggles the visiblity of the modal and determines the display of the user's profile.
+  handleToggleProfileModal = () => {
+    const slideDirection = !this.state.isProfileModalVisible
+      ? this.slideLeft
+      : this.slideRight;
+
+    slideDirection();
+
+    this.setState({
+      isProfileModalVisible: !this.state.isProfileModalVisible,
+    });
+  };
+
+  _navigateToUserProfile = () => {
+    this.slideRight();
+    this.handleToggleProfileModal(null);
+    this.props.navigation.navigate('UserProfileScreen');
+  };
+
+  _navigateToBetaHomeScreen = () => {
+    this.slideRight();
+    this.handleToggleProfileModal(null);
+    this.props.navigation.navigate('BetaHomeScreen');
+  };
+
+  // This function is a shitty hack I am doing because my UI skills suck.
+  // We use a modal to render the blur view and display the user's profile.
+  _renderProfileModal = () => {
+    const window = Dimensions.get('window');
+
+    if (!this.state.isProfileModalVisible) return null;
+    return (
+      <Modal
+        style={{flex: 1, height: window.height}}
+        isVisible={this.state.isProfileModalVisible}
+        onRequestClose={() => this.handleToggleProfileModal(null)}>
+        <Animated.View
+          style={{
+            transform: [{translateX: this.state.profileModalMarginLeft}],
+          }}>
+          <View
+            style={{
+              backgroundColor: 'white',
+              width: '80%',
+              height: window.height,
+            }}>
+            {this._renderProfileHeader()}
+            {this._renderProfileOptions()}
+          </View>
+        </Animated.View>
+
+        <TouchableOpacity
+          onPressOut={() => this.handleToggleProfileModal(null)}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: '70%',
+            height: window.height,
+            width: window.width,
+          }}
+        />
+      </Modal>
+    );
+  };
+
+  slideLeft = () => {
+    Animated.spring(this.state.profileModalMarginLeft, {
+      toValue: -30,
+      delay: 250,
+    }).start();
+  };
+
+  slideRight = () => {
+    Animated.spring(this.state.profileModalMarginLeft, {
+      toValue: -400,
+      delay: 0,
+    }).start();
+  };
+
   render() {
     return (
       <View style={styles.container}>
         {this._renderHeader()}
+
+        {this._renderProfileModal()}
 
         {this._renderPaymentDefaultHeader()}
 
@@ -431,5 +629,10 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     marginLeft: 10,
+  },
+  profileSetting: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 30,
   },
 });
