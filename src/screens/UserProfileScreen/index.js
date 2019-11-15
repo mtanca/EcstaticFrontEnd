@@ -87,17 +87,17 @@ export default class UserProfileScreen extends React.Component {
         }}>
         <View style={{flexDirection: 'row'}}>
           <UserSection onPressFunc={() => null} hasData={null} data={null} />
-          <View
-            style={{flexDirection: 'column', marginTop: 10, marginLeft: 10}}>
+          <View style={{flexDirection: 'column', marginLeft: 10}}>
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>
               {this.state.userData.first_name} {this.state.userData.last_name}
+              <Icon name="edit" size={15} color="rgba(184, 190, 201, 1)" />
             </Text>
             <Text
               style={{
                 marginTop: 3,
                 fontSize: 15,
                 fontWeight: 'bold',
-                color: 'grey',
+                color: 'rgba(184, 190, 201, 1)',
               }}>
               Joined{' '}
               {moment(this.state.userData.inserted_at).format('MMMM YYYY')}

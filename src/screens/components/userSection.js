@@ -27,7 +27,6 @@ export default class UserSection extends React.Component {
       <TouchableOpacity
         onPress={this.props.onPressFunc}
         style={{
-          marginTop: '5%',
           borderRadius: 60,
         }}>
         <Image source={userProfileImage} style={{height: 40, width: 40}} />
