@@ -1,17 +1,17 @@
 import React from 'react';
-import {View, Text, Button, StyleSheet, Dimensions} from 'react-native';
 import {
-  FormLabel,
-  FormInput,
-  FormValidationMessage,
-} from 'react-native-elements';
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Dimensions,
+  TextInput,
+} from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-import MainScreen from '../MainScreen';
-import RegistrationScreenOne from '../RegistrationScreen';
-import ForgotPasswordScreen from '../ForgotPasswordScreen';
-import GiveAwayShowScreen from '../GiveAwayShowScreen';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import EcstaticButton from '../components/ecstaticButton.js';
 
 import {IP_ADDRESS} from '../../constants/constants.js';
@@ -95,6 +95,7 @@ class LoginScreen extends React.Component {
       .then(response => response.json())
       .then(responseJson => {
         this._storeData(responseJson.data);
+
         if (responseJson.data.isAuthenticated) {
           this.setState({
             canNavigate: true,
@@ -128,77 +129,113 @@ class LoginScreen extends React.Component {
         <Text style={{marginLeft: 15, fontWeight: 'bold', fontSize: 20}}>
           Log In
         </Text>
-        <View style={styles.contentContainer}>
+        <View style={styles.facebookBtnContainer}>
           <FBLoginButton />
+        </View>
 
-          <View style={{marginTop: '10%'}}>
-            {this.state.loginHasErrors && (
-              <Text style={{marginLeft: 15, fontWeight: 'bold', color: 'red'}}>
-                Invalid username or password. Please try again.
+        <View style={{marginTop: '10%'}}>
+          {this.state.loginHasErrors && (
+            <Text style={{marginLeft: 15, fontWeight: 'bold', color: 'red'}}>
+              Invalid username or password. Please try again.
+            </Text>
+          )}
+
+          <View style={styles.mainFormContainer}>
+            <View style={styles.formContainer}>
+              <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>
+                Email or username
               </Text>
-            )}
-            <FormLabel labelStyle={{fontWeight: 'bold'}}>
-              {' '}
-              Email or username{' '}
-            </FormLabel>
-            <FormInput
-              containerStyle={{backgroundColor: '#f2f4f7'}}
-              onChangeText={email => this.updateField({email: email})}
-            />
-            <FormLabel> Password </FormLabel>
-            <FormInput
-              inputStyle={{backgroundColor: '#f2f4f7'}}
-              secureTextEntry={true}
-              onChangeText={password => this.updateField({password: password})}
-            />
+              <View style={styles.formBody}>
+                <Icon
+                  style={{marginLeft: 10}}
+                  name="user"
+                  size={15}
+                  color="#b9bec9"
+                />
+                <TextInput
+                  style={styles.inputStyle}
+                  autoCorrect={false}
+                  onChangeText={email => this.updateField({email: email})}
+                />
+              </View>
+            </View>
 
+            <View style={styles.formContainer}>
+              <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>
+                Password
+              </Text>
+              <View style={styles.formBody}>
+                <Icon
+                  style={{marginLeft: 10}}
+                  name="unlock-alt"
+                  size={15}
+                  color="#b9bec9"
+                />
+                <TextInput
+                  style={styles.inputStyle}
+                  autoCorrect={false}
+                  secureTextEntry={true}
+                  placeholder={'Enter new password'}
+                  onChangeText={password =>
+                    this.updateField({password: password})
+                  }
+                />
+              </View>
+            </View>
+          </View>
+
+          <Text
+            onPress={() =>
+              navigate('ForgotPasswordScreen', {
+                navigation: navigate.navigate,
+              })
+            }
+            style={styles.forgotPasswordButton}>
+            {' '}
+            Forgot Password?
+          </Text>
+        </View>
+
+        <View style={{marginTop: '5%'}}>
+          <View style={{alignItems: 'center'}}>
+            <View style={{width: '90%'}}>
+              <EcstaticButton
+                buttonMarginTopScalor={0}
+                buttonColor={this.state.buttonColor}
+                isDisabled={this.state.isDisabled}
+                buttonText={'Log In'}
+                navigationScreen={'BetaHomeScreen'}
+                navigation={this.props.navigation}
+                onPressFunc={() => this.handleSubmit()}
+              />
+            </View>
+          </View>
+
+          <View
+            style={{
+              marginTop: signUpMarginTopScalor,
+              width: '100%',
+              height: 50,
+              justifyContent: 'center',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: '#798498', textAlign: 'center'}}>
+              {' '}
+              Already have an account?
+            </Text>
             <Text
               onPress={() =>
-                navigate('ForgotPasswordScreen', {
+                navigate('RegistrationScreenOne', {
                   navigation: navigate.navigate,
                 })
               }
-              style={styles.forgotPasswordButton}>
+              style={{fontWeight: 'bold'}}>
               {' '}
-              Forgot Password?
+              Sign Up
             </Text>
           </View>
-        </View>
-
-        <View style={{marginLeft: '5%', marginTop: '10%'}}>
-          <EcstaticButton
-            buttonMarginTopScalor={0}
-            buttonColor={this.state.buttonColor}
-            isDisabled={this.state.isDisabled}
-            buttonText={'Log In'}
-            navigationScreen={'GiveAwayShowScreen'}
-            navigation={this.props.navigation}
-            onPressFunc={() => this.handleSubmit()}
-          />
-        </View>
-
-        <View
-          style={{
-            marginTop: signUpMarginTopScalor,
-            width: '100%',
-            height: 50,
-            justifyContent: 'center',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-          }}>
-          <Text style={{color: '#798498', textAlign: 'center'}}>
-            {' '}
-            Already have an account?
-          </Text>
-          <Text
-            onPress={() =>
-              navigate('RegistrationScreenOne', {navigation: navigate.navigate})
-            }
-            style={{fontWeight: 'bold'}}>
-            {' '}
-            Sign Up
-          </Text>
         </View>
 
         {this.state.canNavigate && this._navigate()}
@@ -208,13 +245,25 @@ class LoginScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    justifyContent: 'center',
+  facebookBtnContainer: {
     alignItems: 'center',
-    marginTop: '15%',
+    marginTop: '10%',
+  },
+  mainFormContainer: {
+    marginLeft: '5%',
+    width: '95%',
+  },
+  formContainer: {
+    marginTop: 15,
+    width: '95%',
+  },
+  formBody: {
+    width: '100%',
+    height: 50,
+    flexDirection: 'row',
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    borderRadius: 10,
+    alignItems: 'center',
   },
   loginButton: {
     alignItems: 'center',
@@ -225,6 +274,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: '#00b1f1',
     fontWeight: 'bold',
+  },
+  inputStyle: {
+    flex: 1,
+    marginLeft: 5,
   },
 });
 
