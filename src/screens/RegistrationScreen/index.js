@@ -139,6 +139,7 @@ class RegistrationScreenOne extends React.Component {
             <TextInput
               style={styles.inputStyle}
               autoCorrect={false}
+              keyboardType={'email-address'}
               placeholder={'Enter your email address'}
               onChangeText={email => this.updateField({email: email})}
             />

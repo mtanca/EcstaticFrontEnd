@@ -155,6 +155,7 @@ class LoginScreen extends React.Component {
                 <TextInput
                   style={styles.inputStyle}
                   autoCorrect={false}
+                  placeholder={'Enter your email or username'}
                   onChangeText={email => this.updateField({email: email})}
                 />
               </View>
@@ -175,7 +176,7 @@ class LoginScreen extends React.Component {
                   style={styles.inputStyle}
                   autoCorrect={false}
                   secureTextEntry={true}
-                  placeholder={'Enter new password'}
+                  placeholder={'Enter your password'}
                   onChangeText={password =>
                     this.updateField({password: password})
                   }

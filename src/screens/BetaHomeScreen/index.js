@@ -188,6 +188,9 @@ export default class BetaHomeScreen extends React.Component {
     AsyncStorage.removeItem('@userId');
     AsyncStorage.removeItem('@giveawayId');
 
+    this.slideRight();
+    this.handleToggleProfileModal(null);
+
     this.props.navigation.navigate('SplashScreen', {
       navigation: this.props.navigation.navigate,
     });

@@ -258,6 +258,8 @@ class RegistrationScreenTwo extends React.Component {
               />
               <TextInput
                 style={styles.inputStyle}
+                keyboardType={'number-pad'}
+                returnKeyType={'done'}
                 autoCorrect={false}
                 placeholder={'Enter your age'}
                 onChangeText={age => this.updateField({age: age})}
