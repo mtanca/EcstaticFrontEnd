@@ -29,7 +29,7 @@ export default class UserProfileScreen extends React.Component {
   _fetchUserData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}`, {
+      fetch(`https://${IP_ADDRESS}/api/users/${userId}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

@@ -202,7 +202,7 @@ export default class BetaHomeScreen extends React.Component {
   _fetchUserGiveAwayData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}/giveaways`, {
+      fetch(`https://${IP_ADDRESS}/api/users/${userId}/giveaways`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -224,7 +224,7 @@ export default class BetaHomeScreen extends React.Component {
   _fetchUserPrizeData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}/prizes`, {
+      fetch(`https://${IP_ADDRESS}/api/users/${userId}/prizes`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

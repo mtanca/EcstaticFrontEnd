@@ -39,7 +39,7 @@ export default class UserPaymentHistoryScreen extends React.Component {
   _fetchUserPaymentHistory = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}/payments_history`, {
+      fetch(`https://${IP_ADDRESS}/api/users/${userId}/payments_history`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

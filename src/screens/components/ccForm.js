@@ -283,7 +283,7 @@ export default class CreditCardForm extends React.Component {
   };
 
   handleSubmit = () => {
-    fetch(`http://${IP_ADDRESS}:4000/api/users/${this.state.userId}/payments`, {
+    fetch(`https://${IP_ADDRESS}/api/users/${this.state.userId}/payments`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

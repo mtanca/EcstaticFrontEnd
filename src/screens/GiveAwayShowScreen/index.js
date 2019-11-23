@@ -149,7 +149,7 @@ export default class GiveAwayShowScreen extends React.Component {
         giveawayId = defaultGiveAwayId;
       }
 
-      fetch(`http://${IP_ADDRESS}:4000/api/giveaways/${giveawayId}/prizes`, {
+      fetch(`https://${IP_ADDRESS}/api/giveaways/${giveawayId}/prizes`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -365,7 +365,7 @@ export default class GiveAwayShowScreen extends React.Component {
    */
   handleSubmit = () => {
     fetch(
-      `http://${IP_ADDRESS}:4000/api/giveaways/` +
+      `https://${IP_ADDRESS}/api/giveaways/` +
         this.state.data.giveaway.id +
         '/purchase',
       {
@@ -432,7 +432,7 @@ export default class GiveAwayShowScreen extends React.Component {
         giveawayId = defaultGiveAwayId;
       }
 
-      fetch(`http://${IP_ADDRESS}:4000/api/giveaways/` + giveawayId, {
+      fetch(`https://${IP_ADDRESS}/api/giveaways/` + giveawayId, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

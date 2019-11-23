@@ -1,1 +1,1 @@
-export const IP_ADDRESS = '192.168.86.163';
+export const IP_ADDRESS = 'key-thoughtful-basilisk.gigalixirapp.com/';
