@@ -199,7 +199,46 @@ export default class UserPaymentsScreen extends React.Component {
     } else if (defaultCard === false) {
       return this._renderNoDefaultPayment();
     } else {
-      return this._renderPaymentInformation(navigationScreen, defaultCard);
+      return (
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate('EditDefaultCardScreen', {
+              navigation: this.props.navigation.navigate,
+            })
+          }
+          style={{
+            marginTop: 10,
+            paddingTop: 12,
+            paddingBottom: 12,
+            alignItems: 'center',
+            height: 50,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            borderWidth: 1,
+            borderTopColor: 'rgba(0, 0, 0, 0.05)',
+            borderLeftColor: 'white',
+            borderRightColor: 'white',
+            borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+          }}>
+          {this._renderCardBrand(defaultCard.brand)}
+          <Text style={{marginLeft: 20, fontSize: 15, fontWeight: 'bold'}}>
+            {defaultCard.brand} {defaultCard.last4}
+          </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row-reverse',
+              marginLeft: '5%',
+            }}>
+            <Icon
+              style={{marginLeft: 10}}
+              name="chevron-right"
+              size={20}
+              color="#798498"
+            />
+          </View>
+        </TouchableOpacity>
+      );
     }
   };
 
@@ -228,16 +267,15 @@ export default class UserPaymentsScreen extends React.Component {
     }
   };
 
+  onSwipeLeft(gestureState) {
+    this.setState({myText: 'You swiped left!'});
+  }
+
   // Make into component
   _renderPaymentInformation = (navigationScreen, paymentMethod) => {
     return (
       <GestureRecognizer onSwipeLeft={this.onSwipeLeft}>
-        <TouchableOpacity
-          onPress={() =>
-            this.props.navigation.navigate(navigationScreen, {
-              navigation: this.props.navigation.navigate,
-            })
-          }
+        <View
           style={{
             paddingTop: 12,
             paddingBottom: 12,
@@ -255,20 +293,7 @@ export default class UserPaymentsScreen extends React.Component {
           <Text style={{marginLeft: 20, fontWeight: 'bold', fontSize: 15}}>
             {paymentMethod.brand} {paymentMethod.last4}
           </Text>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row-reverse',
-              marginLeft: '5%',
-            }}>
-            <Icon
-              style={{marginLeft: 10}}
-              name="chevron-right"
-              size={20}
-              color="#798498"
-            />
-          </View>
-        </TouchableOpacity>
+        </View>
       </GestureRecognizer>
     );
   };
