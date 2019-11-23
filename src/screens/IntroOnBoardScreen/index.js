@@ -94,18 +94,20 @@ class IntroOnBoardScreen extends React.Component {
             />
           </Swiper>
 
-          <View style={{marginLeft: '5%'}}>
-            <EcstaticButton
-              buttonMarginTopScalor={signUpButtonMarginTopScalor}
-              buttonColor={'#3FF1BF'}
-              isDisabled={false}
-              buttonText={'Sign up'}
-              navigationScreen={'RegistrationScreenOne'}
-              navigation={this.props.navigation}
-              onPressFunc={() =>
-                navigate('RegistrationScreenOne', {navigation: navigate})
-              }
-            />
+          <View style={{alignItems: 'center'}}>
+            <View style={{width: '90%'}}>
+              <EcstaticButton
+                buttonMarginTopScalor={signUpButtonMarginTopScalor}
+                buttonColor={'#3FF1BF'}
+                isDisabled={false}
+                buttonText={'Sign up'}
+                navigationScreen={'RegistrationScreenOne'}
+                navigation={this.props.navigation}
+                onPressFunc={() =>
+                  navigate('RegistrationScreenOne', {navigation: navigate})
+                }
+              />
+            </View>
           </View>
           <View
             style={Object.assign({}, styles.signOrLogin, {

@@ -122,16 +122,16 @@ class RegistrationScreenOne extends React.Component {
           }}>
           Account Creation
         </Text>
-        <View style={styles.contentContainer}>
+        <View style={styles.facebookBtnContainer}>
           <FBLoginButton />
         </View>
         <Text style={{marginTop: '3%', textAlign: 'center'}}>or</Text>
 
-        <View style={{marginLeft: '5%'}}>
+        <View style={styles.mainFormContainer}>
           <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Email</Text>
           <View style={styles.formContainer}>
             <Icon
-              style={{marginLeft: 10, marginTop: 17}}
+              style={{marginLeft: 10}}
               name="envelope"
               size={15}
               color="#b9bec9"
@@ -139,6 +139,7 @@ class RegistrationScreenOne extends React.Component {
             <TextInput
               style={styles.inputStyle}
               autoCorrect={false}
+              keyboardType={'email-address'}
               placeholder={'Enter your email address'}
               onChangeText={email => this.updateField({email: email})}
             />
@@ -149,7 +150,7 @@ class RegistrationScreenOne extends React.Component {
           </Text>
           <View style={styles.formContainer}>
             <Icon
-              style={{marginLeft: 10, marginTop: 17}}
+              style={{marginLeft: 10}}
               name="unlock-alt"
               size={15}
               color="#b9bec9"
@@ -168,7 +169,7 @@ class RegistrationScreenOne extends React.Component {
           </Text>
           <View style={styles.formContainer}>
             <Icon
-              style={{marginLeft: 10, marginTop: 17}}
+              style={{marginLeft: 10, alignSelf: 'center'}}
               name="unlock-alt"
               size={15}
               color="#b9bec9"
@@ -183,21 +184,27 @@ class RegistrationScreenOne extends React.Component {
               }
             />
           </View>
+        </View>
 
-          <EcstaticButton
-            buttonMarginTopScalor={nextButtonMarginTopScalor}
-            buttonColor={this.state.nextButtonColor}
-            isDisabled={this.state.isDisabled}
-            buttonText={'Next'}
-            navigationScreen={'RegistrationScreenTwo'}
-            navigation={this.props.navigation}
-            onPressFunc={() =>
-              navigate('RegistrationScreenTwo', {
-                navigation: navigate,
-                props: this.state,
-              })
-            }
-          />
+        <View>
+          <View style={{alignItems: 'center'}}>
+            <View style={{width: '90%'}}>
+              <EcstaticButton
+                buttonMarginTopScalor={nextButtonMarginTopScalor}
+                buttonColor={this.state.nextButtonColor}
+                isDisabled={this.state.isDisabled}
+                buttonText={'Next'}
+                navigationScreen={'RegistrationScreenTwo'}
+                navigation={this.props.navigation}
+                onPressFunc={() =>
+                  navigate('RegistrationScreenTwo', {
+                    navigation: navigate,
+                    props: this.state,
+                  })
+                }
+              />
+            </View>
+          </View>
 
           <View
             style={{
@@ -228,15 +235,20 @@ class RegistrationScreenOne extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
+  facebookBtnContainer: {
     alignItems: 'center',
     marginTop: '10%',
   },
+  mainFormContainer: {
+    marginLeft: '5%',
+  },
   formContainer: {
+    width: '95%',
+    height: 50,
     flexDirection: 'row',
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    borderRadius: 5,
-    marginRight: '5%',
+    borderRadius: 10,
+    alignItems: 'center',
   },
   inputStyle: {
     flex: 1,

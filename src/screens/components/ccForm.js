@@ -131,10 +131,8 @@ export default class CreditCardForm extends React.Component {
 
   _renderCardNumberField = () => {
     return (
-      <View>
-        <Text style={{marginTop: 15, paddingBottom: 5, fontWeight: 'bold'}}>
-          Card Number
-        </Text>
+      <View style={{marginTop: 15}}>
+        <Text style={styles.formLabel}>Card Number</Text>
         <View style={styles.formContainer}>
           <Icon
             style={{marginLeft: 10}}
@@ -163,14 +161,14 @@ export default class CreditCardForm extends React.Component {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
-          marginTop: 10,
+          marginTop: 15,
         }}>
         <View
           style={{
             flex: 1,
             justifyContent: 'space-between',
           }}>
-          <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Exp. Month</Text>
+          <Text style={styles.formLabel}>Exp. Month</Text>
           <View style={Object.assign({}, styles.formContainer, {width: '95%'})}>
             <TextInput
               allowFontScaling={true}
@@ -187,13 +185,14 @@ export default class CreditCardForm extends React.Component {
         </View>
 
         <View style={{flex: 1}}>
-          <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Exp. Year</Text>
+          <Text style={styles.formLabel}>Exp. Year</Text>
           <View
             style={Object.assign({}, styles.formContainer, {width: '100%'})}>
             <TextInput
               allowFontScaling={true}
               maxLength={4}
               keyboardType={'number-pad'}
+              returnKeyType={'done'}
               autoCompleteType={'cc-csc'}
               style={{marginLeft: 5, width: '100%'}}
               autoCorrect={false}
@@ -211,10 +210,11 @@ export default class CreditCardForm extends React.Component {
       <View
         style={{
           flex: 1,
+          height: 25,
           width: '47.5%',
-          marginTop: 10,
+          marginTop: 15,
         }}>
-        <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>CVV</Text>
+        <Text style={styles.formLabel}>CVV</Text>
         <View style={styles.formContainer}>
           <TextInput
             allowFontScaling={true}
@@ -235,7 +235,7 @@ export default class CreditCardForm extends React.Component {
   _renderCountryField = () => {
     return (
       <View style={{width: '100%'}}>
-        <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Country</Text>
+        <Text style={styles.formLabel}>Country</Text>
         <RNPickerSelect
           placeholder={{
             label: 'United States',
@@ -264,10 +264,8 @@ export default class CreditCardForm extends React.Component {
 
   _renderZipCodeField = () => {
     return (
-      <View>
-        <Text style={{marginTop: 10, paddingBottom: 5, fontWeight: 'bold'}}>
-          Zip Code
-        </Text>
+      <View style={{marginTop: 15}}>
+        <Text style={styles.formLabel}>Zip Code</Text>
         <View style={styles.formContainer}>
           <TextInput
             allowFontScaling={true}
@@ -361,6 +359,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
     borderRadius: 10,
     alignItems: 'center',
+  },
+  formLabel: {
+    paddingBottom: 5,
+    fontWeight: 'bold',
   },
   inputStyle: {
     flex: 1,

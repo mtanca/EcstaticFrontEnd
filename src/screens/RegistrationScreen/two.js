@@ -96,6 +96,7 @@ class RegistrationScreenTwo extends React.Component {
       await AsyncStorage.setItem('@userId', data.userId + '');
       await AsyncStorage.setItem('@isLoggedIn', 'true');
       await AsyncStorage.setItem('@giveawayId', data.giveawayId + '');
+      await AsyncStorage.setItem('@userFirstName', this.state.firstName + '');
     } catch (e) {
       console.log(e);
       // saving error
@@ -183,113 +184,126 @@ class RegistrationScreenTwo extends React.Component {
             {this.state.registrationErrors}
           </Text>
         )}
-        <View style={{marginTop: '5%', marginLeft: '5%'}}>
-          <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>
-            Create Username
-          </Text>
+
+        <View style={styles.mainFormContainer}>
           <View style={styles.formContainer}>
-            <Icon
-              style={{marginLeft: 10, marginTop: 17}}
-              name="user"
-              size={15}
-              color="#b9bec9"
-            />
-            <TextInput
-              style={styles.inputStyle}
-              autoCorrect={false}
-              placeholder={'Enter new username'}
-              onChangeText={username => this.updateField({username: username})}
-            />
-          </View>
-
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{marginTop: 15, paddingBottom: 5, fontWeight: 'bold'}}>
-              First Name
+            <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>
+              Create Username
             </Text>
-            <Text
-              style={{
-                marginTop: 15,
-                marginLeft: '32%',
-                paddingBottom: 5,
-                fontWeight: 'bold',
-              }}>
-              Last Name
-            </Text>
-          </View>
-
-          <View style={{flexDirection: 'row'}}>
-            <View
-              style={Object.assign({}, styles.formContainer, {width: '45%'})}>
-              <TextInput
-                style={{marginLeft: 5}}
-                autoCorrect={false}
-                placeholder={'Enter first name'}
-                onChangeText={firstName =>
-                  this.updateField({firstName: firstName})
-                }
+            <View style={styles.formBody}>
+              <Icon
+                style={{marginLeft: 10}}
+                name="user"
+                size={15}
+                color="#b9bec9"
               />
-            </View>
-
-            <View
-              style={Object.assign({}, styles.formContainer, {width: '45%'})}>
               <TextInput
-                style={{marginLeft: 5}}
+                style={styles.inputStyle}
                 autoCorrect={false}
-                placeholder={'Enter last name'}
-                onChangeText={lastName =>
-                  this.updateField({lastName: lastName})
+                placeholder={'Enter new username'}
+                onChangeText={username =>
+                  this.updateField({username: username})
                 }
               />
             </View>
           </View>
 
-          <Text style={{marginTop: 15, paddingBottom: 5, fontWeight: 'bold'}}>
-            Age
-          </Text>
-          <View style={styles.formContainer}>
-            <Icon
-              style={{marginLeft: 10, marginTop: 17}}
-              name="calendar"
-              size={15}
-              color="#b9bec9"
-            />
-            <TextInput
-              style={styles.inputStyle}
-              autoCorrect={false}
-              placeholder={'Enter your age'}
-              onChangeText={age => this.updateField({age: age})}
-            />
+          <View style={{flexDirection: 'row', marginTop: 15}}>
+            <View style={{flexDirection: 'column', width: '45%'}}>
+              <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>
+                First Name
+              </Text>
+              <View>
+                <View style={styles.formBody}>
+                  <TextInput
+                    style={{marginLeft: 5}}
+                    autoCorrect={false}
+                    placeholder={'Enter first name'}
+                    onChangeText={firstName =>
+                      this.updateField({firstName: firstName})
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View
+              style={{flexDirection: 'column', marginLeft: '5%', width: '45%'}}>
+              <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>
+                Last Name
+              </Text>
+              <View>
+                <View style={styles.formBody}>
+                  <TextInput
+                    style={{marginLeft: 5}}
+                    autoCorrect={false}
+                    placeholder={'Enter last name'}
+                    onChangeText={lastName =>
+                      this.updateField({lastName: lastName})
+                    }
+                  />
+                </View>
+              </View>
+            </View>
           </View>
 
-          <Text style={{marginTop: 15, paddingBottom: 5, fontWeight: 'bold'}}>
-            Enter Invite Code
-          </Text>
           <View style={styles.formContainer}>
-            <Icon
-              style={{marginLeft: 10, marginTop: 17}}
-              name="key"
-              size={15}
-              color="#b9bec9"
-            />
-            <TextInput
-              style={styles.inputStyle}
-              autoCorrect={false}
-              placeholder={'Enter code received in your invite'}
-              onChangeText={giveawayUUID =>
-                this.updateField({giveawayUUID: giveawayUUID})
-              }
-            />
+            <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>Age</Text>
+            <View style={styles.formBody}>
+              <Icon
+                style={{marginLeft: 10}}
+                name="calendar"
+                size={15}
+                color="#b9bec9"
+              />
+              <TextInput
+                style={styles.inputStyle}
+                keyboardType={'number-pad'}
+                returnKeyType={'done'}
+                autoCorrect={false}
+                placeholder={'Enter your age'}
+                onChangeText={age => this.updateField({age: age})}
+              />
+            </View>
           </View>
 
-          <EcstaticButton
-            buttonMarginTopScalor={completeButtonMarginTopScalor}
-            buttonColor={this.state.nextButtonColor}
-            isDisabled={this.state.isDisabled}
-            buttonText={'Complete'}
-            navigationScreen={'GiveAwayShowScreen'}
-            navigation={this.props.navigation}
-            onPressFunc={() => this.handleSubmit()}
-          />
+          <View style={styles.formContainer}>
+            <Text style={{paddingBottom: 5, fontWeight: 'bold'}}>
+              Enter Invite Code
+            </Text>
+            <View style={styles.formBody}>
+              <Icon
+                style={{marginLeft: 10}}
+                name="key"
+                size={15}
+                color="#b9bec9"
+              />
+              <TextInput
+                style={styles.inputStyle}
+                autoCorrect={false}
+                placeholder={'Enter code received in your invite'}
+                onChangeText={giveawayUUID =>
+                  this.updateField({giveawayUUID: giveawayUUID})
+                }
+              />
+            </View>
+          </View>
+        </View>
+
+        <View>
+          <View style={{alignItems: 'center'}}>
+            <View style={{width: '90%'}}>
+              <EcstaticButton
+                buttonMarginTopScalor={completeButtonMarginTopScalor}
+                buttonColor={this.state.nextButtonColor}
+                isDisabled={this.state.isDisabled}
+                buttonText={'Complete'}
+                navigationScreen={'BetaHomeScreen'}
+                navigation={this.props.navigation}
+                onPressFunc={() => this.handleSubmit()}
+              />
+            </View>
+          </View>
 
           <View
             style={{
@@ -314,6 +328,7 @@ class RegistrationScreenTwo extends React.Component {
             </Text>
           </View>
         </View>
+
         {this.state.canNavigate && this._navigate()}
       </ScrollView>
     );
@@ -321,15 +336,21 @@ class RegistrationScreenTwo extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    alignItems: 'center',
-    marginTop: '10%',
+  mainFormContainer: {
+    marginLeft: '5%',
+    width: '95%',
   },
   formContainer: {
+    marginTop: 15,
+    width: '95%',
+  },
+  formBody: {
+    width: '100%',
+    height: 50,
     flexDirection: 'row',
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    borderRadius: 5,
-    marginRight: '5%',
+    borderRadius: 10,
+    alignItems: 'center',
   },
   inputStyle: {
     flex: 1,
