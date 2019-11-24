@@ -69,7 +69,8 @@ export default class UserPaymentsScreen extends React.Component {
           console.log(responseJson.data.cards);
           this.setState({
             userPaymentData: responseJson.data.cards,
-            userDefaultPaymentData: defaultCard === [] ? false : defaultCard,
+            userDefaultPaymentData:
+              defaultCard.length === 0 ? false : defaultCard,
           });
         });
     } catch (e) {
@@ -190,12 +191,36 @@ export default class UserPaymentsScreen extends React.Component {
     );
   };
 
+  _handleDefaultPaymentDataLoading = () => {
+    setTimeout(
+      () =>
+        this.setState({
+          userDefaultPaymentData: false,
+        }),
+      4000,
+    );
+
+    return this._renderLoading();
+  };
+
+  _handlePaymentDataMethodsLoading = () => {
+    setTimeout(
+      () =>
+        this.setState({
+          userPaymentData: false,
+        }),
+      4000,
+    );
+
+    return this._renderLoading();
+  };
+
   _renderDefaultCard = () => {
     const defaultCard = this.state.userDefaultPaymentData;
     const navigationScreen = 'CreditCardForm';
 
     if (defaultCard === null) {
-      return this._renderLoading();
+      return this._handleDefaultPaymentDataLoading();
     } else if (defaultCard === false) {
       return this._renderNoDefaultPayment();
     } else {
@@ -303,7 +328,7 @@ export default class UserPaymentsScreen extends React.Component {
     const paymentMethods = this.state.userPaymentData;
 
     if (paymentMethods === null) {
-      return this._renderLoading();
+      return this._handlePaymentDataMethodsLoading();
     }
     return (
       <View>

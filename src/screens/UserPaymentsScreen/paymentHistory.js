@@ -49,10 +49,11 @@ export default class UserPaymentHistoryScreen extends React.Component {
         .then(response => response.json())
         .then(responseJson => {
           console.log(responseJson.data.paymentHistory);
+          console.log(responseJson.data.paymentHistory);
           const paymentHistory = responseJson.data.paymentHistory;
           this.setState({
             userPaymentHistoryData:
-              paymentHistory === [] ? false : paymentHistory,
+              paymentHistory.length === 0 ? false : paymentHistory,
           });
         });
     } catch (e) {
