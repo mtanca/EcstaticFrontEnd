@@ -50,6 +50,7 @@ class RegistrationScreenOne extends React.Component {
       'isAllFieldsFilled',
       'registrationErrors',
       'nextButtonColor',
+      'isDisabled',
     ];
 
     let requiredBlankFields = Object.keys(this.state).filter(

@@ -21,7 +21,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import EcstaticButton from '../components/ecstaticButton.js';
 
-import {IP_ADDRESS} from '../../constants/constants.js';
+import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
 
 class RegistrationScreenTwo extends React.Component {
   constructor(props) {
@@ -104,7 +104,7 @@ class RegistrationScreenTwo extends React.Component {
   };
 
   handleSubmit = () => {
-    fetch(`https://${IP_ADDRESS}/api/users`, {
+    fetch(`${REMOTE_SERVER}/api/users`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

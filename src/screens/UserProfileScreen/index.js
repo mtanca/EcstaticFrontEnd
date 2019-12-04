@@ -3,7 +3,7 @@ import {Text, View, TouchableOpacity} from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {IP_ADDRESS} from '../../constants/constants.js';
+import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
 
 import LottieView from 'lottie-react-native';
 
@@ -29,7 +29,7 @@ export default class UserProfileScreen extends React.Component {
   _fetchUserData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`https://${IP_ADDRESS}/api/users/${userId}`, {
+      fetch(`${REMOTE_SERVER}/api/users/${userId}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

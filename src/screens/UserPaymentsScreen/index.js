@@ -23,7 +23,7 @@ import UserPaymentHistoryScreen from './paymentHistory.js';
 import CreditCardForm from '../components/ccForm.js';
 import UserNavigationBar from '../components/userNavigationBar';
 
-import {IP_ADDRESS} from '../../constants/constants.js';
+import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -55,7 +55,7 @@ export default class UserPaymentsScreen extends React.Component {
   _fetchUserPaymentData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`https://${IP_ADDRESS}/api/users/${userId}/payments`, {
+      fetch(`${REMOTE_SERVER}/api/users/${userId}/payments`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
