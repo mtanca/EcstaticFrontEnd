@@ -13,7 +13,7 @@ import LottieView from 'lottie-react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {IP_ADDRESS} from '../../constants/constants.js';
+import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -39,7 +39,7 @@ export default class UserPaymentHistoryScreen extends React.Component {
   _fetchUserPaymentHistory = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}/payments_history`, {
+      fetch(`${REMOTE_SERVER}/api/users/${userId}/payments_history`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -49,10 +49,11 @@ export default class UserPaymentHistoryScreen extends React.Component {
         .then(response => response.json())
         .then(responseJson => {
           console.log(responseJson.data.paymentHistory);
+          console.log(responseJson.data.paymentHistory);
           const paymentHistory = responseJson.data.paymentHistory;
           this.setState({
             userPaymentHistoryData:
-              paymentHistory === [] ? false : paymentHistory,
+              paymentHistory.length === 0 ? false : paymentHistory,
           });
         });
     } catch (e) {

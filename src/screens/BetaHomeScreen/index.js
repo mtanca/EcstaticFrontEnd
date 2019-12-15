@@ -41,7 +41,7 @@ import UserNavigationBar from '../components/userNavigationBar';
 
 import CategoryTitle from '../components/categoryTitle.js';
 
-import {IP_ADDRESS} from '../../constants/constants.js';
+import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
 
 export default class BetaHomeScreen extends React.Component {
   constructor(props) {
@@ -202,7 +202,7 @@ export default class BetaHomeScreen extends React.Component {
   _fetchUserGiveAwayData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}/giveaways`, {
+      fetch(`${REMOTE_SERVER}/api/users/${userId}/giveaways`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -224,7 +224,7 @@ export default class BetaHomeScreen extends React.Component {
   _fetchUserPrizeData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`http://${IP_ADDRESS}:4000/api/users/${userId}/prizes`, {
+      fetch(`${REMOTE_SERVER}/api/users/${userId}/prizes`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

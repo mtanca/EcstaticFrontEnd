@@ -24,7 +24,7 @@ import PrizeContainer from '../components/prizeContainer.js';
 import UserSection from '../components/userSection.js';
 import EcstaticButton from '../components/ecstaticButton.js';
 
-import {IP_ADDRESS} from '../../constants/constants.js';
+import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
 
 const ninja = require('../../assets/Ninja.png');
 const ninjaHeader = require('../../assets/ninjaHeader.png');
@@ -149,7 +149,7 @@ export default class GiveAwayShowScreen extends React.Component {
         giveawayId = defaultGiveAwayId;
       }
 
-      fetch(`http://${IP_ADDRESS}:4000/api/giveaways/${giveawayId}/prizes`, {
+      fetch(`${REMOTE_SERVER}/api/giveaways/${giveawayId}/prizes`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -365,7 +365,7 @@ export default class GiveAwayShowScreen extends React.Component {
    */
   handleSubmit = () => {
     fetch(
-      `http://${IP_ADDRESS}:4000/api/giveaways/` +
+      `${REMOTE_SERVER}/api/giveaways/` +
         this.state.data.giveaway.id +
         '/purchase',
       {
@@ -382,6 +382,7 @@ export default class GiveAwayShowScreen extends React.Component {
     )
       .then(response => response.json())
       .then(responseJson => {
+        console.log(responseJson);
         if (responseJson.data.errors === null) {
           this.setState({
             hasData: true,
@@ -432,7 +433,7 @@ export default class GiveAwayShowScreen extends React.Component {
         giveawayId = defaultGiveAwayId;
       }
 
-      fetch(`http://${IP_ADDRESS}:4000/api/giveaways/` + giveawayId, {
+      fetch(`${REMOTE_SERVER}/api/giveaways/` + giveawayId, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

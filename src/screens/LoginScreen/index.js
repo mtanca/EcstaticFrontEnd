@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import EcstaticButton from '../components/ecstaticButton.js';
 
-import {IP_ADDRESS} from '../../constants/constants.js';
+import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
 
 import FBLoginButton from '../components/FBLoginButton';
 
@@ -59,11 +59,13 @@ class LoginScreen extends React.Component {
   };
 
   _enableSumbitButton = () => {
-    const fieldsNotToCheck = ['isAllFieldsFilled', 'loginErrors'];
+    const fieldsNotToCheck = ['isAllFieldsFilled', 'loginErrors', 'isDisabled'];
 
     let requiredBlankFields = Object.keys(this.state).filter(
       key => !fieldsNotToCheck.includes(key) && this.state[key] == '',
     );
+
+    console.log('requiredBlankFields: ' + requiredBlankFields);
 
     if (requiredBlankFields.length == 0) {
       this.setState({
@@ -81,7 +83,7 @@ class LoginScreen extends React.Component {
   };
 
   handleSubmit = () => {
-    fetch(`http://${IP_ADDRESS}:4000/api/sessions`, {
+    fetch(`${REMOTE_SERVER}/api/sessions`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -94,6 +96,7 @@ class LoginScreen extends React.Component {
     })
       .then(response => response.json())
       .then(responseJson => {
+        console.log(responseJson);
         this._storeData(responseJson.data);
 
         if (responseJson.data.isAuthenticated) {
