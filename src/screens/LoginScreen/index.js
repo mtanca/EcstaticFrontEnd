@@ -29,10 +29,8 @@ class LoginScreen extends React.Component {
       loginErrors: false,
       buttonColor: 'rgba(57,243,187, 0.5)',
       isDisabled: true,
+      userFirstName: '',
     };
-
-    this._storeData = this._storeData.bind(this);
-    this.navigate = this._navigate.bind(this);
   }
 
   _storeData = async data => {
@@ -55,11 +53,17 @@ class LoginScreen extends React.Component {
     this.props.navigation.navigate('BetaHomeScreen', {
       navigation: this.props.navigation.navigate,
       giveawayId: this.state.giveawayId,
+      userFirstName: this.state.userFirstName,
     });
   };
 
   _enableSumbitButton = () => {
-    const fieldsNotToCheck = ['isAllFieldsFilled', 'loginErrors', 'isDisabled'];
+    const fieldsNotToCheck = [
+      'isAllFieldsFilled',
+      'loginErrors',
+      'isDisabled',
+      'userFirstName',
+    ];
 
     let requiredBlankFields = Object.keys(this.state).filter(
       key => !fieldsNotToCheck.includes(key) && this.state[key] == '',
@@ -97,13 +101,15 @@ class LoginScreen extends React.Component {
       .then(response => response.json())
       .then(responseJson => {
         console.log(responseJson);
-        this._storeData(responseJson.data);
 
         if (responseJson.data.isAuthenticated) {
+          this._storeData(responseJson.data);
+
           this.setState({
             canNavigate: true,
             loginHasErrors: false,
             giveawayId: responseJson.data.giveawayId,
+            userFirstName: responseJson.data.userFirstName,
           });
         } else {
           this.setState({

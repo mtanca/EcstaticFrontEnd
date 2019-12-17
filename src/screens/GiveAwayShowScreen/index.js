@@ -386,6 +386,8 @@ export default class GiveAwayShowScreen extends React.Component {
         if (responseJson.data.errors === null) {
           this.setState({
             hasData: true,
+            purchaseHasErrors: false,
+            purchaseErrors: null,
             purchaseData: responseJson.data.purchase_result,
             currentDisplayPrize: responseJson.data.purchase_result[0],
           });
@@ -393,7 +395,7 @@ export default class GiveAwayShowScreen extends React.Component {
         } else {
           this.setState({
             purchaseHasErrors: true,
-            purchaseErrors: null,
+            purchaseErrors: responseJson.data.errors,
             purchaseData: null,
           });
         }
@@ -472,6 +474,15 @@ export default class GiveAwayShowScreen extends React.Component {
     });
   };
 
+  _renderPurchaseError = () => {
+    return (
+      <View
+        style={{marginTop: 5, justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{color: 'red'}}> {this.state.purchaseErrors} </Text>
+      </View>
+    );
+  };
+
   render() {
     const window = Dimensions.get('window');
 
@@ -527,6 +538,9 @@ export default class GiveAwayShowScreen extends React.Component {
                 {this.state.data.giveaway.name}
               </Text>
               <GiveAwayStatistics giveaway={this.state.data.giveaway} />
+
+              {this.state.purchaseHasErrors && this._renderPurchaseError()}
+
               <View style={{marginTop: '5%'}}>
                 <PrizeContainer
                   title="Prizes"

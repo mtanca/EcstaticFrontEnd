@@ -67,10 +67,10 @@ export default class UserPaymentsScreen extends React.Component {
           const defaultCard = responseJson.data.defaultCard;
 
           console.log(responseJson.data.cards);
+
           this.setState({
             userPaymentData: responseJson.data.cards,
-            userDefaultPaymentData:
-              defaultCard.length === 0 ? false : defaultCard,
+            userDefaultPaymentData: defaultCard === null ? false : defaultCard,
           });
         });
     } catch (e) {
@@ -79,10 +79,13 @@ export default class UserPaymentsScreen extends React.Component {
   };
 
   _fetchUserFirstName = async () => {
+    const capitalizedName = name =>
+      name.charAt(0).toUpperCase() + name.slice(1);
+
     try {
       let userFirstName = await AsyncStorage.getItem('@userFirstName');
       this.setState({
-        userFirstName: userFirstName,
+        userFirstName: capitalizedName(userFirstName),
       });
     } catch (e) {
       this.setState({
@@ -192,26 +195,10 @@ export default class UserPaymentsScreen extends React.Component {
   };
 
   _handleDefaultPaymentDataLoading = () => {
-    setTimeout(
-      () =>
-        this.setState({
-          userDefaultPaymentData: false,
-        }),
-      4000,
-    );
-
     return this._renderLoading();
   };
 
   _handlePaymentDataMethodsLoading = () => {
-    setTimeout(
-      () =>
-        this.setState({
-          userPaymentData: false,
-        }),
-      4000,
-    );
-
     return this._renderLoading();
   };
 
@@ -551,6 +538,19 @@ export default class UserPaymentsScreen extends React.Component {
         </View>
       </View>
     );
+  };
+
+  _signOut = navigate => {
+    AsyncStorage.removeItem('@isLoggedIn');
+    AsyncStorage.removeItem('@userId');
+    AsyncStorage.removeItem('@giveawayId');
+
+    this.slideRight();
+    this.handleToggleProfileModal(null);
+
+    this.props.navigation.navigate('SplashScreen', {
+      navigation: this.props.navigation.navigate,
+    });
   };
 
   // This function toggles the visiblity of the modal and determines the display of the user's profile.
