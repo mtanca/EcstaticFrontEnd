@@ -251,16 +251,33 @@ export default class BetaHomeScreen extends React.Component {
   };
 
   _fetchUserFirstName = async () => {
+    let firstName = '';
+
+    const capitalizedName = name =>
+      name.charAt(0).toUpperCase() + name.slice(1);
+
+    // There is a race condition from when we save then user's name in the storage and when
+    // we have to display it on login. This is why we pass in the userFirstName in the nav props.
+    const userFirstNameFromLogin = this.props.navigation.state.params
+      .userFirstName;
+
     try {
       let userFirstName = await AsyncStorage.getItem('@userFirstName');
-      this.setState({
-        userFirstName: userFirstName,
-      });
+
+      if (userFirstName != null) {
+        firstName = capitalizedName(userFirstName);
+      }
+
+      if (userFirstNameFromLogin) {
+        firstName = capitalizedName(userFirstNameFromLogin);
+      }
     } catch (e) {
-      this.setState({
-        userFirstName: 'Not Available',
-      });
+      firstName = 'Not Available';
     }
+
+    this.setState({
+      userFirstName: firstName,
+    });
   };
 
   _userPrizeOwn = () => {
