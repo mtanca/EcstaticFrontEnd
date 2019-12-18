@@ -23,6 +23,7 @@ import GiveAwayStatistics from './statistics.js';
 import PrizeContainer from '../components/prizeContainer.js';
 import UserSection from '../components/userSection.js';
 import EcstaticButton from '../components/ecstaticButton.js';
+import PrizeModalDisplay from '../components/prizeModalDisplay';
 
 import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
 
@@ -129,7 +130,7 @@ export default class GiveAwayShowScreen extends React.Component {
       return floss;
     } else if (name.includes('OMG')) {
       return omgPrize;
-    } else if (name.includes('Shirt')) {
+    } else if (name.includes('Tee')) {
       return ninjaTee;
     } else if (name.includes('Private')) {
       return privateQA;
@@ -191,6 +192,26 @@ export default class GiveAwayShowScreen extends React.Component {
         .isPrizeDescriptionModalVisible,
       currentDisplayShowModalPrize: prize,
     });
+  };
+
+  getPrizeImage = fileName => {
+    const nameImageMapper = {
+      'Rocket On.png': rocketOn,
+      'Heals.png': heals,
+      'Dab.png': dab,
+      'Floss.png': floss,
+      'omg-prize.png': omgPrize,
+      'shirt-prize.png': ninjaTee,
+      'private-qa-prize.png': privateQA,
+    };
+
+    const image = nameImageMapper[fileName];
+
+    if (image) {
+      return image;
+    } else {
+      return coinsPrize;
+    }
   };
 
   _togglePrizeModal = () =>
@@ -308,39 +329,17 @@ export default class GiveAwayShowScreen extends React.Component {
   renderPrizeShowModal = () => {
     const window = Dimensions.get('window');
 
-    const data = this.state.currentDisplayShowModalPrize.image.file_name;
+    const displayPrize = this.state.currentDisplayShowModalPrize;
+    const userPrizes = this.props.navigation.state.params.userPrizes;
 
     if (!this.state.isPrizeDescriptionModalVisible) return null;
     return (
-      <Modal
-        style={{flex: 1, height: 250}}
+      <PrizeModalDisplay
         isVisible={this.state.isPrizeDescriptionModalVisible}
-        onRequestClose={() => this.handleTogglePrizeModal(null)}>
-        <View style={{flexDirection: 'row'}}>
-          <View style={{flex: 1, alignItems: 'center', marginTop: 80}}>
-            <Text style={{color: 'white', fontSize: 30}}>
-              {this.state.currentDisplayShowModalPrize.name}
-            </Text>
-            <Text style={{color: 'white', fontSize: 15}}>Not Owned</Text>
-          </View>
-        </View>
-
-        <TouchableOpacity
-          onPressOut={() => this.handleTogglePrizeModal(null)}
-          style={{
-            justifyContent: 'center',
-            flexGrow: 1,
-            alignItems: 'center',
-            height: '100%',
-            width: '100%',
-          }}>
-          <Image
-            source={this.getPrizePhoto(
-              this.state.currentDisplayShowModalPrize.image.file_name,
-            )}
-          />
-        </TouchableOpacity>
-      </Modal>
+        toggleModalFunc={this.handleTogglePrizeModal.bind(this)}
+        displayPrize={displayPrize}
+        userPrizes={userPrizes}
+      />
     );
   };
 

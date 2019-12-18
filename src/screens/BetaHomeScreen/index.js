@@ -27,17 +27,13 @@ const madisonBeers = require('../../assets/madison-beer.png');
 const blackPink = require('../../assets/Blackpink.png');
 const khalid = require('../../assets/Khalid.png');
 
-const ninjaTee = require('../../assets/shirt-prize.png');
-const omgPrize = require('../../assets/omg-prize.png');
-const privateQA = require('../../assets/private-qa-prize.png');
-const coinsPrize = require('../../assets/treasure-prize.png');
-
 const moment = require('moment');
 const time = require('../../assets/time.png');
 
 import UserSection from '../components/userSection.js';
 import PrizeContainer from '../components/prizeContainer';
 import UserNavigationBar from '../components/userNavigationBar';
+import PrizeModalDisplay from '../components/prizeModalDisplay';
 
 import CategoryTitle from '../components/categoryTitle.js';
 
@@ -90,26 +86,6 @@ export default class BetaHomeScreen extends React.Component {
     this.setState({
       isProfileModalVisible: !this.state.isProfileModalVisible,
     });
-  };
-
-  getPrizePhoto = fileName => {
-    if (fileName === 'Rocket On.png') {
-      return rocketOn;
-    } else if (fileName === 'Heals.png') {
-      return heals;
-    } else if (fileName === 'Dab.png') {
-      return dab;
-    } else if (fileName === 'Floss.png') {
-      return floss;
-    } else if (fileName === 'omg-prize.png') {
-      return omgPrize;
-    } else if (fileName === 'shirt-prize.png') {
-      return ninjaTee;
-    } else if (fileName === 'private-qa-prize.png') {
-      return privateQA;
-    } else {
-      return coinsPrize;
-    }
   };
 
   renderGiveAwayStats = giveaway => {
@@ -280,19 +256,6 @@ export default class BetaHomeScreen extends React.Component {
     });
   };
 
-  _userPrizeOwn = () => {
-    const prizeMapping = this.state.userPrizes;
-
-    const amountOwned =
-      prizeMapping[this.state.currentDisplayShowModalPrize.name].length;
-
-    if (amountOwned < 1) {
-      return 'Not owned';
-    } else {
-      return `Owned x${amountOwned}`;
-    }
-  };
-
   _renderHeader = () => {
     return (
       <View style={styles.header}>
@@ -332,39 +295,16 @@ export default class BetaHomeScreen extends React.Component {
   renderPrizeShowModal = () => {
     const window = Dimensions.get('window');
 
+    const displayPrize = this.state.currentDisplayShowModalPrize;
+
     if (!this.state.isPrizeDescriptionModalVisible) return null;
     return (
-      <Modal
-        style={{flex: 1, height: 250}}
+      <PrizeModalDisplay
         isVisible={this.state.isPrizeDescriptionModalVisible}
-        onRequestClose={() => this.handleTogglePrizeModal(null)}>
-        <View style={{flexDirection: 'row'}}>
-          <View style={{flex: 1, alignItems: 'center', marginTop: 80}}>
-            <Text style={{color: 'white', fontSize: 30}}>
-              {this.state.currentDisplayShowModalPrize.name}
-            </Text>
-            <Text style={{color: 'white', fontSize: 15}}>
-              {this._userPrizeOwn()}
-            </Text>
-          </View>
-        </View>
-
-        <TouchableOpacity
-          onPressOut={() => this.handleTogglePrizeModal(null)}
-          style={{
-            justifyContent: 'center',
-            flexGrow: 1,
-            alignItems: 'center',
-            height: '100%',
-            width: '100%',
-          }}>
-          <Image
-            source={this.getPrizePhoto(
-              this.state.currentDisplayShowModalPrize.image.file_name,
-            )}
-          />
-        </TouchableOpacity>
-      </Modal>
+        toggleModalFunc={this.handleTogglePrizeModal.bind(this)}
+        displayPrize={displayPrize}
+        userPrizes={this.state.userPrizes}
+      />
     );
   };
 
@@ -372,6 +312,7 @@ export default class BetaHomeScreen extends React.Component {
     this.props.navigation.navigate('GiveAwayShowScreen', {
       navigation: this.props.navigation.navigate,
       giveaway: giveawayId,
+      userPrizes: this.state.userPrizes,
     });
   };
 
