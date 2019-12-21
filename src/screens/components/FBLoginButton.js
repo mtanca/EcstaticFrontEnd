@@ -6,7 +6,12 @@ export default class FBLoginButton extends React.Component {
   render() {
     return (
       <LoginButton
-        publishPermissions={['email']}
+        publishPermissions={[
+          'email',
+          'user_birthday',
+          'user_age_range',
+          'user_photos',
+        ]}
         onLoginFinished={(error, result) => {
           if (error) {
             alert('Login failed with error: ' + error.message);
