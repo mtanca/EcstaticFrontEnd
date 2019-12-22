@@ -15,12 +15,7 @@ import EcstaticButton from '../components/ecstaticButton.js';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import FBLoginButton from '../components/FBLoginButton';
-import {
-  FormLabel,
-  FormInput,
-  FormValidationMessage,
-} from 'react-native-elements';
+import {facebookService} from '../../services/Facebook.js';
 
 class RegistrationScreenOne extends React.Component {
   constructor(props) {
@@ -124,7 +119,7 @@ class RegistrationScreenOne extends React.Component {
           Account Creation
         </Text>
         <View style={styles.facebookBtnContainer}>
-          <FBLoginButton />
+          {facebookService.makeLoginButton(accessToken => {})}
         </View>
         <Text style={{marginTop: '3%', textAlign: 'center'}}>or</Text>
 

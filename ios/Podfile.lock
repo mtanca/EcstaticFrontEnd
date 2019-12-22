@@ -119,6 +119,7 @@ PODS:
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - FBSDKLoginKit
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - lottie-ios (from `../node_modules/lottie-ios`)
@@ -246,6 +247,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: a3c395829c56e2cb054a0730126298bf805a2dca
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
-PODFILE CHECKSUM: 116b01f3f72ac90df44605c8c4eb6b4cf2c33e33
+PODFILE CHECKSUM: 7c97253e2cd59e1aa1a56a97fdb858601480efc5
 
 COCOAPODS: 1.7.5

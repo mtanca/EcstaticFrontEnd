@@ -16,7 +16,7 @@ import EcstaticButton from '../components/ecstaticButton.js';
 
 import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
 
-import FBLoginButton from '../components/FBLoginButton';
+import {facebookService} from '../../services/Facebook.js';
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -30,6 +30,7 @@ class LoginScreen extends React.Component {
       buttonColor: 'rgba(57,243,187, 0.5)',
       isDisabled: true,
       userFirstName: '',
+      profile: null,
     };
   }
 
@@ -50,6 +51,7 @@ class LoginScreen extends React.Component {
   };
 
   _navigate = () => {
+    debugger;
     this.props.navigation.navigate('BetaHomeScreen', {
       navigation: this.props.navigation.navigate,
       giveawayId: this.state.giveawayId,
@@ -119,6 +121,44 @@ class LoginScreen extends React.Component {
       });
   };
 
+  _loadData = async () => {
+    const profile = await facebookService.fetchProfile();
+    let userFirstName = '';
+
+    if (profile) {
+      this.setState({
+        canNavigate: true,
+        profile: profile,
+      });
+      // userFirstName = profile.name.split(' ')[0];
+      //
+      // this.handleFaceBookOauthLogin(profile);
+    }
+  };
+
+  handleFaceBookOauthLogin = facebookProfile => {
+    fetch(`${REMOTE_SERVER}/api/sessions/oath/${facebookProfile.id}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson);
+        if (responseJson.data.user) {
+          this._storeData(responseJson.data);
+
+          this.setState({
+            profile: profile,
+            userFirstName: userFirstName,
+            canNavigate: true,
+          });
+        }
+      });
+  };
+
   render() {
     const window = Dimensions.get('window');
     const {navigate} = this.props.navigation;
@@ -139,7 +179,9 @@ class LoginScreen extends React.Component {
           Log In
         </Text>
         <View style={styles.facebookBtnContainer}>
-          <FBLoginButton />
+          {facebookService.makeLoginButton(accessToken => {
+            this._loadData();
+          })}
         </View>
 
         <View style={{marginTop: '10%'}}>
