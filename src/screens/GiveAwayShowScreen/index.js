@@ -26,7 +26,7 @@ import EcstaticButton from '../components/ecstaticButton.js';
 import PrizeModalDisplay from '../components/prizeModalDisplay';
 
 import {LOCAL_SERVER} from '../../constants/localServer.js';
-import {REMOTE_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/remoteServer.js';
 
 const ninja = require('../../assets/Ninja.png');
 const ninjaHeader = require('../../assets/ninjaHeader.png');

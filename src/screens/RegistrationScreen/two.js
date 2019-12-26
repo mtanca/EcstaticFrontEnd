@@ -22,7 +22,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import EcstaticButton from '../components/ecstaticButton.js';
 
 import {LOCAL_SERVER} from '../../constants/localServer.js';
-import {REMOTE_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/remoteServer.js';
 
 class RegistrationScreenTwo extends React.Component {
   constructor(props) {

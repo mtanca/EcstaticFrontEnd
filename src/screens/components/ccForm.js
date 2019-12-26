@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import RNPickerSelect from 'react-native-picker-select';
 
 import {LOCAL_SERVER} from '../../constants/localServer.js';
-import {REMOTE_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/remoteServer.js';
 
 var countries = require('country-data').countries;
 

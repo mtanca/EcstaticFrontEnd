@@ -40,7 +40,7 @@ import PrizeModalDisplay from '../components/prizeModalDisplay';
 import CategoryTitle from '../components/categoryTitle.js';
 
 import {LOCAL_SERVER} from '../../constants/localServer.js';
-import {REMOTE_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/remoteServer.js';
 
 export default class BetaHomeScreen extends React.Component {
   constructor(props) {

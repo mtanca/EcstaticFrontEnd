@@ -3,7 +3,7 @@ import React from 'react';
 import {Text} from 'react-native';
 
 import {LOCAL_SERVER} from '../../constants/localServer.js';
-import {REMOTE_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/remoteServer.js';
 
 import AsyncStorage from '@react-native-community/async-storage';
 

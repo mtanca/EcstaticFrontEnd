@@ -14,7 +14,7 @@ import {
 import EcstaticButton from '../components/ecstaticButton.js';
 
 import {LOCAL_SERVER} from '../../constants/localServer.js';
-import {REMOTE_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/remoteServer.js';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
