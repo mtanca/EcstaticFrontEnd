@@ -11,16 +11,17 @@ import {
 } from 'react-native';
 
 import RegistrationScreenTwo from './two.js';
+
 import EcstaticButton from '../components/ecstaticButton.js';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import FBLoginButton from '../components/FBLoginButton';
-import {
-  FormLabel,
-  FormInput,
-  FormValidationMessage,
-} from 'react-native-elements';
+import {facebookService} from '../../services/Facebook.js';
+
+import {LOCAL_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/remoteServer.js';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 class RegistrationScreenOne extends React.Component {
   constructor(props) {
@@ -34,6 +35,8 @@ class RegistrationScreenOne extends React.Component {
       confirmPassword: '',
       registrationErrors: null,
       isDisabled: true,
+      profile: null,
+      navigateTo: '',
     };
 
     this.updateField = this.updateField.bind(this);
@@ -72,10 +75,6 @@ class RegistrationScreenOne extends React.Component {
     }
   };
 
-  _navigate = () => {
-    _storeData(this.state);
-  };
-
   // We need to store the data on the disk in the event the user fills out the first registration
   // screen, but does not complete the enitre registration process. Doing this allows us to go
   // directly to the last registration screen when the app loads up.
@@ -87,6 +86,108 @@ class RegistrationScreenOne extends React.Component {
       await AsyncStorage.setItem('@confirmedPassword', data.confirmPassword);
     } catch (e) {
       // saving error
+    }
+  };
+
+  _storeOauthData = async data => {
+    const userFirstName = data.userFirstName || data.user.first_name;
+    const userId = data.userId || data.user.id;
+    const giveawayId = data.giveawayId || data.give_away_id;
+
+    try {
+      await AsyncStorage.setItem('@userId', userId + '');
+      await AsyncStorage.setItem('@isLoggedIn', 'true');
+      await AsyncStorage.setItem('@giveawayId', giveawayId + '');
+      await AsyncStorage.setItem('@userFirstName', userFirstName + '');
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  _loadData = async () => {
+    const profile = await facebookService.fetchProfile();
+    let userFirstName = '';
+
+    if (profile) {
+      this.setState({
+        profile: profile,
+        navigateTo: 'OauthGiveAwayVerificationScreen',
+      });
+      this.handleFaceBookOauthLogin(profile);
+    }
+  };
+
+  handleFaceBookOauthLogin = facebookProfile => {
+    fetch(`${REMOTE_SERVER}/api/users/oauth/${facebookProfile.id}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson);
+        if (responseJson.data.user && !responseJson.data.errors) {
+          this._storeOauthData(responseJson.data);
+
+          this.setState({
+            userId: responseJson.data.user.id,
+            userFirstName: responseJson.data.user.first_name,
+            navigateTo: 'BetaHomeScreen',
+            canNavigate: true,
+            loginHasErrors: false,
+          });
+        } else {
+          this._createUserByFaceBookOauth(facebookProfile);
+        }
+      });
+  };
+
+  _createUserByFaceBookOauth = facebookProfile => {
+    fetch(`${REMOTE_SERVER}/api/users/oauth/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        facebook_profile_id: facebookProfile.id,
+        first_name: facebookProfile.name,
+        image: facebookProfile.avatar,
+      }),
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson);
+
+        if (responseJson.data.user && !responseJson.data.errrors) {
+          this.setState({
+            navigateTo: 'OauthGiveAwayVerificationScreen',
+            canNavigate: true,
+            loginHasErrors: false,
+            userId: responseJson.data.user.id,
+          });
+        } else {
+          this.setState({
+            loginHasErrors: true,
+          });
+        }
+      });
+  };
+
+  _handleNavigation = navigate => {
+    if (this.state.navigateTo === 'RegistrationScreenTwo') {
+      navigate('RegistrationScreenTwo', {
+        navigation: navigate,
+        props: this.state,
+      });
+    } else if (this.state.navigateTo === 'OauthGiveAwayVerificationScreen') {
+      navigate('OauthGiveAwayVerificationScreen', {
+        userId: this.state.userId,
+        navigation: this.props.navigation.navigate,
+        userFirstName: this.state.userFirstName,
+      });
     }
   };
 
@@ -124,7 +225,9 @@ class RegistrationScreenOne extends React.Component {
           Account Creation
         </Text>
         <View style={styles.facebookBtnContainer}>
-          <FBLoginButton />
+          {facebookService.makeLoginButton(accessToken => {
+            this._loadData();
+          })}
         </View>
         <Text style={{marginTop: '3%', textAlign: 'center'}}>or</Text>
 
@@ -197,12 +300,7 @@ class RegistrationScreenOne extends React.Component {
                 buttonText={'Next'}
                 navigationScreen={'RegistrationScreenTwo'}
                 navigation={this.props.navigation}
-                onPressFunc={() =>
-                  navigate('RegistrationScreenTwo', {
-                    navigation: navigate,
-                    props: this.state,
-                  })
-                }
+                onPressFunc={() => this._handleNavigation(navigate)}
               />
             </View>
           </View>

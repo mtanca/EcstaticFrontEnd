@@ -14,9 +14,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import EcstaticButton from '../components/ecstaticButton.js';
 
-import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
+import {LOCAL_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/remoteServer.js';
 
-import FBLoginButton from '../components/FBLoginButton';
+import OauthGiveAwayVerificationScreen from '../OauthGiveAwayVerificationScreen';
+
+import {facebookService} from '../../services/Facebook.js';
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -30,15 +33,21 @@ class LoginScreen extends React.Component {
       buttonColor: 'rgba(57,243,187, 0.5)',
       isDisabled: true,
       userFirstName: '',
+      profile: null,
+      userId: null,
     };
   }
 
   _storeData = async data => {
+    const userFirstName = data.userFirstName || data.user.first_name;
+    const userId = data.userId || data.user.id;
+    const giveawayId = data.giveawayId || data.give_away_id;
+
     try {
-      await AsyncStorage.setItem('@userId', data.userId + '');
-      await AsyncStorage.setItem('@userFirstName', data.userFirstName + '');
+      await AsyncStorage.setItem('@userId', userId + '');
       await AsyncStorage.setItem('@isLoggedIn', 'true');
-      await AsyncStorage.setItem('@giveawayId', data.giveawayId + '');
+      await AsyncStorage.setItem('@giveawayId', giveawayId + '');
+      await AsyncStorage.setItem('@userFirstName', userFirstName + '');
     } catch (e) {
       // saving error
     }
@@ -49,16 +58,34 @@ class LoginScreen extends React.Component {
     this._enableSumbitButton();
   };
 
-  _navigate = () => {
+  _navigateHome = () => {
     this.props.navigation.navigate('BetaHomeScreen', {
       navigation: this.props.navigation.navigate,
       giveawayId: this.state.giveawayId,
       userFirstName: this.state.userFirstName,
+      userId: this.state.userId,
     });
+  };
+
+  _navigateOauthVerification = () => {
+    this.props.navigation.navigate('OauthGiveAwayVerificationScreen', {
+      userId: this.state.userId,
+      navigation: this.props.navigation.navigate,
+      userFirstName: this.state.userFirstName,
+    });
+  };
+
+  _handleNavigation = () => {
+    if (this.state.navigateTo === 'BetaHomeScreen') {
+      return this._navigateHome();
+    } else if (this.state.navigateTo === 'OauthGiveAwayVerificationScreen') {
+      return this._navigateOauthVerification();
+    }
   };
 
   _enableSumbitButton = () => {
     const fieldsNotToCheck = [
+      'canNavigate',
       'isAllFieldsFilled',
       'loginErrors',
       'isDisabled',
@@ -106,10 +133,83 @@ class LoginScreen extends React.Component {
           this._storeData(responseJson.data);
 
           this.setState({
+            navigateTo: 'BetaHomeScreen',
             canNavigate: true,
             loginHasErrors: false,
             giveawayId: responseJson.data.giveawayId,
             userFirstName: responseJson.data.userFirstName,
+          });
+        } else {
+          this.setState({
+            loginHasErrors: true,
+          });
+        }
+      });
+  };
+
+  _loadData = async () => {
+    const profile = await facebookService.fetchProfile();
+    let userFirstName = '';
+
+    if (profile) {
+      this.setState({
+        profile: profile,
+        navigateTo: 'OauthGiveAwayVerificationScreen',
+      });
+      this.handleFaceBookOauthLogin(profile);
+    }
+  };
+
+  handleFaceBookOauthLogin = facebookProfile => {
+    fetch(`${REMOTE_SERVER}/api/users/oauth/${facebookProfile.id}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson);
+        if (responseJson.data.user && !responseJson.data.errors) {
+          this._storeData(responseJson.data);
+
+          this.setState({
+            userId: responseJson.data.user.id,
+            userFirstName: responseJson.data.user.first_name,
+            navigateTo: 'BetaHomeScreen',
+            canNavigate: true,
+            loginHasErrors: false,
+          });
+        } else {
+          this._createUserByFaceBookOauth(facebookProfile);
+        }
+      });
+  };
+
+  _createUserByFaceBookOauth = facebookProfile => {
+    fetch(`${REMOTE_SERVER}/api/users/oauth/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        facebook_profile_id: facebookProfile.id,
+        first_name: facebookProfile.name,
+        image: facebookProfile.avatar,
+      }),
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson);
+
+        if (responseJson.data.user && !responseJson.data.errrors) {
+          this.setState({
+            navigateTo: 'OauthGiveAwayVerificationScreen',
+            canNavigate: true,
+            loginHasErrors: false,
+            userId: responseJson.data.user.id,
           });
         } else {
           this.setState({
@@ -139,7 +239,9 @@ class LoginScreen extends React.Component {
           Log In
         </Text>
         <View style={styles.facebookBtnContainer}>
-          <FBLoginButton />
+          {facebookService.makeLoginButton(accessToken => {
+            this._loadData();
+          })}
         </View>
 
         <View style={{marginTop: '10%'}}>
@@ -248,7 +350,7 @@ class LoginScreen extends React.Component {
           </View>
         </View>
 
-        {this.state.canNavigate && this._navigate()}
+        {this.state.canNavigate && this._handleNavigation()}
       </View>
     );
   }

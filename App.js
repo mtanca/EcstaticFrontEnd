@@ -15,6 +15,7 @@ import UserPaymentHistoryScreen from './src/screens/UserPaymentsScreen/paymentHi
 import CreditCardForm from './src/screens/components/ccForm.js';
 import UserProfileScreen from './src/screens/UserProfileScreen';
 import EditDefaultCardScreen from './src/screens/UserPaymentsScreen/editDefaultCard.js';
+import OauthGiveAwayVerificationScreen from './src/screens/OauthGiveAwayVerificationScreen';
 
 import {View} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
@@ -112,6 +113,20 @@ const AppNavigator = createStackNavigator({
     screen: EditDefaultCardScreen,
     navigationOptions: {
       title: 'Default Payment',
+      headerTitleStyle: {
+        alignItems: 'center',
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: 'bold',
+      },
+    },
+  },
+  OauthGiveAwayVerificationScreen: {
+    screen: OauthGiveAwayVerificationScreen,
+    navigationOptions: {
+      headerLeft: null,
+      title: 'New Phone',
       headerTitleStyle: {
         alignItems: 'center',
         alignSelf: 'center',
