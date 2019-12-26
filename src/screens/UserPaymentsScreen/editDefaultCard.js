@@ -2,8 +2,8 @@ import React from 'react';
 
 import {Text} from 'react-native';
 
-import LOCAL_SERVER from '../../constants/localServer.js';
-import REMOTE_SERVER from '../../constants/remoteServer.js';
+import {LOCAL_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/localServer.js';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -23,7 +23,7 @@ export default class EditDefaultCardScreen extends React.Component {
   _fetchUserPaymentData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`${LOCAL_SERVER}/api/users/${userId}/payments`, {
+      fetch(`${REMOTE_SERVER}/api/users/${userId}/payments`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

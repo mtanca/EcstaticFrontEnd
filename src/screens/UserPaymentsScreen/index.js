@@ -23,8 +23,8 @@ import UserPaymentHistoryScreen from './paymentHistory.js';
 import CreditCardForm from '../components/ccForm.js';
 import UserNavigationBar from '../components/userNavigationBar';
 
-import LOCAL_SERVER from '../../constants/localServer.js';
-import REMOTE_SERVER from '../../constants/remoteServer.js';
+import {LOCAL_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/localServer.js';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -56,7 +56,7 @@ export default class UserPaymentsScreen extends React.Component {
   _fetchUserPaymentData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`${LOCAL_SERVER}/api/users/${userId}/payments`, {
+      fetch(`${REMOTE_SERVER}/api/users/${userId}/payments`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -548,6 +548,9 @@ export default class UserPaymentsScreen extends React.Component {
 
     this.slideRight();
     this.handleToggleProfileModal(null);
+
+    // logout user in the event they came in via oauth
+    facebookService.logOutUser();
 
     this.props.navigation.navigate('SplashScreen', {
       navigation: this.props.navigation.navigate,

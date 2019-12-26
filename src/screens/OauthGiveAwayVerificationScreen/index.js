@@ -13,8 +13,8 @@ import {
 
 import EcstaticButton from '../components/ecstaticButton.js';
 
-import LOCAL_SERVER from '../../constants/localServer.js';
-import REMOTE_SERVER from '../../constants/remoteServer.js';
+import {LOCAL_SERVER} from '../../constants/localServer.js';
+import {REMOTE_SERVER} from '../../constants/localServer.js';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -57,7 +57,7 @@ export default class OauthGiveAwayVerificationScreen extends React.Component {
   };
 
   handleSubmit = () => {
-    fetch(`${LOCAL_SERVER}/api/users/${this.state.userId}/giveaways`, {
+    fetch(`${REMOTE_SERVER}/api/users/${this.state.userId}/giveaways`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

@@ -114,7 +114,7 @@ class LoginScreen extends React.Component {
   };
 
   handleSubmit = () => {
-    fetch(`${LOCAL_SERVER}/api/sessions`, {
+    fetch(`${REMOTE_SERVER}/api/sessions`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -161,7 +161,7 @@ class LoginScreen extends React.Component {
   };
 
   handleFaceBookOauthLogin = facebookProfile => {
-    fetch(`${LOCAL_SERVER}/api/users/oauth/${facebookProfile.id}`, {
+    fetch(`${REMOTE_SERVER}/api/users/oauth/${facebookProfile.id}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -188,7 +188,7 @@ class LoginScreen extends React.Component {
   };
 
   _createUserByFaceBookOauth = facebookProfile => {
-    fetch(`${LOCAL_SERVER}/api/users/oauth/`, {
+    fetch(`${REMOTE_SERVER}/api/users/oauth/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
