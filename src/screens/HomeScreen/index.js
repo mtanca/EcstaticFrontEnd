@@ -15,7 +15,8 @@ import SplashScreen from '../SplashScreen';
 import UserSection from '../components/userSection.js';
 import HomeScreenNew from './new.js';
 
-import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
+import LOCAL_SERVER from '../../constants/localServer.js';
+import REMOTE_SERVER from '../../constants/remoteServer.js';
 
 const ninja = require('../../assets/Ninja.png');
 const madisonBeers = require('../../assets/madison-beer.png');
@@ -101,7 +102,7 @@ export default class HomeScreen extends React.Component {
     try {
       const userId = await AsyncStorage.getItem('@userId');
 
-      fetch(`${REMOTE_SERVER}/api/giveaways?id=` + userId, {
+      fetch(`${LOCAL_SERVER}/api/giveaways?id=` + userId, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

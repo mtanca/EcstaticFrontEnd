@@ -1,7 +1,13 @@
 import React from 'react';
 import FBSDK from 'react-native-fbsdk';
 
-const {LoginButton, AccessToken, GraphRequest, GraphRequestManager} = FBSDK;
+const {
+  LoginButton,
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager,
+  LoginManager,
+} = FBSDK;
 
 class FacebookService {
   constructor() {
@@ -27,6 +33,10 @@ class FacebookService {
         }}
       />
     );
+  }
+
+  logOutUser() {
+    LoginManager.logOut();
   }
 
   makeLogoutButton(callback) {

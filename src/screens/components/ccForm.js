@@ -17,7 +17,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import RNPickerSelect from 'react-native-picker-select';
 
-import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
+import LOCAL_SERVER from '../../constants/localServer.js';
+import REMOTE_SERVER from '../../constants/remoteServer.js';
 
 var countries = require('country-data').countries;
 
@@ -283,7 +284,7 @@ export default class CreditCardForm extends React.Component {
   };
 
   handleSubmit = () => {
-    fetch(`${REMOTE_SERVER}/api/users/${this.state.userId}/payments`, {
+    fetch(`${LOCAL_SERVER}/api/users/${this.state.userId}/payments`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

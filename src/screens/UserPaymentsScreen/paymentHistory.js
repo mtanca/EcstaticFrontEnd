@@ -13,7 +13,8 @@ import LottieView from 'lottie-react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
+import LOCAL_SERVER from '../../constants/localServer.js';
+import REMOTE_SERVER from '../../constants/remoteServer.js';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -39,7 +40,7 @@ export default class UserPaymentHistoryScreen extends React.Component {
   _fetchUserPaymentHistory = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`${REMOTE_SERVER}/api/users/${userId}/payments_history`, {
+      fetch(`${LOCAL_SERVER}/api/users/${userId}/payments_history`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

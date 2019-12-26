@@ -18,6 +18,8 @@ import Modal from 'react-native-modal';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
+import {facebookService} from '../../services/Facebook.js';
+
 const commentTextSVG = require('../../assets/comment_text.svg');
 const creditCardSVG = require('../../assets/credit_card.svg');
 const homeSVG = require('../../assets/home_vs.svg');
@@ -37,7 +39,8 @@ import PrizeModalDisplay from '../components/prizeModalDisplay';
 
 import CategoryTitle from '../components/categoryTitle.js';
 
-import {LOCAL_SERVER, REMOTE_SERVER} from '../../constants/constants.js';
+import LOCAL_SERVER from '../../constants/localServer.js';
+import REMOTE_SERVER from '../../constants/remoteServer.js';
 
 export default class BetaHomeScreen extends React.Component {
   constructor(props) {
@@ -167,6 +170,7 @@ export default class BetaHomeScreen extends React.Component {
     this.slideRight();
     this.handleToggleProfileModal(null);
 
+    facebookService.logOutUser();
     this.props.navigation.navigate('SplashScreen', {
       navigation: this.props.navigation.navigate,
     });
@@ -178,7 +182,7 @@ export default class BetaHomeScreen extends React.Component {
   _fetchUserGiveAwayData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`${REMOTE_SERVER}/api/users/${userId}/giveaways`, {
+      fetch(`${LOCAL_SERVER}/api/users/${userId}/giveaways`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -200,7 +204,7 @@ export default class BetaHomeScreen extends React.Component {
   _fetchUserPrizeData = async () => {
     try {
       let userId = await AsyncStorage.getItem('@userId');
-      fetch(`${REMOTE_SERVER}/api/users/${userId}/prizes`, {
+      fetch(`${LOCAL_SERVER}/api/users/${userId}/prizes`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

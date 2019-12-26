@@ -49,12 +49,12 @@ export default class PrizeModalDisplay extends React.Component {
   _userPrizeOwn = () => {
     const prizeMapping = this.props.userPrizes;
 
-    const amountOwned = prizeMapping[this.props.displayPrize.name].length;
+    const amountOwned = prizeMapping[this.props.displayPrize.name];
 
-    if (amountOwned < 1) {
-      return 'Not owned';
+    if (amountOwned) {
+      return `Own x${amountOwned.length}`;
     } else {
-      return `Own x${amountOwned}`;
+      return 'Not owned';
     }
   };
 
