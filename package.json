@@ -15,7 +15,7 @@
     "moment": "^2.24.0",
     "react": "16.8.6",
     "react-currency-format": "^1.0.0",
-    "react-native": "0.60.5",
+    "react-native": "0.62.3",
     "react-native-country-list": "^1.0.10",
     "react-native-elements": "^0.19.1",
     "react-native-extra-dimensions-android": "^1.2.5",
